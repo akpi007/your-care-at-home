@@ -14,16 +14,559 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      admin_logs: {
+        Row: {
+          action: string
+          admin_id: string
+          created_at: string
+          id: string
+          target_id: string | null
+        }
+        Insert: {
+          action: string
+          admin_id: string
+          created_at?: string
+          id?: string
+          target_id?: string | null
+        }
+        Update: {
+          action?: string
+          admin_id?: string
+          created_at?: string
+          id?: string
+          target_id?: string | null
+        }
+        Relationships: []
+      }
+      availability: {
+        Row: {
+          day_of_week: number
+          end_time: string
+          id: string
+          professional_id: string
+          start_time: string
+        }
+        Insert: {
+          day_of_week: number
+          end_time: string
+          id?: string
+          professional_id: string
+          start_time: string
+        }
+        Update: {
+          day_of_week?: number
+          end_time?: string
+          id?: string
+          professional_id?: string
+          start_time?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "availability_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bookings: {
+        Row: {
+          address: string | null
+          booking_date: string
+          booking_time: string
+          created_at: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          patient_profile_id: string
+          prescription_file: string | null
+          professional_id: string
+          service_id: string
+          status: string
+          symptoms_notes: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          booking_date: string
+          booking_time: string
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          patient_profile_id: string
+          prescription_file?: string | null
+          professional_id: string
+          service_id: string
+          status?: string
+          symptoms_notes?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          booking_date?: string
+          booking_time?: string
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          patient_profile_id?: string
+          prescription_file?: string | null
+          professional_id?: string
+          service_id?: string
+          status?: string
+          symptoms_notes?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_patient_profile_id_fkey"
+            columns: ["patient_profile_id"]
+            isOneToOne: false
+            referencedRelation: "patient_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      earnings: {
+        Row: {
+          amount: number
+          booking_id: string
+          commission: number | null
+          created_at: string
+          id: string
+          payout_status: string | null
+          professional_id: string
+        }
+        Insert: {
+          amount: number
+          booking_id: string
+          commission?: number | null
+          created_at?: string
+          id?: string
+          payout_status?: string | null
+          professional_id: string
+        }
+        Update: {
+          amount?: number
+          booking_id?: string
+          commission?: number | null
+          created_at?: string
+          id?: string
+          payout_status?: string | null
+          professional_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "earnings_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "earnings_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      medical_reports: {
+        Row: {
+          ai_recommendation: string | null
+          ai_summary: string | null
+          created_at: string
+          file_url: string | null
+          id: string
+          patient_profile_id: string
+          user_id: string
+        }
+        Insert: {
+          ai_recommendation?: string | null
+          ai_summary?: string | null
+          created_at?: string
+          file_url?: string | null
+          id?: string
+          patient_profile_id: string
+          user_id: string
+        }
+        Update: {
+          ai_recommendation?: string | null
+          ai_summary?: string | null
+          created_at?: string
+          file_url?: string | null
+          id?: string
+          patient_profile_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "medical_reports_patient_profile_id_fkey"
+            columns: ["patient_profile_id"]
+            isOneToOne: false
+            referencedRelation: "patient_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          booking_id: string
+          created_at: string
+          id: string
+          message: string
+          message_type: string | null
+          sender_id: string
+        }
+        Insert: {
+          booking_id: string
+          created_at?: string
+          id?: string
+          message: string
+          message_type?: string | null
+          sender_id: string
+        }
+        Update: {
+          booking_id?: string
+          created_at?: string
+          id?: string
+          message?: string
+          message_type?: string | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      patient_profiles: {
+        Row: {
+          age: number | null
+          allergies: string | null
+          blood_group: string | null
+          created_at: string
+          emergency_contact: string | null
+          gender: string | null
+          id: string
+          medical_history: string | null
+          medications: string | null
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age?: number | null
+          allergies?: string | null
+          blood_group?: string | null
+          created_at?: string
+          emergency_contact?: string | null
+          gender?: string | null
+          id?: string
+          medical_history?: string | null
+          medications?: string | null
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age?: number | null
+          allergies?: string | null
+          blood_group?: string | null
+          created_at?: string
+          emergency_contact?: string | null
+          gender?: string | null
+          id?: string
+          medical_history?: string | null
+          medications?: string | null
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          booking_id: string
+          created_at: string
+          id: string
+          payment_method: string | null
+          payment_status: string | null
+          transaction_id: string | null
+        }
+        Insert: {
+          amount: number
+          booking_id: string
+          created_at?: string
+          id?: string
+          payment_method?: string | null
+          payment_status?: string | null
+          transaction_id?: string | null
+        }
+        Update: {
+          amount?: number
+          booking_id?: string
+          created_at?: string
+          id?: string
+          payment_method?: string | null
+          payment_status?: string | null
+          transaction_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professional_certifications: {
+        Row: {
+          certificate_name: string
+          created_at: string
+          document_url: string | null
+          id: string
+          professional_id: string
+          verified: boolean | null
+        }
+        Insert: {
+          certificate_name: string
+          created_at?: string
+          document_url?: string | null
+          id?: string
+          professional_id: string
+          verified?: boolean | null
+        }
+        Update: {
+          certificate_name?: string
+          created_at?: string
+          document_url?: string | null
+          id?: string
+          professional_id?: string
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_certifications_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professionals: {
+        Row: {
+          bio: string | null
+          consultation_fee: number | null
+          created_at: string
+          id: string
+          license_number: string | null
+          rating: number | null
+          service_id: string | null
+          specialization: string | null
+          total_reviews: number | null
+          updated_at: string
+          user_id: string
+          verification_status: string | null
+          years_experience: number | null
+        }
+        Insert: {
+          bio?: string | null
+          consultation_fee?: number | null
+          created_at?: string
+          id?: string
+          license_number?: string | null
+          rating?: number | null
+          service_id?: string | null
+          specialization?: string | null
+          total_reviews?: number | null
+          updated_at?: string
+          user_id: string
+          verification_status?: string | null
+          years_experience?: number | null
+        }
+        Update: {
+          bio?: string | null
+          consultation_fee?: number | null
+          created_at?: string
+          id?: string
+          license_number?: string | null
+          rating?: number | null
+          service_id?: string | null
+          specialization?: string | null
+          total_reviews?: number | null
+          updated_at?: string
+          user_id?: string
+          verification_status?: string | null
+          years_experience?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professionals_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          booking_id: string
+          comment: string | null
+          created_at: string
+          id: string
+          patient_id: string
+          professional_id: string
+          rating: number
+        }
+        Insert: {
+          booking_id: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          patient_id: string
+          professional_id: string
+          rating: number
+        }
+        Update: {
+          booking_id?: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          patient_id?: string
+          professional_id?: string
+          rating?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      services: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "patient" | "professional" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +693,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["patient", "professional", "admin"],
+    },
   },
 } as const

@@ -1,11 +1,19 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Heart } from "lucide-react";
+import { Menu, X, Heart, LogOut } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Header = () => {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   const navLinks = [
     { to: "/", label: "Home" },
@@ -43,12 +51,23 @@ const Header = () => {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Button variant="ghost" size="sm" asChild>
-            <Link to="/login">Log In</Link>
-          </Button>
-          <Button variant="hero" size="sm" asChild>
-            <Link to="/signup">Get Started</Link>
-          </Button>
+          {user ? (
+            <>
+              <span className="text-sm text-muted-foreground">{user.email}</span>
+              <Button variant="ghost" size="sm" onClick={handleSignOut}>
+                <LogOut className="h-4 w-4 mr-1" /> Sign Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/login">Log In</Link>
+              </Button>
+              <Button variant="hero" size="sm" asChild>
+                <Link to="/signup">Get Started</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         <button
@@ -77,12 +96,20 @@ const Header = () => {
               </Link>
             ))}
             <div className="mt-3 flex flex-col gap-2">
-              <Button variant="outline" asChild>
-                <Link to="/login">Log In</Link>
-              </Button>
-              <Button variant="hero" asChild>
-                <Link to="/signup">Get Started</Link>
-              </Button>
+              {user ? (
+                <Button variant="outline" onClick={() => { setMobileOpen(false); handleSignOut(); }}>
+                  Sign Out
+                </Button>
+              ) : (
+                <>
+                  <Button variant="outline" asChild>
+                    <Link to="/login" onClick={() => setMobileOpen(false)}>Log In</Link>
+                  </Button>
+                  <Button variant="hero" asChild>
+                    <Link to="/signup" onClick={() => setMobileOpen(false)}>Get Started</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </nav>
         </div>
