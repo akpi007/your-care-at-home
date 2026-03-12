@@ -35,6 +35,9 @@ const App = () => (
               <ProtectedRoute><Dashboard /></ProtectedRoute>
             } />
             <Route path="/services" element={<Services />} />
+            <Route path="/patient-profiles" element={
+              <ProtectedRoute><PatientProfiles /></ProtectedRoute>
+            } />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/reset-password" element={<ResetPassword />} />
