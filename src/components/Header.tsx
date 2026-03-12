@@ -5,8 +5,15 @@ import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Header = () => {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   const navLinks = [
     { to: "/", label: "Home" },
