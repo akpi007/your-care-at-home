@@ -13,6 +13,7 @@ import Services from "./pages/Services";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ResetPassword from "./pages/ResetPassword";
+import PatientProfiles from "./pages/PatientProfiles";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,9 @@ const App = () => (
               <ProtectedRoute><Dashboard /></ProtectedRoute>
             } />
             <Route path="/services" element={<Services />} />
+            <Route path="/patient-profiles" element={
+              <ProtectedRoute><PatientProfiles /></ProtectedRoute>
+            } />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/reset-password" element={<ResetPassword />} />
