@@ -96,12 +96,20 @@ const Header = () => {
               </Link>
             ))}
             <div className="mt-3 flex flex-col gap-2">
-              <Button variant="outline" asChild>
-                <Link to="/login">Log In</Link>
-              </Button>
-              <Button variant="hero" asChild>
-                <Link to="/signup">Get Started</Link>
-              </Button>
+              {user ? (
+                <Button variant="outline" onClick={() => { setMobileOpen(false); handleSignOut(); }}>
+                  Sign Out
+                </Button>
+              ) : (
+                <>
+                  <Button variant="outline" asChild>
+                    <Link to="/login" onClick={() => setMobileOpen(false)}>Log In</Link>
+                  </Button>
+                  <Button variant="hero" asChild>
+                    <Link to="/signup" onClick={() => setMobileOpen(false)}>Get Started</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </nav>
         </div>
