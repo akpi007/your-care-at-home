@@ -45,6 +45,15 @@ const Login = () => {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    const { error } = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin,
+    });
+    if (error) {
+      toast({ title: "Google login failed", description: String(error), variant: "destructive" });
+    }
+  };
+
   return (
     <div className="min-h-screen flex">
       {/* Left panel */}
