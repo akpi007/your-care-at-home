@@ -66,6 +66,9 @@ const Header = () => {
               <Button variant="hero" size="sm" asChild>
                 <Link to="/signup">Get Started</Link>
               </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/provider-signup">For Providers</Link>
+              </Button>
             </>
           )}
         </div>
@@ -107,6 +110,9 @@ const Header = () => {
                   </Button>
                   <Button variant="hero" asChild>
                     <Link to="/signup" onClick={() => setMobileOpen(false)}>Get Started</Link>
+                  </Button>
+                  <Button variant="soft" asChild>
+                    <Link to="/provider-signup" onClick={() => setMobileOpen(false)}>Join as Provider</Link>
                   </Button>
                 </>
               )}
