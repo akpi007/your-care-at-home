@@ -390,8 +390,10 @@ export type Database = {
           created_at: string
           display_name: string | null
           id: string
+          id_proof_url: string | null
           image_url: string | null
           license_number: string | null
+          passport_photo_url: string | null
           rating: number | null
           service_id: string | null
           specialization: string | null
@@ -408,8 +410,10 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           id?: string
+          id_proof_url?: string | null
           image_url?: string | null
           license_number?: string | null
+          passport_photo_url?: string | null
           rating?: number | null
           service_id?: string | null
           specialization?: string | null
@@ -426,8 +430,10 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           id?: string
+          id_proof_url?: string | null
           image_url?: string | null
           license_number?: string | null
+          passport_photo_url?: string | null
           rating?: number | null
           service_id?: string | null
           specialization?: string | null
