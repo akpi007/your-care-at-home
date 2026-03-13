@@ -15,6 +15,7 @@ import Signup from "./pages/Signup";
 import ProviderSignup from "./pages/ProviderSignup";
 import ResetPassword from "./pages/ResetPassword";
 import PatientProfiles from "./pages/PatientProfiles";
+import ProviderDashboard from "./pages/ProviderDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
