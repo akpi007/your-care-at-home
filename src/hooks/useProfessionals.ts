@@ -37,6 +37,7 @@ async function fetchProfessionals(): Promise<Professional[]> {
     fee: Number(p.consultation_fee) || 0,
     imageUrl: p.image_url ?? "/placeholder.svg",
     available: p.available ?? true,
+    bio: p.bio ?? "",
   }));
 }
 
