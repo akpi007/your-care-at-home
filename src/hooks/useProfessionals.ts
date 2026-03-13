@@ -13,6 +13,7 @@ export interface Professional {
   fee: number;
   imageUrl: string;
   available: boolean;
+  bio: string;
 }
 
 async function fetchProfessionals(): Promise<Professional[]> {
