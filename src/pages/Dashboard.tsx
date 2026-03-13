@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
@@ -5,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Clock, Star, User, FileText, MessageSquare, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useBookings } from "@/hooks/useBookings";
+import BookingChat from "@/components/BookingChat";
 
 const statusColors: Record<string, string> = {
   confirmed: "bg-healthcare-soft-green text-healthcare-green",
@@ -15,6 +17,7 @@ const statusColors: Record<string, string> = {
 
 const Dashboard = () => {
   const { data: bookings = [], isLoading } = useBookings();
+  const [chatBookingId, setChatBookingId] = useState<string | null>(null);
 
   const upcoming = bookings.filter((b) => ["pending", "confirmed"].includes(b.status));
   const past = bookings.filter((b) => ["completed", "cancelled"].includes(b.status));
@@ -77,6 +80,9 @@ const Dashboard = () => {
                           <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{b.booking_time}</span>
                         </div>
                       </div>
+                      <Button variant="ghost" size="sm" onClick={() => setChatBookingId(b.id)}>
+                        <MessageSquare className="h-4 w-4" />
+                      </Button>
                       <Badge className={statusColors[b.status] || "bg-muted text-muted-foreground"}>{b.status}</Badge>
                     </div>
                   ))}
@@ -120,6 +126,13 @@ const Dashboard = () => {
       </div>
 
       <Footer />
+
+      {/* Chat modal */}
+      <BookingChat
+        bookingId={chatBookingId ?? ""}
+        open={!!chatBookingId}
+        onClose={() => setChatBookingId(null)}
+      />
     </div>
   );
 };

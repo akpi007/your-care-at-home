@@ -7,11 +7,13 @@ import { useProfessionals } from "@/hooks/useProfessionals";
 import { useServices } from "@/hooks/useServices";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, SlidersHorizontal, Loader2 } from "lucide-react";
+import { Search, Loader2 } from "lucide-react";
+import ProfessionalsFilter, { Filters, defaultFilters } from "@/components/ProfessionalsFilter";
 
 const Professionals = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
+  const [filters, setFilters] = useState<Filters>(defaultFilters);
   const activeService = searchParams.get("service") || "all";
 
   const { data: professionals = [], isLoading } = useProfessionals();
@@ -26,9 +28,13 @@ const Professionals = () => {
         !search ||
         p.name.toLowerCase().includes(search.toLowerCase()) ||
         p.specialization.toLowerCase().includes(search.toLowerCase());
-      return matchesService && matchesSearch;
+      const matchesPrice =
+        p.fee >= filters.priceRange[0] && p.fee <= filters.priceRange[1];
+      const matchesRating = p.rating >= filters.minRating;
+      const matchesAvailable = !filters.availableOnly || p.available;
+      return matchesService && matchesSearch && matchesPrice && matchesRating && matchesAvailable;
     });
-  }, [activeService, search, professionals]);
+  }, [activeService, search, professionals, filters]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -51,10 +57,7 @@ const Professionals = () => {
               className="pl-9"
             />
           </div>
-          <button className="flex items-center gap-2 rounded-lg border border-input bg-card px-4 py-2.5 text-sm text-muted-foreground hover:bg-muted transition-colors">
-            <SlidersHorizontal className="h-4 w-4" />
-            Filters
-          </button>
+          <ProfessionalsFilter filters={filters} onChange={setFilters} />
         </div>
 
         {/* Service tabs */}
@@ -77,6 +80,13 @@ const Professionals = () => {
             </Badge>
           ))}
         </div>
+
+        {/* Results count */}
+        {!isLoading && (
+          <p className="text-sm text-muted-foreground mb-4">
+            {filtered.length} professional{filtered.length !== 1 ? "s" : ""} found
+          </p>
+        )}
 
         {/* Results */}
         {isLoading ? (
