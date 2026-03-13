@@ -1,12 +1,17 @@
-import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { professionals } from "@/data/mockData";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useProfessional } from "@/hooks/useProfessionals";
+import { useCreateBooking } from "@/hooks/useBookings";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 import {
   ArrowLeft,
   ArrowRight,
@@ -16,21 +21,60 @@ import {
   Star,
   CheckCircle2,
   User,
+  Loader2,
 } from "lucide-react";
 
 const timeSlots = [
-  "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
-  "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM",
+  "09:00", "10:00", "11:00", "12:00",
+  "14:00", "15:00", "16:00", "17:00",
 ];
+
+const formatTime = (t: string) => {
+  const [h] = t.split(":");
+  const hour = parseInt(h);
+  return hour >= 12 ? `${hour === 12 ? 12 : hour - 12}:00 PM` : `${hour}:00 AM`;
+};
 
 const BookService = () => {
   const { id } = useParams();
-  const professional = professionals.find((p) => p.id === id);
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { data: professional, isLoading } = useProfessional(id);
+  const createBooking = useCreateBooking();
+
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [notes, setNotes] = useState("");
   const [address, setAddress] = useState("");
+  const [selectedProfile, setSelectedProfile] = useState("");
+  const [patientProfiles, setPatientProfiles] = useState<{ id: string; name: string }[]>([]);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from("patient_profiles")
+      .select("id, name")
+      .eq("user_id", user.id)
+      .then(({ data }) => {
+        if (data && data.length > 0) {
+          setPatientProfiles(data);
+          setSelectedProfile(data[0].id);
+        }
+      });
+  }, [user]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!professional) {
     return (
@@ -50,6 +94,35 @@ const BookService = () => {
   }
 
   const totalSteps = 3;
+
+  const handleConfirm = async () => {
+    if (!user) {
+      toast({ title: "Please sign in", description: "You need to be logged in to book.", variant: "destructive" });
+      navigate("/login");
+      return;
+    }
+    if (!selectedProfile) {
+      toast({ title: "No patient profile", description: "Please create a patient profile first.", variant: "destructive" });
+      navigate("/patient-profiles");
+      return;
+    }
+
+    try {
+      await createBooking.mutateAsync({
+        professional_id: professional.id,
+        service_id: professional.serviceId,
+        patient_profile_id: selectedProfile,
+        booking_date: selectedDate,
+        booking_time: selectedTime,
+        address,
+        symptoms_notes: notes || undefined,
+      });
+      toast({ title: "Booking confirmed!", description: "Your appointment has been scheduled." });
+      navigate("/dashboard");
+    } catch (err: any) {
+      toast({ title: "Booking failed", description: err.message, variant: "destructive" });
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -135,7 +208,7 @@ const BookService = () => {
                         : "border-input bg-card text-card-foreground hover:border-primary/50"
                     }`}
                   >
-                    {t}
+                    {formatTime(t)}
                   </button>
                 ))}
               </div>
@@ -155,6 +228,21 @@ const BookService = () => {
         {/* Step 2: Details */}
         {step === 2 && (
           <div className="space-y-6 animate-fade-in">
+            {patientProfiles.length > 1 && (
+              <div>
+                <label className="mb-2 block text-sm font-medium text-foreground">
+                  <User className="inline h-4 w-4 mr-1" /> Patient Profile
+                </label>
+                <Select value={selectedProfile} onValueChange={setSelectedProfile}>
+                  <SelectTrigger><SelectValue placeholder="Select patient" /></SelectTrigger>
+                  <SelectContent>
+                    {patientProfiles.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
             <div>
               <label className="mb-2 block text-sm font-medium text-foreground">
                 <MapPin className="inline h-4 w-4 mr-1" /> Your Address
@@ -213,7 +301,7 @@ const BookService = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Time</span>
-                  <span className="font-medium text-foreground">{selectedTime}</span>
+                  <span className="font-medium text-foreground">{formatTime(selectedTime)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Address</span>
@@ -236,8 +324,19 @@ const BookService = () => {
               <Button variant="outline" size="lg" onClick={() => setStep(2)}>
                 Back
               </Button>
-              <Button variant="hero" size="lg" className="flex-1">
-                <CheckCircle2 className="h-4 w-4" /> Confirm Booking
+              <Button
+                variant="hero"
+                size="lg"
+                className="flex-1"
+                onClick={handleConfirm}
+                disabled={createBooking.isPending}
+              >
+                {createBooking.isPending ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <CheckCircle2 className="h-4 w-4" />
+                )}
+                {createBooking.isPending ? "Booking..." : "Confirm Booking"}
               </Button>
             </div>
           </div>

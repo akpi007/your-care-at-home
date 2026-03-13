@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ServiceCard from "@/components/ServiceCard";
 import ProfessionalCard from "@/components/ProfessionalCard";
-import { professionals } from "@/data/mockData";
+import { useProfessionals } from "@/hooks/useProfessionals";
 import {
   Stethoscope,
   Syringe,
@@ -17,6 +17,7 @@ import {
   Star,
   ArrowRight,
   Search,
+  Loader2,
 } from "lucide-react";
 
 const serviceCards = [
@@ -35,6 +36,9 @@ const steps = [
 ];
 
 const Index = () => {
+  const { data: professionals = [], isLoading } = useProfessionals();
+  const topProfessionals = professionals.slice(0, 3);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -129,11 +133,17 @@ const Index = () => {
             <Link to="/professionals">View All <ArrowRight className="h-4 w-4" /></Link>
           </Button>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {professionals.slice(0, 3).map((pro) => (
-            <ProfessionalCard key={pro.id} {...pro} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {topProfessionals.map((pro) => (
+              <ProfessionalCard key={pro.id} {...pro} />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* CTA */}

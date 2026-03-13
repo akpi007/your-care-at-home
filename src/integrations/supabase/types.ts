@@ -384,47 +384,56 @@ export type Database = {
       }
       professionals: {
         Row: {
+          available: boolean | null
           bio: string | null
           consultation_fee: number | null
           created_at: string
+          display_name: string | null
           id: string
+          image_url: string | null
           license_number: string | null
           rating: number | null
           service_id: string | null
           specialization: string | null
           total_reviews: number | null
           updated_at: string
-          user_id: string
+          user_id: string | null
           verification_status: string | null
           years_experience: number | null
         }
         Insert: {
+          available?: boolean | null
           bio?: string | null
           consultation_fee?: number | null
           created_at?: string
+          display_name?: string | null
           id?: string
+          image_url?: string | null
           license_number?: string | null
           rating?: number | null
           service_id?: string | null
           specialization?: string | null
           total_reviews?: number | null
           updated_at?: string
-          user_id: string
+          user_id?: string | null
           verification_status?: string | null
           years_experience?: number | null
         }
         Update: {
+          available?: boolean | null
           bio?: string | null
           consultation_fee?: number | null
           created_at?: string
+          display_name?: string | null
           id?: string
+          image_url?: string | null
           license_number?: string | null
           rating?: number | null
           service_id?: string | null
           specialization?: string | null
           total_reviews?: number | null
           updated_at?: string
-          user_id?: string
+          user_id?: string | null
           verification_status?: string | null
           years_experience?: number | null
         }

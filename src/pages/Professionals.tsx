@@ -3,15 +3,19 @@ import { useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProfessionalCard from "@/components/ProfessionalCard";
-import { professionals, services } from "@/data/mockData";
+import { useProfessionals } from "@/hooks/useProfessionals";
+import { useServices } from "@/hooks/useServices";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, Loader2 } from "lucide-react";
 
 const Professionals = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const activeService = searchParams.get("service") || "all";
+
+  const { data: professionals = [], isLoading } = useProfessionals();
+  const { data: services = [] } = useServices();
 
   const filtered = useMemo(() => {
     return professionals.filter((p) => {
@@ -24,7 +28,7 @@ const Professionals = () => {
         p.specialization.toLowerCase().includes(search.toLowerCase());
       return matchesService && matchesSearch;
     });
-  }, [activeService, search]);
+  }, [activeService, search, professionals]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -65,9 +69,9 @@ const Professionals = () => {
           {services.map((s) => (
             <Badge
               key={s.id}
-              variant={activeService === s.id ? "default" : "secondary"}
+              variant={activeService === s.name.toLowerCase() ? "default" : "secondary"}
               className="cursor-pointer px-4 py-1.5 text-sm"
-              onClick={() => setSearchParams({ service: s.id })}
+              onClick={() => setSearchParams({ service: s.name.toLowerCase() })}
             >
               {s.name}
             </Badge>
@@ -75,7 +79,11 @@ const Professionals = () => {
         </div>
 
         {/* Results */}
-        {filtered.length > 0 ? (
+        {isLoading ? (
+          <div className="flex items-center justify-center py-16">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : filtered.length > 0 ? (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {filtered.map((pro) => (
               <ProfessionalCard key={pro.id} {...pro} />
