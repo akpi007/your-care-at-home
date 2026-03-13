@@ -23,6 +23,7 @@ interface ProfessionalCardProps {
   distance?: string;
   imageUrl: string;
   available: boolean;
+  bio?: string;
 }
 
 const ProfessionalCard = ({
@@ -37,6 +38,7 @@ const ProfessionalCard = ({
   distance,
   imageUrl,
   available,
+  bio,
 }: ProfessionalCardProps) => {
   const [open, setOpen] = useState(false);
 
@@ -146,6 +148,10 @@ const ProfessionalCard = ({
               <span className="text-xs text-muted-foreground">per visit</span>
             </div>
           </div>
+
+          {bio && (
+            <p className="text-sm text-muted-foreground leading-relaxed">{bio}</p>
+          )}
 
           {distance && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">

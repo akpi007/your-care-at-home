@@ -13,6 +13,7 @@ export interface Professional {
   fee: number;
   imageUrl: string;
   available: boolean;
+  bio: string;
 }
 
 async function fetchProfessionals(): Promise<Professional[]> {
@@ -36,6 +37,7 @@ async function fetchProfessionals(): Promise<Professional[]> {
     fee: Number(p.consultation_fee) || 0,
     imageUrl: p.image_url ?? "/placeholder.svg",
     available: p.available ?? true,
+    bio: p.bio ?? "",
   }));
 }
 
@@ -72,6 +74,7 @@ export function useProfessional(id: string | undefined) {
         fee: Number(data.consultation_fee) || 0,
         imageUrl: data.image_url ?? "/placeholder.svg",
         available: data.available ?? true,
+        bio: data.bio ?? "",
       };
     },
     enabled: !!id,
