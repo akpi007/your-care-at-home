@@ -74,6 +74,7 @@ export function useProfessional(id: string | undefined) {
         fee: Number(data.consultation_fee) || 0,
         imageUrl: data.image_url ?? "/placeholder.svg",
         available: data.available ?? true,
+        bio: data.bio ?? "",
       };
     },
     enabled: !!id,
