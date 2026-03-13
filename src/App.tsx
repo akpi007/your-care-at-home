@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import Services from "./pages/Services";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import ProviderSignup from "./pages/ProviderSignup";
 import ResetPassword from "./pages/ResetPassword";
 import PatientProfiles from "./pages/PatientProfiles";
 import NotFound from "./pages/NotFound";
