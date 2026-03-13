@@ -17,11 +17,27 @@ const Header = () => {
     navigate("/");
   };
 
+  // Check if user is a professional
+  const { data: isProfessional } = useQuery({
+    queryKey: ["is-professional", user?.id],
+    queryFn: async () => {
+      if (!user) return false;
+      const { data } = await supabase
+        .from("professionals")
+        .select("id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      return !!data;
+    },
+    enabled: !!user,
+  });
+
   const navLinks = [
     { to: "/", label: "Home" },
     { to: "/professionals", label: "Find Professionals" },
     { to: "/services", label: "Services" },
     { to: "/dashboard", label: "My Dashboard" },
+    ...(isProfessional ? [{ to: "/provider-dashboard", label: "Provider Dashboard" }] : []),
   ];
 
   return (
