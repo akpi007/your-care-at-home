@@ -66,6 +66,9 @@ const Header = () => {
               <Button variant="hero" size="sm" asChild>
                 <Link to="/signup">Get Started</Link>
               </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/provider-signup">For Providers</Link>
+              </Button>
             </>
           )}
         </div>
