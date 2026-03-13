@@ -155,14 +155,27 @@ const Index = () => {
           <p className="mt-3 text-primary-foreground/80 text-lg">
             Join thousands of patients who trust MedHome for quality healthcare.
           </p>
-          <Button
-            variant="outline"
-            size="xl"
-            className="mt-8 border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20 backdrop-blur"
-            asChild
-          >
-            <Link to="/signup">Create Free Account</Link>
-          </Button>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Button
+              variant="outline"
+              size="xl"
+              className="border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20 backdrop-blur"
+              asChild
+            >
+              <Link to="/signup">Create Free Account</Link>
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 backdrop-blur"
+              asChild
+            >
+              <Link to="/provider-signup">
+                <Stethoscope className="h-4 w-4 mr-1" />
+                Join as a Provider
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
 

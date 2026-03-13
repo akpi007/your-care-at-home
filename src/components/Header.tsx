@@ -111,6 +111,9 @@ const Header = () => {
                   <Button variant="hero" asChild>
                     <Link to="/signup" onClick={() => setMobileOpen(false)}>Get Started</Link>
                   </Button>
+                  <Button variant="soft" asChild>
+                    <Link to="/provider-signup" onClick={() => setMobileOpen(false)}>Join as Provider</Link>
+                  </Button>
                 </>
               )}
             </div>
