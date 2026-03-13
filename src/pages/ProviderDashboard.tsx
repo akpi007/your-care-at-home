@@ -21,6 +21,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import ProviderProfileEdit from "@/components/ProviderProfileEdit";
 import ProviderBookingCard from "@/components/ProviderBookingCard";
+import AvailabilityScheduler from "@/components/AvailabilityScheduler";
 
 const verificationBadge: Record<string, { label: string; className: string }> = {
   verified: { label: "Verified", className: "bg-healthcare-soft-green text-healthcare-green" },
@@ -127,7 +128,10 @@ const ProviderDashboard = () => {
               >
                 {profile.available ? "Available ✓" : "Set Available"}
               </Button>
-              <ProviderProfileEdit profile={profile} />
+              <div className="flex gap-2">
+                <ProviderProfileEdit profile={profile} />
+                <AvailabilityScheduler professionalId={profile.id} />
+              </div>
             </div>
           </div>
         </div>
