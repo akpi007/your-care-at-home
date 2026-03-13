@@ -23,6 +23,7 @@ interface ProfessionalCardProps {
   distance?: string;
   imageUrl: string;
   available: boolean;
+  bio?: string;
 }
 
 const ProfessionalCard = ({
