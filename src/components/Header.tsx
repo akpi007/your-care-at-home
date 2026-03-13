@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Heart, LogOut } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Header = () => {
   const { user, signOut } = useAuth();
@@ -15,11 +17,27 @@ const Header = () => {
     navigate("/");
   };
 
+  // Check if user is a professional
+  const { data: isProfessional } = useQuery({
+    queryKey: ["is-professional", user?.id],
+    queryFn: async () => {
+      if (!user) return false;
+      const { data } = await supabase
+        .from("professionals")
+        .select("id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      return !!data;
+    },
+    enabled: !!user,
+  });
+
   const navLinks = [
     { to: "/", label: "Home" },
     { to: "/professionals", label: "Find Professionals" },
     { to: "/services", label: "Services" },
     { to: "/dashboard", label: "My Dashboard" },
+    ...(isProfessional ? [{ to: "/provider-dashboard", label: "Provider Dashboard" }] : []),
   ];
 
   return (
