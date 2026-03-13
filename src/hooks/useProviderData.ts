@@ -14,6 +14,8 @@ export interface ProviderProfile {
   bio: string;
   available: boolean;
   licenseNumber: string;
+  passportPhotoUrl: string;
+  idProofUrl: string;
 }
 
 export interface ProviderBooking {
