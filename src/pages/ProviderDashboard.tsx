@@ -19,13 +19,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-
-const statusColors: Record<string, string> = {
-  confirmed: "bg-healthcare-soft-green text-healthcare-green",
-  pending: "bg-healthcare-warm text-amber-700",
-  completed: "bg-secondary text-secondary-foreground",
-  cancelled: "bg-destructive/10 text-destructive",
-};
+import ProviderProfileEdit from "@/components/ProviderProfileEdit";
+import ProviderBookingCard from "@/components/ProviderBookingCard";
 
 const verificationBadge: Record<string, { label: string; className: string }> = {
   verified: { label: "Verified", className: "bg-healthcare-soft-green text-healthcare-green" },
@@ -99,8 +94,12 @@ const ProviderDashboard = () => {
         {/* Profile header */}
         <div className="mb-8 rounded-2xl bg-card p-6 shadow-card">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
-              <User className="h-8 w-8 text-primary" />
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 overflow-hidden">
+              {profile.passportPhotoUrl ? (
+                <img src={profile.passportPhotoUrl} alt={profile.displayName} className="h-full w-full object-cover" />
+              ) : (
+                <User className="h-8 w-8 text-primary" />
+              )}
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 flex-wrap">
@@ -110,18 +109,26 @@ const ProviderDashboard = () => {
                 <Badge className={vBadge.className}>{vBadge.label}</Badge>
               </div>
               <p className="text-muted-foreground">{profile.specialization}</p>
+              {profile.bio && (
+                <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{profile.bio}</p>
+              )}
               <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground flex-wrap">
                 <span className="flex items-center gap-1"><Star className="h-4 w-4 text-primary" />{profile.rating.toFixed(1)} ({profile.totalReviews} reviews)</span>
                 <span className="flex items-center gap-1"><Briefcase className="h-4 w-4" />{profile.yearsExperience} yrs exp</span>
+                <span className="flex items-center gap-1"><DollarSign className="h-4 w-4" />${profile.consultationFee}/visit</span>
                 <span className="flex items-center gap-1"><ShieldCheck className="h-4 w-4" />License: {profile.licenseNumber}</span>
               </div>
             </div>
-            <Button
-              variant={profile.available ? "hero" : "outline"}
-              onClick={toggleAvailability}
-            >
-              {profile.available ? "Available ✓" : "Set Available"}
-            </Button>
+            <div className="flex flex-col gap-2 sm:items-end">
+              <Button
+                variant={profile.available ? "hero" : "outline"}
+                onClick={toggleAvailability}
+                size="sm"
+              >
+                {profile.available ? "Available ✓" : "Set Available"}
+              </Button>
+              <ProviderProfileEdit profile={profile} />
+            </div>
           </div>
         </div>
 
@@ -154,7 +161,7 @@ const ProviderDashboard = () => {
             ) : (
               <div className="space-y-3">
                 {upcoming.map((b) => (
-                  <BookingCard key={b.id} booking={b} />
+                  <ProviderBookingCard key={b.id} booking={b} showActions />
                 ))}
               </div>
             )}
@@ -166,7 +173,7 @@ const ProviderDashboard = () => {
             ) : (
               <div className="space-y-3">
                 {past.map((b) => (
-                  <BookingCard key={b.id} booking={b} />
+                  <ProviderBookingCard key={b.id} booking={b} />
                 ))}
               </div>
             )}
@@ -178,31 +185,5 @@ const ProviderDashboard = () => {
     </div>
   );
 };
-
-function BookingCard({ booking }: { booking: { id: string; bookingDate: string; bookingTime: string; status: string; patientName: string; serviceName: string; address: string | null; symptomsNotes: string | null } }) {
-  return (
-    <div className="rounded-xl bg-card p-4 shadow-card">
-      <div className="flex items-center justify-between gap-3 flex-wrap">
-        <div>
-          <h4 className="font-semibold text-card-foreground">{booking.patientName}</h4>
-          <p className="text-sm text-muted-foreground">{booking.serviceName}</p>
-        </div>
-        <Badge className={statusColors[booking.status] ?? "bg-muted text-muted-foreground"}>
-          {booking.status}
-        </Badge>
-      </div>
-      <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground flex-wrap">
-        <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{booking.bookingDate}</span>
-        <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{booking.bookingTime}</span>
-        {booking.address && <span className="truncate max-w-[200px]">📍 {booking.address}</span>}
-      </div>
-      {booking.symptomsNotes && (
-        <p className="mt-2 text-sm text-muted-foreground bg-muted/50 rounded-lg p-2">
-          {booking.symptomsNotes}
-        </p>
-      )}
-    </div>
-  );
-}
 
 export default ProviderDashboard;
