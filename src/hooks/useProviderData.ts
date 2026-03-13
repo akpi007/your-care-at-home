@@ -14,6 +14,8 @@ export interface ProviderProfile {
   bio: string;
   available: boolean;
   licenseNumber: string;
+  passportPhotoUrl: string;
+  idProofUrl: string;
 }
 
 export interface ProviderBooking {
@@ -55,6 +57,8 @@ export function useProviderProfile() {
         bio: data.bio ?? "",
         available: data.available ?? true,
         licenseNumber: data.license_number ?? "",
+        passportPhotoUrl: (data as any).passport_photo_url ?? "",
+        idProofUrl: (data as any).id_proof_url ?? "",
       };
     },
     enabled: !!user,
