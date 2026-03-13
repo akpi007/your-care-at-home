@@ -111,7 +111,7 @@ const ProviderDashboard = () => {
               </div>
               <p className="text-muted-foreground">{profile.specialization}</p>
               <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground flex-wrap">
-                <span className="flex items-center gap-1"><Star className="h-4 w-4 text-amber-500" />{profile.rating.toFixed(1)} ({profile.totalReviews} reviews)</span>
+                <span className="flex items-center gap-1"><Star className="h-4 w-4 text-primary" />{profile.rating.toFixed(1)} ({profile.totalReviews} reviews)</span>
                 <span className="flex items-center gap-1"><Briefcase className="h-4 w-4" />{profile.yearsExperience} yrs exp</span>
                 <span className="flex items-center gap-1"><ShieldCheck className="h-4 w-4" />License: {profile.licenseNumber}</span>
               </div>
