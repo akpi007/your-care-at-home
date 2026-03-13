@@ -149,6 +149,10 @@ const ProfessionalCard = ({
             </div>
           </div>
 
+          {bio && (
+            <p className="text-sm text-muted-foreground leading-relaxed">{bio}</p>
+          )}
+
           {distance && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
               <MapPin className="h-4 w-4" />
