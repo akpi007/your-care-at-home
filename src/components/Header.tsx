@@ -32,12 +32,27 @@ const Header = () => {
     enabled: !!user,
   });
 
+  // Check if user is admin
+  const { data: isAdmin } = useQuery({
+    queryKey: ["is-admin", user?.id],
+    queryFn: async () => {
+      if (!user) return false;
+      const { data } = await supabase.rpc("has_role", {
+        _user_id: user.id,
+        _role: "admin",
+      });
+      return !!data;
+    },
+    enabled: !!user,
+  });
+
   const navLinks = [
     { to: "/", label: "Home" },
     { to: "/professionals", label: "Find Professionals" },
     { to: "/services", label: "Services" },
     { to: "/dashboard", label: "My Dashboard" },
     ...(isProfessional ? [{ to: "/provider-dashboard", label: "Provider Dashboard" }] : []),
+    ...(isAdmin ? [{ to: "/admin", label: "Admin" }] : []),
   ];
 
   return (
