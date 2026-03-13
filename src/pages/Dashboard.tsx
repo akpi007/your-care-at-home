@@ -2,41 +2,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, MapPin, Star, User, FileText, MessageSquare } from "lucide-react";
+import { Calendar, Clock, Star, User, FileText, MessageSquare, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const upcomingBookings = [
-  {
-    id: "b1",
-    professional: "Dr. Sarah Johnson",
-    service: "Doctor",
-    date: "Mar 15, 2026",
-    time: "10:00 AM",
-    status: "confirmed",
-    imageUrl: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100&h=100&fit=crop&crop=face",
-  },
-  {
-    id: "b2",
-    professional: "Lisa Thompson, PT",
-    service: "Physiotherapist",
-    date: "Mar 18, 2026",
-    time: "02:00 PM",
-    status: "pending",
-    imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop&crop=face",
-  },
-];
-
-const pastBookings = [
-  {
-    id: "b3",
-    professional: "Emily Chen, RN",
-    service: "Nurse",
-    date: "Mar 5, 2026",
-    status: "completed",
-    rating: 5,
-    imageUrl: "https://images.unsplash.com/photo-1594824476967-48c8b964ac31?w=100&h=100&fit=crop&crop=face",
-  },
-];
+import { useBookings } from "@/hooks/useBookings";
 
 const statusColors: Record<string, string> = {
   confirmed: "bg-healthcare-soft-green text-healthcare-green",
@@ -46,6 +14,11 @@ const statusColors: Record<string, string> = {
 };
 
 const Dashboard = () => {
+  const { data: bookings = [], isLoading } = useBookings();
+
+  const upcoming = bookings.filter((b) => ["pending", "confirmed"].includes(b.status));
+  const past = bookings.filter((b) => ["completed", "cancelled"].includes(b.status));
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
@@ -75,52 +48,75 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Upcoming */}
-        <section className="mb-10">
-          <h2 className="font-display text-xl font-semibold text-foreground mb-4">Upcoming Bookings</h2>
-          <div className="space-y-3">
-            {upcomingBookings.map((b) => (
-              <div key={b.id} className="flex items-center gap-4 rounded-xl bg-card p-4 shadow-card">
-                <img src={b.imageUrl} alt={b.professional} className="h-12 w-12 rounded-xl object-cover" />
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-card-foreground truncate">{b.professional}</h4>
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground mt-0.5">
-                    <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{b.date}</span>
-                    <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{b.time}</span>
-                  </div>
-                </div>
-                <Badge className={statusColors[b.status]}>{b.status}</Badge>
-              </div>
-            ))}
+        {isLoading ? (
+          <div className="flex items-center justify-center py-16">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
-        </section>
+        ) : (
+          <>
+            {/* Upcoming */}
+            <section className="mb-10">
+              <h2 className="font-display text-xl font-semibold text-foreground mb-4">Upcoming Bookings</h2>
+              {upcoming.length === 0 ? (
+                <p className="text-muted-foreground text-sm">No upcoming bookings. <Link to="/professionals" className="text-primary underline">Book a visit</Link></p>
+              ) : (
+                <div className="space-y-3">
+                  {upcoming.map((b: any) => (
+                    <div key={b.id} className="flex items-center gap-4 rounded-xl bg-card p-4 shadow-card">
+                      <img
+                        src={b.professionals?.image_url || "/placeholder.svg"}
+                        alt={b.professionals?.display_name || "Professional"}
+                        className="h-12 w-12 rounded-xl object-cover"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-card-foreground truncate">
+                          {b.professionals?.display_name || "Professional"}
+                        </h4>
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground mt-0.5">
+                          <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{b.booking_date}</span>
+                          <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{b.booking_time}</span>
+                        </div>
+                      </div>
+                      <Badge className={statusColors[b.status] || "bg-muted text-muted-foreground"}>{b.status}</Badge>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
 
-        {/* Past */}
-        <section>
-          <h2 className="font-display text-xl font-semibold text-foreground mb-4">Past Bookings</h2>
-          <div className="space-y-3">
-            {pastBookings.map((b) => (
-              <div key={b.id} className="flex items-center gap-4 rounded-xl bg-card p-4 shadow-card">
-                <img src={b.imageUrl} alt={b.professional} className="h-12 w-12 rounded-xl object-cover" />
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-card-foreground truncate">{b.professional}</h4>
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground mt-0.5">
-                    <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{b.date}</span>
-                    {b.rating && (
-                      <span className="flex items-center gap-1">
-                        <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />{b.rating}/5
-                      </span>
-                    )}
-                  </div>
+            {/* Past */}
+            <section>
+              <h2 className="font-display text-xl font-semibold text-foreground mb-4">Past Bookings</h2>
+              {past.length === 0 ? (
+                <p className="text-muted-foreground text-sm">No past bookings yet.</p>
+              ) : (
+                <div className="space-y-3">
+                  {past.map((b: any) => (
+                    <div key={b.id} className="flex items-center gap-4 rounded-xl bg-card p-4 shadow-card">
+                      <img
+                        src={b.professionals?.image_url || "/placeholder.svg"}
+                        alt={b.professionals?.display_name || "Professional"}
+                        className="h-12 w-12 rounded-xl object-cover"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-card-foreground truncate">
+                          {b.professionals?.display_name || "Professional"}
+                        </h4>
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground mt-0.5">
+                          <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{b.booking_date}</span>
+                        </div>
+                      </div>
+                      <Badge className={statusColors[b.status] || "bg-muted text-muted-foreground"}>{b.status}</Badge>
+                      <Button variant="outline" size="sm" asChild>
+                        <Link to={`/book/${b.professional_id}`}>Rebook</Link>
+                      </Button>
+                    </div>
+                  ))}
                 </div>
-                <Badge className={statusColors[b.status]}>{b.status}</Badge>
-                <Button variant="outline" size="sm" asChild>
-                  <Link to={`/book/${b.id}`}>Rebook</Link>
-                </Button>
-              </div>
-            ))}
-          </div>
-        </section>
+              )}
+            </section>
+          </>
+        )}
       </div>
 
       <Footer />
