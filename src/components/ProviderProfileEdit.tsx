@@ -106,6 +106,7 @@ const ProviderProfileEdit = ({ profile }: Props) => {
       const updates: Record<string, any> = {
         bio: bio.trim(),
         consultation_fee: feeNum,
+        city: city || null,
       };
 
       if (photoFile) {
