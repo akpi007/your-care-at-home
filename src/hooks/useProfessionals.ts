@@ -39,6 +39,7 @@ async function fetchProfessionals(): Promise<Professional[]> {
     imageUrl: p.image_url ?? "/placeholder.svg",
     available: p.available ?? true,
     bio: p.bio ?? "",
+    city: p.city ?? "",
   }));
 }
 
