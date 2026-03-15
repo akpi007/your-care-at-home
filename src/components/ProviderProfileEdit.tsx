@@ -42,6 +42,7 @@ const ProviderProfileEdit = ({ profile }: Props) => {
 
   const [bio, setBio] = useState(profile.bio);
   const [fee, setFee] = useState(String(profile.consultationFee));
+  const [city, setCity] = useState(profile.city ?? "");
   const [saving, setSaving] = useState(false);
 
   const [photoFile, setPhotoFile] = useState<File | null>(null);
