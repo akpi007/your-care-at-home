@@ -11,7 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Heart, Mail, Lock, User, ArrowRight, Stethoscope, Briefcase } from "lucide-react";
+import { Heart, Mail, Lock, User, ArrowRight, Stethoscope, Briefcase, MapPin } from "lucide-react";
+import { ZAMBIAN_CITIES } from "@/components/ProfessionalsFilter";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
