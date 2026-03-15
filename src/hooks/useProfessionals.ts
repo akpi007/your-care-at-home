@@ -14,6 +14,7 @@ export interface Professional {
   imageUrl: string;
   available: boolean;
   bio: string;
+  city: string;
 }
 
 async function fetchProfessionals(): Promise<Professional[]> {
