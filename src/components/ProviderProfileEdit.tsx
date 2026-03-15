@@ -140,6 +140,7 @@ const ProviderProfileEdit = ({ profile }: Props) => {
       if (v) {
         setBio(profile.bio);
         setFee(String(profile.consultationFee));
+        setCity(profile.city ?? "");
         setPhotoFile(null);
         setPhotoPreview(null);
         setIdFile(null);
