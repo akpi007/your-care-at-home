@@ -225,6 +225,22 @@ const ProviderSignup = () => {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="city">City / Location</Label>
+              <Select value={city} onValueChange={setCity} required>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your city" />
+                </SelectTrigger>
+                <SelectContent>
+                  {ZAMBIAN_CITIES.map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {c}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="bio">Short Bio</Label>
               <Textarea
                 id="bio"
