@@ -1,0 +1,1 @@
+ALTER TABLE public.professionals ADD COLUMN city text DEFAULT NULL;
