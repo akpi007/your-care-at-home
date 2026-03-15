@@ -16,6 +16,7 @@ export interface ProviderProfile {
   licenseNumber: string;
   passportPhotoUrl: string;
   idProofUrl: string;
+  city: string;
 }
 
 export interface ProviderBooking {
@@ -59,6 +60,7 @@ export function useProviderProfile() {
         licenseNumber: data.license_number ?? "",
         passportPhotoUrl: (data as any).passport_photo_url ?? "",
         idProofUrl: (data as any).id_proof_url ?? "",
+        city: (data as any).city ?? "",
       };
     },
     enabled: !!user,

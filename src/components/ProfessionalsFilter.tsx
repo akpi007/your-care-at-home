@@ -4,18 +4,50 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { SlidersHorizontal, RotateCcw } from "lucide-react";
+
+export const ZAMBIAN_CITIES = [
+  "Lusaka",
+  "Kitwe",
+  "Ndola",
+  "Kabwe",
+  "Chingola",
+  "Mufulira",
+  "Livingstone",
+  "Luanshya",
+  "Kasama",
+  "Chipata",
+  "Solwezi",
+  "Mansa",
+  "Mongu",
+  "Mazabuka",
+  "Choma",
+  "Kafue",
+  "Mpika",
+  "Kapiri Mposhi",
+  "Kalulushi",
+  "Nakonde",
+];
 
 export interface Filters {
   priceRange: [number, number];
   minRating: number;
   availableOnly: boolean;
+  city: string;
 }
 
 const defaultFilters: Filters = {
   priceRange: [0, 500],
   minRating: 0,
   availableOnly: false,
+  city: "all",
 };
 
 interface Props {
@@ -39,7 +71,7 @@ const ProfessionalsFilter = ({ filters, onChange }: Props) => {
   };
 
   const hasActive =
-    filters.minRating > 0 || filters.availableOnly || filters.priceRange[0] > 0 || filters.priceRange[1] < 500;
+    filters.minRating > 0 || filters.availableOnly || filters.priceRange[0] > 0 || filters.priceRange[1] < 500 || filters.city !== "all";
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -57,6 +89,27 @@ const ProfessionalsFilter = ({ filters, onChange }: Props) => {
           <SheetTitle>Filter Professionals</SheetTitle>
         </SheetHeader>
         <div className="mt-6 space-y-6">
+          {/* City */}
+          <div>
+            <Label className="text-sm font-medium text-foreground">City / Location</Label>
+            <Select
+              value={local.city}
+              onValueChange={(v) => setLocal({ ...local, city: v })}
+            >
+              <SelectTrigger className="mt-2">
+                <SelectValue placeholder="All cities" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Cities</SelectItem>
+                {ZAMBIAN_CITIES.map((city) => (
+                  <SelectItem key={city} value={city}>
+                    {city}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
           {/* Price */}
           <div>
             <Label className="text-sm font-medium text-foreground">

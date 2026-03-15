@@ -11,7 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Heart, Mail, Lock, User, ArrowRight, Stethoscope, Briefcase } from "lucide-react";
+import { Heart, Mail, Lock, User, ArrowRight, Stethoscope, Briefcase, MapPin } from "lucide-react";
+import { ZAMBIAN_CITIES } from "@/components/ProfessionalsFilter";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -36,6 +37,7 @@ const ProviderSignup = () => {
   const [yearsExperience, setYearsExperience] = useState("");
   const [licenseNumber, setLicenseNumber] = useState("");
   const [bio, setBio] = useState("");
+  const [city, setCity] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -56,6 +58,7 @@ const ProviderSignup = () => {
           years_experience: parseInt(yearsExperience) || 0,
           license_number: licenseNumber,
           bio,
+          city,
         },
         emailRedirectTo: window.location.origin,
       },
@@ -219,6 +222,22 @@ const ProviderSignup = () => {
                   required
                 />
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="city">City / Location</Label>
+              <Select value={city} onValueChange={setCity} required>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your city" />
+                </SelectTrigger>
+                <SelectContent>
+                  {ZAMBIAN_CITIES.map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {c}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">

@@ -386,6 +386,7 @@ export type Database = {
         Row: {
           available: boolean | null
           bio: string | null
+          city: string | null
           consultation_fee: number | null
           created_at: string
           display_name: string | null
@@ -406,6 +407,7 @@ export type Database = {
         Insert: {
           available?: boolean | null
           bio?: string | null
+          city?: string | null
           consultation_fee?: number | null
           created_at?: string
           display_name?: string | null
@@ -426,6 +428,7 @@ export type Database = {
         Update: {
           available?: boolean | null
           bio?: string | null
+          city?: string | null
           consultation_fee?: number | null
           created_at?: string
           display_name?: string | null

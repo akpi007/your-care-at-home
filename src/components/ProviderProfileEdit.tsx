@@ -11,6 +11,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Pencil, Upload, Loader2, Camera, FileCheck } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { ZAMBIAN_CITIES } from "@/components/ProfessionalsFilter";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
@@ -34,6 +42,7 @@ const ProviderProfileEdit = ({ profile }: Props) => {
 
   const [bio, setBio] = useState(profile.bio);
   const [fee, setFee] = useState(String(profile.consultationFee));
+  const [city, setCity] = useState(profile.city ?? "");
   const [saving, setSaving] = useState(false);
 
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -97,6 +106,7 @@ const ProviderProfileEdit = ({ profile }: Props) => {
       const updates: Record<string, any> = {
         bio: bio.trim(),
         consultation_fee: feeNum,
+        city: city || null,
       };
 
       if (photoFile) {
@@ -131,6 +141,7 @@ const ProviderProfileEdit = ({ profile }: Props) => {
       if (v) {
         setBio(profile.bio);
         setFee(String(profile.consultationFee));
+        setCity(profile.city ?? "");
         setPhotoFile(null);
         setPhotoPreview(null);
         setIdFile(null);
@@ -197,6 +208,23 @@ const ProviderProfileEdit = ({ profile }: Props) => {
               value={fee}
               onChange={(e) => setFee(e.target.value)}
             />
+          </div>
+
+          {/* City */}
+          <div className="space-y-2">
+            <Label>City / Location</Label>
+            <Select value={city} onValueChange={setCity}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select your city" />
+              </SelectTrigger>
+              <SelectContent>
+                {ZAMBIAN_CITIES.map((c) => (
+                  <SelectItem key={c} value={c}>
+                    {c}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Bio */}

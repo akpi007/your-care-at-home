@@ -14,6 +14,7 @@ export interface Professional {
   imageUrl: string;
   available: boolean;
   bio: string;
+  city: string;
 }
 
 async function fetchProfessionals(): Promise<Professional[]> {
@@ -38,6 +39,7 @@ async function fetchProfessionals(): Promise<Professional[]> {
     imageUrl: p.image_url ?? "/placeholder.svg",
     available: p.available ?? true,
     bio: p.bio ?? "",
+    city: p.city ?? "",
   }));
 }
 
@@ -75,6 +77,7 @@ export function useProfessional(id: string | undefined) {
         imageUrl: data.image_url ?? "/placeholder.svg",
         available: data.available ?? true,
         bio: data.bio ?? "",
+        city: (data as any).city ?? "",
       };
     },
     enabled: !!id,
