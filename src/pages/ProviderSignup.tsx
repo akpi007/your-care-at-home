@@ -58,6 +58,7 @@ const ProviderSignup = () => {
           years_experience: parseInt(yearsExperience) || 0,
           license_number: licenseNumber,
           bio,
+          city,
         },
         emailRedirectTo: window.location.origin,
       },
