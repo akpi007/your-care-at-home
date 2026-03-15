@@ -37,6 +37,7 @@ const ProviderSignup = () => {
   const [yearsExperience, setYearsExperience] = useState("");
   const [licenseNumber, setLicenseNumber] = useState("");
   const [bio, setBio] = useState("");
+  const [city, setCity] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
