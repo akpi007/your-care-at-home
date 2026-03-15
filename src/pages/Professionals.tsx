@@ -32,7 +32,9 @@ const Professionals = () => {
         p.fee >= filters.priceRange[0] && p.fee <= filters.priceRange[1];
       const matchesRating = p.rating >= filters.minRating;
       const matchesAvailable = !filters.availableOnly || p.available;
-      return matchesService && matchesSearch && matchesPrice && matchesRating && matchesAvailable;
+      const matchesCity =
+        filters.city === "all" || p.city.toLowerCase() === filters.city.toLowerCase();
+      return matchesService && matchesSearch && matchesPrice && matchesRating && matchesAvailable && matchesCity;
     });
   }, [activeService, search, professionals, filters]);
 

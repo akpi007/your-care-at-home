@@ -77,6 +77,7 @@ export function useProfessional(id: string | undefined) {
         imageUrl: data.image_url ?? "/placeholder.svg",
         available: data.available ?? true,
         bio: data.bio ?? "",
+        city: (data as any).city ?? "",
       };
     },
     enabled: !!id,
