@@ -210,6 +210,23 @@ const ProviderProfileEdit = ({ profile }: Props) => {
             />
           </div>
 
+          {/* City */}
+          <div className="space-y-2">
+            <Label>City / Location</Label>
+            <Select value={city} onValueChange={setCity}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select your city" />
+              </SelectTrigger>
+              <SelectContent>
+                {ZAMBIAN_CITIES.map((c) => (
+                  <SelectItem key={c} value={c}>
+                    {c}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
           {/* Bio */}
           <div className="space-y-2">
             <Label htmlFor="edit-bio">Bio</Label>
