@@ -16,6 +16,7 @@ export interface ProviderProfile {
   licenseNumber: string;
   passportPhotoUrl: string;
   idProofUrl: string;
+  city: string;
 }
 
 export interface ProviderBooking {
