@@ -51,6 +51,9 @@ const App = () => (
             <Route path="/admin" element={
               <ProtectedRoute><AdminPanel /></ProtectedRoute>
             } />
+            <Route path="/ai-assistant" element={
+              <ProtectedRoute><AIAssistant /></ProtectedRoute>
+            } />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
