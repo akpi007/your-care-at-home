@@ -17,6 +17,7 @@ import ResetPassword from "./pages/ResetPassword";
 import PatientProfiles from "./pages/PatientProfiles";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import AdminPanel from "./pages/AdminPanel";
+import AIAssistant from "./pages/AIAssistant";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
