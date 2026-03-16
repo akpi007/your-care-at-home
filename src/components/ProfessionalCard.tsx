@@ -24,6 +24,7 @@ interface ProfessionalCardProps {
   imageUrl: string;
   available: boolean;
   bio?: string;
+  city?: string;
 }
 
 const ProfessionalCard = ({
