@@ -40,6 +40,7 @@ const ProfessionalCard = ({
   imageUrl,
   available,
   bio,
+  city,
 }: ProfessionalCardProps) => {
   const [open, setOpen] = useState(false);
 
