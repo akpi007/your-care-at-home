@@ -24,6 +24,7 @@ interface ProfessionalCardProps {
   imageUrl: string;
   available: boolean;
   bio?: string;
+  city?: string;
 }
 
 const ProfessionalCard = ({
@@ -39,6 +40,7 @@ const ProfessionalCard = ({
   imageUrl,
   available,
   bio,
+  city,
 }: ProfessionalCardProps) => {
   const [open, setOpen] = useState(false);
 
@@ -80,7 +82,13 @@ const ProfessionalCard = ({
                 <Clock className="h-3.5 w-3.5" />
                 {experience} yrs
               </span>
-              {distance && (
+              {city && (
+                <span className="flex items-center gap-1">
+                  <MapPin className="h-3.5 w-3.5" />
+                  {city}
+                </span>
+              )}
+              {distance && !city && (
                 <span className="flex items-center gap-1">
                   <MapPin className="h-3.5 w-3.5" />
                   {distance}
