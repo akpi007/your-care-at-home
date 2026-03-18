@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import BookingChat from "@/components/BookingChat";
+import PatientLocationLink from "@/components/PatientLocationLink";
 
 const statusColors: Record<string, string> = {
   confirmed: "bg-healthcare-soft-green text-healthcare-green",
