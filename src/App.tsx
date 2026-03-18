@@ -18,6 +18,7 @@ import PatientProfiles from "./pages/PatientProfiles";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import AdminPanel from "./pages/AdminPanel";
 import AIAssistant from "./pages/AIAssistant";
+import ProviderEarnings from "./pages/ProviderEarnings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,6 +48,9 @@ const App = () => (
             <Route path="/provider-signup" element={<ProviderSignup />} />
             <Route path="/provider-dashboard" element={
               <ProtectedRoute><ProviderDashboard /></ProtectedRoute>
+            } />
+            <Route path="/provider-earnings" element={
+              <ProtectedRoute><ProviderEarnings /></ProtectedRoute>
             } />
             <Route path="/admin" element={
               <ProtectedRoute><AdminPanel /></ProtectedRoute>

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
@@ -141,15 +142,22 @@ const ProviderDashboard = () => {
           {[
             { icon: Calendar, label: "Upcoming", value: upcoming.length },
             { icon: Star, label: "Rating", value: profile.rating.toFixed(1) },
-            { icon: DollarSign, label: "Total Earned", value: `$${earnings?.total ?? 0}` },
-            { icon: Clock, label: "Pending Payout", value: `$${earnings?.pending ?? 0}` },
-          ].map((stat) => (
-            <div key={stat.label} className="flex flex-col items-center gap-1 rounded-xl bg-card p-4 shadow-card">
-              <stat.icon className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold text-foreground">{stat.value}</span>
-              <span className="text-xs text-muted-foreground">{stat.label}</span>
-            </div>
-          ))}
+            { icon: DollarSign, label: "Total Earned", value: `$${earnings?.total ?? 0}`, link: "/provider-earnings" },
+            { icon: Clock, label: "Pending Payout", value: `$${earnings?.pending ?? 0}`, link: "/provider-earnings" },
+          ].map((stat) => {
+            const content = (
+              <div key={stat.label} className="flex flex-col items-center gap-1 rounded-xl bg-card p-4 shadow-card hover:shadow-md transition-shadow">
+                <stat.icon className="h-6 w-6 text-primary" />
+                <span className="text-xl font-bold text-foreground">{stat.value}</span>
+                <span className="text-xs text-muted-foreground">{stat.label}</span>
+              </div>
+            );
+            return stat.link ? (
+              <Link key={stat.label} to={stat.link}>{content}</Link>
+            ) : (
+              <div key={stat.label}>{content}</div>
+            );
+          })}
         </div>
 
         {/* Bookings tabs */}
