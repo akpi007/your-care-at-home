@@ -256,6 +256,9 @@ const BookService = () => {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               />
+              <div className="mt-2">
+                <LocationCapture onLocationCaptured={(lat, lng) => { setLatitude(lat); setLongitude(lng); }} />
+              </div>
             </div>
             <div>
               <label className="mb-2 block text-sm font-medium text-foreground">
