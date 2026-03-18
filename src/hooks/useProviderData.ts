@@ -26,6 +26,8 @@ export interface ProviderBooking {
   status: string;
   symptomsNotes: string | null;
   address: string | null;
+  latitude: number | null;
+  longitude: number | null;
   patientName: string;
   serviceName: string;
 }
