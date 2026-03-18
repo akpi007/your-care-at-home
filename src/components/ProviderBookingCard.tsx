@@ -73,7 +73,13 @@ const ProviderBookingCard = ({ booking, showActions = false }: BookingCardProps)
         <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground flex-wrap">
           <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{booking.bookingDate}</span>
           <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{booking.bookingTime}</span>
-          {booking.address && <span className="truncate max-w-[200px]">📍 {booking.address}</span>}
+          {(booking.address || booking.latitude) && (
+            <PatientLocationLink
+              latitude={booking.latitude ?? null}
+              longitude={booking.longitude ?? null}
+              address={booking.address}
+            />
+          )}
         </div>
         {booking.symptomsNotes && (
           <p className="mt-2 text-sm text-muted-foreground bg-muted/50 rounded-lg p-2">
