@@ -24,6 +24,8 @@ interface BookingCardProps {
     patientName: string;
     serviceName: string;
     address: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
     symptomsNotes: string | null;
   };
   showActions?: boolean;
