@@ -47,6 +47,8 @@ const BookService = () => {
   const [selectedTime, setSelectedTime] = useState("");
   const [notes, setNotes] = useState("");
   const [address, setAddress] = useState("");
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
   const [selectedProfile, setSelectedProfile] = useState("");
   const [patientProfiles, setPatientProfiles] = useState<{ id: string; name: string }[]>([]);
 
