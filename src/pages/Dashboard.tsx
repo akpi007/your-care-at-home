@@ -7,6 +7,7 @@ import { Calendar, Clock, Star, User, FileText, MessageSquare, Loader2 } from "l
 import { Link } from "react-router-dom";
 import { useBookings } from "@/hooks/useBookings";
 import BookingChat from "@/components/BookingChat";
+import NotificationBanner from "@/components/NotificationBanner";
 
 const statusColors: Record<string, string> = {
   confirmed: "bg-healthcare-soft-green text-healthcare-green",
