@@ -49,6 +49,9 @@ const App = () => (
             <Route path="/provider-dashboard" element={
               <ProtectedRoute><ProviderDashboard /></ProtectedRoute>
             } />
+            <Route path="/provider-earnings" element={
+              <ProtectedRoute><ProviderEarnings /></ProtectedRoute>
+            } />
             <Route path="/admin" element={
               <ProtectedRoute><AdminPanel /></ProtectedRoute>
             } />
