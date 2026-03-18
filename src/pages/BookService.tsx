@@ -118,6 +118,8 @@ const BookService = () => {
         booking_time: selectedTime,
         address,
         symptoms_notes: notes || undefined,
+        latitude: latitude ?? undefined,
+        longitude: longitude ?? undefined,
       });
       toast({ title: "Booking confirmed!", description: "Your appointment has been scheduled." });
       navigate("/dashboard");
