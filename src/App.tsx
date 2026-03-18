@@ -59,6 +59,7 @@ const App = () => (
             <Route path="/ai-assistant" element={
               <ProtectedRoute><AIAssistant /></ProtectedRoute>
             } />
+            <Route path="/install" element={<InstallApp />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
