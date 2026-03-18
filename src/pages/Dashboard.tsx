@@ -33,7 +33,10 @@ const Dashboard = () => {
           <p className="mt-1 text-muted-foreground">Manage your bookings and health profiles</p>
         </div>
 
-        {/* Quick actions */}
+        <div className="mb-6">
+          <NotificationBanner />
+        </div>
+
         <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
             { icon: Calendar, label: "Book Visit", to: "/professionals" },
