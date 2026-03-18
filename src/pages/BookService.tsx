@@ -12,6 +12,7 @@ import { useCreateBooking } from "@/hooks/useBookings";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import LocationCapture from "@/components/LocationCapture";
 import {
   ArrowLeft,
   ArrowRight,
@@ -47,6 +48,8 @@ const BookService = () => {
   const [selectedTime, setSelectedTime] = useState("");
   const [notes, setNotes] = useState("");
   const [address, setAddress] = useState("");
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
   const [selectedProfile, setSelectedProfile] = useState("");
   const [patientProfiles, setPatientProfiles] = useState<{ id: string; name: string }[]>([]);
 
@@ -116,6 +119,8 @@ const BookService = () => {
         booking_time: selectedTime,
         address,
         symptoms_notes: notes || undefined,
+        latitude: latitude ?? undefined,
+        longitude: longitude ?? undefined,
       });
       toast({ title: "Booking confirmed!", description: "Your appointment has been scheduled." });
       navigate("/dashboard");
@@ -252,6 +257,9 @@ const BookService = () => {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               />
+              <div className="mt-2">
+                <LocationCapture onLocationCaptured={(lat, lng) => { setLatitude(lat); setLongitude(lng); }} />
+              </div>
             </div>
             <div>
               <label className="mb-2 block text-sm font-medium text-foreground">

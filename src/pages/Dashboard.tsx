@@ -7,6 +7,7 @@ import { Calendar, Clock, Star, User, FileText, MessageSquare, Loader2 } from "l
 import { Link } from "react-router-dom";
 import { useBookings } from "@/hooks/useBookings";
 import BookingChat from "@/components/BookingChat";
+import NotificationBanner from "@/components/NotificationBanner";
 
 const statusColors: Record<string, string> = {
   confirmed: "bg-healthcare-soft-green text-healthcare-green",
@@ -32,7 +33,10 @@ const Dashboard = () => {
           <p className="mt-1 text-muted-foreground">Manage your bookings and health profiles</p>
         </div>
 
-        {/* Quick actions */}
+        <div className="mb-6">
+          <NotificationBanner />
+        </div>
+
         <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
             { icon: Calendar, label: "Book Visit", to: "/professionals" },

@@ -19,6 +19,7 @@ import ProviderDashboard from "./pages/ProviderDashboard";
 import AdminPanel from "./pages/AdminPanel";
 import AIAssistant from "./pages/AIAssistant";
 import ProviderEarnings from "./pages/ProviderEarnings";
+import InstallApp from "./pages/InstallApp";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -58,6 +59,7 @@ const App = () => (
             <Route path="/ai-assistant" element={
               <ProtectedRoute><AIAssistant /></ProtectedRoute>
             } />
+            <Route path="/install" element={<InstallApp />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

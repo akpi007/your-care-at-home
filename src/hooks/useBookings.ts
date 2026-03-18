@@ -28,6 +28,8 @@ interface CreateBookingInput {
   booking_time: string;
   address?: string;
   symptoms_notes?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export function useCreateBooking() {
