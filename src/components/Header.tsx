@@ -85,6 +85,9 @@ const Header = () => {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          <Button variant="soft" size="sm" asChild>
+            <Link to="/install"><Download className="h-4 w-4 mr-1" /> Get App</Link>
+          </Button>
           {user ? (
             <>
               <span className="text-sm text-muted-foreground">{user.email}</span>

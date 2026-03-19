@@ -176,6 +176,17 @@ const Index = () => {
                 Join as a Provider
               </Link>
             </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 backdrop-blur"
+              asChild
+            >
+              <Link to="/install">
+                <Download className="h-4 w-4 mr-1" />
+                Download App
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
