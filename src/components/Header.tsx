@@ -136,6 +136,11 @@ const Header = () => {
               </Link>
             ))}
             <div className="mt-3 flex flex-col gap-2">
+              <Button variant="soft" asChild>
+                <Link to="/install" onClick={() => setMobileOpen(false)}>
+                  <Download className="h-4 w-4 mr-1" /> Download App
+                </Link>
+              </Button>
               {user ? (
                 <Button variant="outline" onClick={() => { setMobileOpen(false); handleSignOut(); }}>
                   Sign Out
