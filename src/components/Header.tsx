@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Heart, LogOut } from "lucide-react";
+import { Menu, X, Heart, LogOut, Download } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
@@ -85,6 +85,9 @@ const Header = () => {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          <Button variant="soft" size="sm" asChild>
+            <Link to="/install"><Download className="h-4 w-4 mr-1" /> Get App</Link>
+          </Button>
           {user ? (
             <>
               <span className="text-sm text-muted-foreground">{user.email}</span>
@@ -133,6 +136,11 @@ const Header = () => {
               </Link>
             ))}
             <div className="mt-3 flex flex-col gap-2">
+              <Button variant="soft" asChild>
+                <Link to="/install" onClick={() => setMobileOpen(false)}>
+                  <Download className="h-4 w-4 mr-1" /> Download App
+                </Link>
+              </Button>
               {user ? (
                 <Button variant="outline" onClick={() => { setMobileOpen(false); handleSignOut(); }}>
                   Sign Out

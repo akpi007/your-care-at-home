@@ -18,6 +18,7 @@ import {
   ArrowRight,
   Search,
   Loader2,
+  Download,
 } from "lucide-react";
 
 const serviceCards = [
@@ -173,6 +174,17 @@ const Index = () => {
               <Link to="/provider-signup">
                 <Stethoscope className="h-4 w-4 mr-1" />
                 Join as a Provider
+              </Link>
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 backdrop-blur"
+              asChild
+            >
+              <Link to="/install">
+                <Download className="h-4 w-4 mr-1" />
+                Download App
               </Link>
             </Button>
           </div>
