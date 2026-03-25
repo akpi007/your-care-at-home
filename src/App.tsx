@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import LocationSelect from "./pages/LocationSelect";
 import Index from "./pages/Index";
 import Professionals from "./pages/Professionals";
 import BookService from "./pages/BookService";
@@ -32,7 +33,8 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<LocationSelect />} />
+            <Route path="/home" element={<Index />} />
             <Route path="/professionals" element={<Professionals />} />
             <Route path="/book/:id" element={
               <ProtectedRoute><BookService /></ProtectedRoute>
