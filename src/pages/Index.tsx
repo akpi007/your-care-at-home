@@ -38,7 +38,16 @@ const steps = [
 
 const Index = () => {
   const { data: professionals = [], isLoading } = useProfessionals();
-  const topProfessionals = professionals.slice(0, 3);
+  const savedLocation = JSON.parse(localStorage.getItem("medhome_location") || "{}");
+  const userCity = savedLocation.city || "";
+  
+  // Show professionals from user's city first, then others
+  const sorted = [...professionals].sort((a, b) => {
+    const aMatch = a.city?.toLowerCase() === userCity.toLowerCase() ? 0 : 1;
+    const bMatch = b.city?.toLowerCase() === userCity.toLowerCase() ? 0 : 1;
+    return aMatch - bMatch;
+  });
+  const topProfessionals = sorted.slice(0, 6);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -127,8 +136,12 @@ const Index = () => {
       <section className="container py-16">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="font-display text-3xl font-bold text-foreground">Top Professionals</h2>
-            <p className="mt-1 text-muted-foreground">Highest-rated professionals near you</p>
+            <h2 className="font-display text-3xl font-bold text-foreground">
+              {userCity ? `Top Professionals in ${userCity}` : "Top Professionals"}
+            </h2>
+            <p className="mt-1 text-muted-foreground">
+              {userCity ? `Healthcare providers near ${userCity}` : "Highest-rated professionals near you"}
+            </p>
           </div>
           <Button variant="outline" asChild>
             <Link to="/professionals">View All <ArrowRight className="h-4 w-4" /></Link>
