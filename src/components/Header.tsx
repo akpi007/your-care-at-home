@@ -23,7 +23,36 @@ const Header = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [locationOpen, setLocationOpen] = useState(false);
   const location = useLocation();
+
+  const [savedLocation, setSavedLocation] = useState<{ country: string; region: string; city: string } | null>(null);
+  const [locCountry, setLocCountry] = useState("");
+  const [locRegion, setLocRegion] = useState("");
+  const [locCity, setLocCity] = useState("");
+
+  useEffect(() => {
+    const stored = localStorage.getItem("medhome_location");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setSavedLocation(parsed);
+      setLocCountry(parsed.country);
+      setLocRegion(parsed.region);
+      setLocCity(parsed.city);
+    }
+  }, []);
+
+  const selectedCountry = locationData.find((l) => l.country === locCountry);
+  const selectedRegion = selectedCountry?.regions.find((r) => r.name === locRegion);
+
+  const handleLocationSave = () => {
+    if (!locCountry || !locRegion || !locCity) return;
+    const loc = { country: locCountry, region: locRegion, city: locCity };
+    localStorage.setItem("medhome_location", JSON.stringify(loc));
+    setSavedLocation(loc);
+    setLocationOpen(false);
+    window.location.reload();
+  };
 
   const handleSignOut = async () => {
     await signOut();
