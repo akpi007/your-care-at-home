@@ -81,7 +81,7 @@ const LocationSelect = () => {
   }, []);
 
   const selectedCountry = locationData.find((l) => l.country === country);
-  const selectedRegion2 = selectedCountry?.regions.find((r) => r.name === region);
+  const selectedRegion = selectedCountry?.regions.find((r) => r.name === region);
   const regionLabel = selectedCountry?.regionLabel ?? "State / Province";
 
   const handleSubmit = () => {
