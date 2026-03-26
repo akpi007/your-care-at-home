@@ -1,10 +1,23 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Heart, LogOut, Download } from "lucide-react";
-import { useState } from "react";
+import { Menu, X, Heart, LogOut, Download, MapPin } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { locationData } from "@/data/locationData";
 
 const Header = () => {
   const { user, signOut } = useAuth();
