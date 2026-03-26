@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Heart, Globe, ArrowRight, Loader2 } from "lucide-react";
 import {
@@ -54,6 +55,14 @@ const LocationSelect = () => {
   const [city, setCity] = useState("");
   const [detecting, setDetecting] = useState(true);
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
+
+  // Redirect authenticated users to home
+  useEffect(() => {
+    if (!loading && user) {
+      navigate("/home", { replace: true });
+    }
+  }, [user, loading, navigate]);
 
   useEffect(() => {
     const detect = async () => {
