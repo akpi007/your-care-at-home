@@ -126,6 +126,13 @@ const LocationSelect = () => {
           </div>
 
           {/* Location heading */}
+          {detecting ? (
+            <div className="flex items-center gap-2 text-sm text-primary mb-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Detecting your location…
+            </div>
+          ) : null}
+
           <div className="flex items-center gap-2 mb-6">
             <Globe className="h-5 w-5 text-primary" />
             <h2 className="font-display text-lg font-semibold text-foreground">
