@@ -55,6 +55,14 @@ const LocationSelect = () => {
   const [city, setCity] = useState("");
   const [detecting, setDetecting] = useState(true);
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
+
+  // Redirect authenticated users to home
+  useEffect(() => {
+    if (!loading && user) {
+      navigate("/home", { replace: true });
+    }
+  }, [user, loading, navigate]);
 
   useEffect(() => {
     const detect = async () => {
