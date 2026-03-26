@@ -127,6 +127,40 @@ const Header = () => {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          <Popover open={locationOpen} onOpenChange={setLocationOpen}>
+            <PopoverTrigger asChild>
+              <Button variant="ghost" size="sm" className="text-muted-foreground">
+                <MapPin className="h-4 w-4 mr-1" />
+                {savedLocation?.city || "Set Location"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-72 p-4" align="end">
+              <p className="text-sm font-semibold text-foreground mb-3">Change Location</p>
+              <div className="space-y-2">
+                <Select value={locCountry} onValueChange={(v) => { setLocCountry(v); setLocRegion(""); setLocCity(""); }}>
+                  <SelectTrigger><SelectValue placeholder="Country" /></SelectTrigger>
+                  <SelectContent>
+                    {locationData.map((l) => <SelectItem key={l.country} value={l.country}>{l.country}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <Select value={locRegion} onValueChange={(v) => { setLocRegion(v); setLocCity(""); }} disabled={!locCountry}>
+                  <SelectTrigger><SelectValue placeholder={selectedCountry?.regionLabel || "Region"} /></SelectTrigger>
+                  <SelectContent>
+                    {selectedCountry?.regions.map((r) => <SelectItem key={r.name} value={r.name}>{r.name}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <Select value={locCity} onValueChange={setLocCity} disabled={!locRegion}>
+                  <SelectTrigger><SelectValue placeholder="City" /></SelectTrigger>
+                  <SelectContent>
+                    {selectedRegion?.cities.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <Button size="sm" className="w-full mt-1" disabled={!locCountry || !locRegion || !locCity} onClick={handleLocationSave}>
+                  Update Location
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
           <Button variant="soft" size="sm" asChild>
             <Link to="/install"><Download className="h-4 w-4 mr-1" /> Get App</Link>
           </Button>
