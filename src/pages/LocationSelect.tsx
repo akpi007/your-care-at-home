@@ -55,8 +55,33 @@ const LocationSelect = () => {
   const [detecting, setDetecting] = useState(true);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const detect = async () => {
+      try {
+        const res = await fetch("https://ipapi.co/json/");
+        if (!res.ok) throw new Error("fetch failed");
+        const data = await res.json();
+        const match = findClosestCity(
+          data.country_name || "",
+          data.region || "",
+          data.city || ""
+        );
+        if (match) {
+          setCountry(match.country);
+          setRegion(match.region);
+          setCity(match.city);
+        }
+      } catch {
+        // silently fail – user can pick manually
+      } finally {
+        setDetecting(false);
+      }
+    };
+    detect();
+  }, []);
+
   const selectedCountry = locationData.find((l) => l.country === country);
-  const selectedRegion = selectedCountry?.regions.find((r) => r.name === region);
+  const selectedRegion2 = selectedCountry?.regions.find((r) => r.name === region);
   const regionLabel = selectedCountry?.regionLabel ?? "State / Province";
 
   const handleSubmit = () => {
