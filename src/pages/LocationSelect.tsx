@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Heart, Globe, ArrowRight } from "lucide-react";
+import { Heart, Globe, ArrowRight, Loader2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -12,11 +12,73 @@ import {
 import { locationData } from "@/data/locationData";
 import worldMapBg from "@/assets/world-map-bg.jpg";
 
+const findClosestCity = (detectedCountry: string, detectedRegion: string, detectedCity: string) => {
+  const countryMatch = locationData.find(
+    (l) => l.country.toLowerCase() === detectedCountry.toLowerCase()
+  );
+  if (!countryMatch) return null;
+
+  let regionMatch = countryMatch.regions.find(
+    (r) => r.name.toLowerCase() === detectedRegion.toLowerCase()
+  );
+  if (!regionMatch) {
+    regionMatch = countryMatch.regions.find((r) =>
+      detectedRegion.toLowerCase().includes(r.name.toLowerCase()) ||
+      r.name.toLowerCase().includes(detectedRegion.toLowerCase())
+    );
+  }
+
+  if (regionMatch) {
+    let cityMatch = regionMatch.cities.find(
+      (c) => c.toLowerCase() === detectedCity.toLowerCase()
+    );
+    if (!cityMatch) {
+      cityMatch = regionMatch.cities.find((c) =>
+        detectedCity.toLowerCase().includes(c.toLowerCase()) ||
+        c.toLowerCase().includes(detectedCity.toLowerCase())
+      );
+    }
+    return {
+      country: countryMatch.country,
+      region: regionMatch.name,
+      city: cityMatch || regionMatch.cities[0],
+    };
+  }
+
+  return { country: countryMatch.country, region: countryMatch.regions[0].name, city: countryMatch.regions[0].cities[0] };
+};
+
 const LocationSelect = () => {
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
   const [city, setCity] = useState("");
+  const [detecting, setDetecting] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const detect = async () => {
+      try {
+        const res = await fetch("https://ipapi.co/json/");
+        if (!res.ok) throw new Error("fetch failed");
+        const data = await res.json();
+        const match = findClosestCity(
+          data.country_name || "",
+          data.region || "",
+          data.city || ""
+        );
+        if (match) {
+          setCountry(match.country);
+          setRegion(match.region);
+          setCity(match.city);
+        }
+      } catch {
+        // silently fail – user can pick manually
+      } finally {
+        setDetecting(false);
+      }
+    };
+    detect();
+  }, []);
 
   const selectedCountry = locationData.find((l) => l.country === country);
   const selectedRegion = selectedCountry?.regions.find((r) => r.name === region);
@@ -64,6 +126,13 @@ const LocationSelect = () => {
           </div>
 
           {/* Location heading */}
+          {detecting ? (
+            <div className="flex items-center gap-2 text-sm text-primary mb-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Detecting your location…
+            </div>
+          ) : null}
+
           <div className="flex items-center gap-2 mb-6">
             <Globe className="h-5 w-5 text-primary" />
             <h2 className="font-display text-lg font-semibold text-foreground">
