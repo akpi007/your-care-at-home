@@ -1,16 +1,58 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Heart, LogOut, Download } from "lucide-react";
-import { useState } from "react";
+import { Menu, X, Heart, LogOut, Download, MapPin } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { locationData } from "@/data/locationData";
 
 const Header = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [locationOpen, setLocationOpen] = useState(false);
   const location = useLocation();
+
+  const [savedLocation, setSavedLocation] = useState<{ country: string; region: string; city: string } | null>(null);
+  const [locCountry, setLocCountry] = useState("");
+  const [locRegion, setLocRegion] = useState("");
+  const [locCity, setLocCity] = useState("");
+
+  useEffect(() => {
+    const stored = localStorage.getItem("medhome_location");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setSavedLocation(parsed);
+      setLocCountry(parsed.country);
+      setLocRegion(parsed.region);
+      setLocCity(parsed.city);
+    }
+  }, []);
+
+  const selectedCountry = locationData.find((l) => l.country === locCountry);
+  const selectedRegion = selectedCountry?.regions.find((r) => r.name === locRegion);
+
+  const handleLocationSave = () => {
+    if (!locCountry || !locRegion || !locCity) return;
+    const loc = { country: locCountry, region: locRegion, city: locCity };
+    localStorage.setItem("medhome_location", JSON.stringify(loc));
+    setSavedLocation(loc);
+    setLocationOpen(false);
+    window.location.reload();
+  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -85,6 +127,40 @@ const Header = () => {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          <Popover open={locationOpen} onOpenChange={setLocationOpen}>
+            <PopoverTrigger asChild>
+              <Button variant="ghost" size="sm" className="text-muted-foreground">
+                <MapPin className="h-4 w-4 mr-1" />
+                {savedLocation?.city || "Set Location"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-72 p-4" align="end">
+              <p className="text-sm font-semibold text-foreground mb-3">Change Location</p>
+              <div className="space-y-2">
+                <Select value={locCountry} onValueChange={(v) => { setLocCountry(v); setLocRegion(""); setLocCity(""); }}>
+                  <SelectTrigger><SelectValue placeholder="Country" /></SelectTrigger>
+                  <SelectContent>
+                    {locationData.map((l) => <SelectItem key={l.country} value={l.country}>{l.country}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <Select value={locRegion} onValueChange={(v) => { setLocRegion(v); setLocCity(""); }} disabled={!locCountry}>
+                  <SelectTrigger><SelectValue placeholder={selectedCountry?.regionLabel || "Region"} /></SelectTrigger>
+                  <SelectContent>
+                    {selectedCountry?.regions.map((r) => <SelectItem key={r.name} value={r.name}>{r.name}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <Select value={locCity} onValueChange={setLocCity} disabled={!locRegion}>
+                  <SelectTrigger><SelectValue placeholder="City" /></SelectTrigger>
+                  <SelectContent>
+                    {selectedRegion?.cities.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <Button size="sm" className="w-full mt-1" disabled={!locCountry || !locRegion || !locCity} onClick={handleLocationSave}>
+                  Update Location
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
           <Button variant="soft" size="sm" asChild>
             <Link to="/install"><Download className="h-4 w-4 mr-1" /> Get App</Link>
           </Button>
