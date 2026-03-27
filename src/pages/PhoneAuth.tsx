@@ -45,14 +45,21 @@ const PhoneAuth = () => {
     }
 
     setLoading(true);
-    const { error } = await supabase.auth.signInWithOtp({ phone: fullPhone });
+    try {
+      const res = await supabase.functions.invoke("send-otp", {
+        body: { phone: fullPhone },
+      });
 
-    if (error) {
-      toast({ title: "Failed to send code", description: error.message, variant: "destructive" });
-    } else {
-      localStorage.setItem("medhome_otp_phone", fullPhone);
-      toast({ title: "Code sent!", description: `We sent a verification code to ${fullPhone}` });
-      navigate("/onboarding/verify");
+      if (res.error || res.data?.error) {
+        const msg = res.data?.error || res.error?.message || "Failed to send code";
+        toast({ title: "Failed to send code", description: msg, variant: "destructive" });
+      } else {
+        localStorage.setItem("medhome_otp_phone", fullPhone);
+        toast({ title: "Code sent!", description: `We sent a verification code to ${fullPhone}` });
+        navigate("/onboarding/verify");
+      }
+    } catch (err: any) {
+      toast({ title: "Failed to send code", description: err.message, variant: "destructive" });
     }
     setLoading(false);
   };
