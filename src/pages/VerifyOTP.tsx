@@ -88,8 +88,8 @@ const VerifyOTP = () => {
 
         <div className="rounded-2xl border border-border bg-card shadow-xl p-8">
           <div className="flex flex-col items-center mb-8">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-500/10 mb-3">
-              <ShieldCheck className="h-6 w-6 text-green-600" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-3">
+              <ShieldCheck className="h-6 w-6 text-primary" />
             </div>
             <h1 className="font-display text-xl font-bold text-foreground">
               Verify your number
