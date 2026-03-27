@@ -32,45 +32,64 @@ const VerifyOTP = () => {
     if (otp.length !== 6) return;
     setLoading(true);
 
-    const { data, error } = await supabase.auth.verifyOtp({
-      phone,
-      token: otp,
-      type: "sms",
-    });
+    try {
+      const res = await supabase.functions.invoke("verify-otp", {
+        body: { phone, code: otp },
+      });
 
-    if (error) {
-      toast({ title: "Verification failed", description: error.message, variant: "destructive" });
-      setLoading(false);
-      return;
-    }
-
-    if (data.user) {
-      // Check if profile is already completed (returning user)
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("full_name")
-        .eq("user_id", data.user.id)
-        .maybeSingle();
-
-      if (profile?.full_name) {
-        // Returning user — go to home
-        navigate("/home", { replace: true });
-      } else {
-        // New user — complete profile
-        navigate("/onboarding/profile", { replace: true });
+      if (res.error || res.data?.error) {
+        const msg = res.data?.error || res.error?.message || "Verification failed";
+        toast({ title: "Verification failed", description: msg, variant: "destructive" });
+        setLoading(false);
+        return;
       }
+
+      const { session, isNewUser } = res.data;
+
+      if (session) {
+        // Set the session in the client
+        await supabase.auth.setSession({
+          access_token: session.access_token,
+          refresh_token: session.refresh_token,
+        });
+      }
+
+      if (isNewUser) {
+        navigate("/onboarding/profile", { replace: true });
+      } else {
+        // Check if profile is completed
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("full_name")
+          .eq("user_id", session.user.id)
+          .maybeSingle();
+
+        if (profile?.full_name) {
+          navigate("/home", { replace: true });
+        } else {
+          navigate("/onboarding/profile", { replace: true });
+        }
+      }
+    } catch (err: any) {
+      toast({ title: "Verification failed", description: err.message, variant: "destructive" });
     }
 
     setLoading(false);
   };
 
   const handleResend = async () => {
-    const { error } = await supabase.auth.signInWithOtp({ phone });
-    if (error) {
-      toast({ title: "Resend failed", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Code resent", description: "Check your phone for the new code" });
-      setResendTimer(60);
+    try {
+      const res = await supabase.functions.invoke("send-otp", {
+        body: { phone },
+      });
+      if (res.error || res.data?.error) {
+        toast({ title: "Resend failed", description: res.data?.error || "Failed", variant: "destructive" });
+      } else {
+        toast({ title: "Code resent", description: "Check your phone for the new code" });
+        setResendTimer(60);
+      }
+    } catch {
+      toast({ title: "Resend failed", description: "Something went wrong", variant: "destructive" });
     }
   };
 
