@@ -1,31 +1,79 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Heart, Mail, Lock, ArrowRight } from "lucide-react";
+import { Heart, Mail, Lock, ArrowRight, Phone, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useToast } from "@/hooks/use-toast";
+import { countryCodes, findCountryByIso, type CountryCode } from "@/data/countryCodes";
+
+type AuthMode = "phone" | "email";
 
 const Login = () => {
+  const [mode, setMode] = useState<AuthMode>("phone");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState<CountryCode>(countryCodes[0]);
+  const [detecting, setDetecting] = useState(true);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  useEffect(() => {
+    const detect = async () => {
+      try {
+        const res = await fetch("https://ipapi.co/json/");
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        const match = findCountryByIso(data.country_code || "");
+        if (match) setSelectedCountry(match);
+      } catch {
+        // default stays
+      } finally {
+        setDetecting(false);
+      }
+    };
+    detect();
+  }, []);
+
+  const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-
     if (error) {
       toast({ title: "Login failed", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "Welcome back!", description: "You've been logged in successfully." });
       navigate("/dashboard");
+    }
+    setLoading(false);
+  };
+
+  const handlePhoneLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!phoneNumber || phoneNumber.length < 6) {
+      toast({ title: "Invalid number", description: "Please enter a valid phone number", variant: "destructive" });
+      return;
+    }
+    setLoading(true);
+    const fullPhone = `${selectedCountry.code}${phoneNumber.replace(/^0+/, "")}`;
+    try {
+      const res = await supabase.functions.invoke("send-otp", {
+        body: { phone: fullPhone },
+      });
+      if (res.error || res.data?.error) {
+        const msg = res.data?.error || res.error?.message || "Failed to send code";
+        toast({ title: "Failed to send code", description: msg, variant: "destructive" });
+      } else {
+        localStorage.setItem("medhome_otp_phone", fullPhone);
+        toast({ title: "Code sent!", description: `We sent a verification code to ${fullPhone}` });
+        navigate("/onboarding/verify");
+      }
+    } catch (err: any) {
+      toast({ title: "Failed to send code", description: err.message, variant: "destructive" });
     }
     setLoading(false);
   };
@@ -82,55 +130,141 @@ const Login = () => {
           </Link>
 
           <h1 className="font-display text-2xl font-bold text-foreground">Sign in to your account</h1>
-          <p className="mt-1 text-muted-foreground">Enter your credentials to continue</p>
+          <p className="mt-1 text-muted-foreground">Choose how you'd like to sign in</p>
 
-          <form onSubmit={handleLogin} className="mt-8 space-y-5">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10"
-                  required
-                />
-              </div>
-            </div>
+          {/* Mode toggle */}
+          <div className="mt-6 flex rounded-lg border border-border bg-muted p-1">
+            <button
+              type="button"
+              onClick={() => setMode("phone")}
+              className={`flex-1 flex items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                mode === "phone"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Phone className="h-4 w-4" /> Phone
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("email")}
+              className={`flex-1 flex items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                mode === "email"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Mail className="h-4 w-4" /> Email
+            </button>
+          </div>
 
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-                <button
-                  type="button"
-                  onClick={handleForgotPassword}
-                  className="text-sm font-medium text-primary hover:underline"
+          {/* Phone form */}
+          {mode === "phone" && (
+            <form onSubmit={handlePhoneLogin} className="mt-6 space-y-5">
+              <div className="space-y-1.5">
+                <Label>Country</Label>
+                <select
+                  value={selectedCountry.iso}
+                  onChange={(e) => {
+                    const c = countryCodes.find((cc) => cc.iso === e.target.value);
+                    if (c) setSelectedCountry(c);
+                  }}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
-                  Forgot password?
-                </button>
+                  {countryCodes.map((c) => (
+                    <option key={c.iso} value={c.iso}>
+                      {c.flag} {c.country} ({c.code})
+                    </option>
+                  ))}
+                </select>
+                {detecting && (
+                  <p className="flex items-center gap-1.5 text-xs text-primary">
+                    <Loader2 className="h-3 w-3 animate-spin" /> Detecting your country…
+                  </p>
+                )}
               </div>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10"
-                  required
-                />
-              </div>
-            </div>
 
-            <Button type="submit" variant="hero" className="w-full" size="lg" disabled={loading}>
-              {loading ? "Signing in…" : "Sign In"}
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </form>
+              <div className="space-y-1.5">
+                <Label>Phone Number</Label>
+                <div className="flex gap-2">
+                  <div className="flex h-10 items-center rounded-md border border-input bg-muted px-3 text-sm font-medium text-foreground min-w-[70px] justify-center">
+                    {selectedCountry.flag} {selectedCountry.code}
+                  </div>
+                  <div className="relative flex-1">
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="tel"
+                      placeholder="97 123 4567"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value.replace(/[^0-9]/g, ""))}
+                      className="pl-10"
+                      required
+                      maxLength={15}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <Button type="submit" variant="hero" className="w-full" size="lg" disabled={loading || !phoneNumber}>
+                {loading ? (
+                  <><Loader2 className="h-4 w-4 animate-spin" /> Sending code…</>
+                ) : (
+                  <>Send Verification Code <ArrowRight className="h-4 w-4" /></>
+                )}
+              </Button>
+            </form>
+          )}
+
+          {/* Email form */}
+          {mode === "email" && (
+            <form onSubmit={handleEmailLogin} className="mt-6 space-y-5">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Password</Label>
+                  <button
+                    type="button"
+                    onClick={handleForgotPassword}
+                    className="text-sm font-medium text-primary hover:underline"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </div>
+
+              <Button type="submit" variant="hero" className="w-full" size="lg" disabled={loading}>
+                {loading ? "Signing in…" : "Sign In"}
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </form>
+          )}
 
           <div className="mt-6">
             <div className="relative">
