@@ -167,7 +167,6 @@ const VerifyOTP = () => {
           </div>
         </div>
       </div>
-      </div>
     </div>
     </PageTransition>
   );
