@@ -8,6 +8,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { Heart, ArrowRight, Loader2, MapPin, User, Stethoscope } from "lucide-react";
+import PageTransition from "@/components/PageTransition";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -120,6 +121,7 @@ const CompleteProfile = () => {
   if (authLoading) return null;
 
   return (
+    <PageTransition>
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
       <div className="w-full max-w-lg">
         <div className="rounded-2xl border border-border bg-card shadow-xl p-8">
@@ -257,6 +259,7 @@ const CompleteProfile = () => {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 };
 

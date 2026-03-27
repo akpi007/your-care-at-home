@@ -6,6 +6,7 @@ import { Heart, Phone, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 import { countryCodes, findCountryByIso, type CountryCode } from "@/data/countryCodes";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import PageTransition from "@/components/PageTransition";
 
 const PhoneAuth = () => {
   const [selectedCountry, setSelectedCountry] = useState<CountryCode>(countryCodes[0]);
@@ -65,6 +66,7 @@ const PhoneAuth = () => {
   };
 
   return (
+    <PageTransition>
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
       <div className="w-full max-w-md">
         {/* Back */}
@@ -155,6 +157,7 @@ const PhoneAuth = () => {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 };
 
