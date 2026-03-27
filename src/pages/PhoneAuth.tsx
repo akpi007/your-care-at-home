@@ -157,6 +157,7 @@ const PhoneAuth = () => {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 };
 
