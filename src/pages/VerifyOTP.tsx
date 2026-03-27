@@ -5,6 +5,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 import { Heart, ArrowLeft, Loader2, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import PageTransition from "@/components/PageTransition";
 
 const VerifyOTP = () => {
   const [otp, setOtp] = useState("");
@@ -96,6 +97,7 @@ const VerifyOTP = () => {
   const maskedPhone = phone ? `${phone.slice(0, 4)}****${phone.slice(-3)}` : "";
 
   return (
+    <PageTransition>
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
       <div className="w-full max-w-md">
         <button
