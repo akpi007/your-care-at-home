@@ -259,6 +259,7 @@ const CompleteProfile = () => {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 };
 
