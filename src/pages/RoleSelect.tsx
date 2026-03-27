@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Heart, User, Briefcase, Star } from "lucide-react";
 import { testimonials } from "@/data/testimonials";
+import PageTransition from "@/components/PageTransition";
 
 const FloatingCard = ({
   testimonial,
@@ -22,13 +23,13 @@ const FloatingCard = ({
 
   return (
     <div
-      className={`absolute ${positions[index]} hidden md:block z-0 pointer-events-none`}
+      className={`absolute ${positions[index]} z-0 pointer-events-none`}
       style={{
         animation: `float ${durations[index]} ease-in-out infinite`,
         animationDelay: delays[index],
       }}
     >
-      <div className="w-56 rounded-2xl border border-border/20 bg-card/80 backdrop-blur-md shadow-xl p-4">
+      <div className="w-40 sm:w-56 rounded-2xl border border-border/20 bg-card/80 backdrop-blur-md shadow-xl p-3 sm:p-4">
         <div className="flex items-center gap-3 mb-2">
           <img
             src={testimonial.image}
@@ -81,6 +82,7 @@ const RoleSelect = () => {
   if (loading) return null;
 
   return (
+    <PageTransition>
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background to-primary/5">
       {/* Floating testimonials */}
       {testimonials.map((t, i) => (
@@ -169,6 +171,7 @@ const RoleSelect = () => {
         }
       `}</style>
     </div>
+    </PageTransition>
   );
 };
 

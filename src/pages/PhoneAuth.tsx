@@ -6,6 +6,7 @@ import { Heart, Phone, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 import { countryCodes, findCountryByIso, type CountryCode } from "@/data/countryCodes";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import PageTransition from "@/components/PageTransition";
 
 const PhoneAuth = () => {
   const [selectedCountry, setSelectedCountry] = useState<CountryCode>(countryCodes[0]);
