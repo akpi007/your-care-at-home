@@ -5,7 +5,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import LocationSelect from "./pages/LocationSelect";
+import RoleSelect from "./pages/RoleSelect";
+import PhoneAuth from "./pages/PhoneAuth";
+import VerifyOTP from "./pages/VerifyOTP";
+import CompleteProfile from "./pages/CompleteProfile";
 import Index from "./pages/Index";
 import Professionals from "./pages/Professionals";
 import BookService from "./pages/BookService";
@@ -33,7 +36,13 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<LocationSelect />} />
+            {/* Onboarding flow */}
+            <Route path="/" element={<RoleSelect />} />
+            <Route path="/onboarding/phone" element={<PhoneAuth />} />
+            <Route path="/onboarding/verify" element={<VerifyOTP />} />
+            <Route path="/onboarding/profile" element={<CompleteProfile />} />
+
+            {/* Main app */}
             <Route path="/home" element={<Index />} />
             <Route path="/professionals" element={<Professionals />} />
             <Route path="/book/:id" element={
