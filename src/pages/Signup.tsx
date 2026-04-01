@@ -52,7 +52,8 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="relative min-h-screen flex">
+      <BackButton />
       {/* Left panel */}
       <div className="hidden lg:flex lg:w-1/2 gradient-primary items-center justify-center p-12">
         <div className="max-w-md text-center">
