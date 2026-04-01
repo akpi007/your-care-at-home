@@ -4,66 +4,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { User, Briefcase } from "lucide-react";
 import raphaLogoIcon from "@/assets/rapha-logo.png";
 import PageTransition from "@/components/PageTransition";
-import PageTransition from "@/components/PageTransition";
-
-const FloatingCard = ({
-  testimonial,
-  index,
-}: {
-  testimonial: (typeof testimonials)[0];
-  index: number;
-}) => {
-  const positions = [
-    "top-[8%] left-[4%]",
-    "top-[12%] right-[3%]",
-    "bottom-[18%] left-[2%]",
-    "bottom-[10%] right-[5%]",
-  ];
-  const delays = ["0s", "2s", "4s", "1s"];
-  const durations = ["8s", "10s", "9s", "11s"];
-
-  return (
-    <div
-      className={`absolute ${positions[index]} z-0 pointer-events-none hidden md:block`}
-      style={{
-        animation: `float ${durations[index]} ease-in-out infinite`,
-        animationDelay: delays[index],
-      }}
-    >
-      <div className="w-40 sm:w-56 rounded-2xl border border-border/20 bg-card/80 backdrop-blur-md shadow-xl p-3 sm:p-4">
-        <div className="flex items-center gap-3 mb-2">
-          <img
-            src={testimonial.image}
-            alt={testimonial.name}
-            className="h-10 w-10 rounded-full object-cover ring-2 ring-primary/30"
-            width={40}
-            height={40}
-            loading="lazy"
-          />
-          <div>
-            <p className="text-xs font-semibold text-foreground leading-tight">
-              {testimonial.name}
-            </p>
-            <p className="text-[10px] text-muted-foreground">
-              {testimonial.location}
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-0.5 mb-1.5">
-          {Array.from({ length: testimonial.rating }).map((_, i) => (
-            <Star
-              key={i}
-              className="h-3 w-3 fill-yellow-400 text-yellow-400"
-            />
-          ))}
-        </div>
-        <p className="text-[11px] text-muted-foreground leading-snug italic">
-          "{testimonial.quote}"
-        </p>
-      </div>
-    </div>
-  );
-};
 
 const RoleSelect = () => {
   const navigate = useNavigate();
@@ -85,10 +25,6 @@ const RoleSelect = () => {
   return (
     <PageTransition>
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background to-primary/5">
-      {/* Floating testimonials */}
-      {testimonials.map((t, i) => (
-        <FloatingCard key={t.id} testimonial={t} index={i} />
-      ))}
 
       {/* Medical SVG background */}
       <div className="absolute inset-0 opacity-[0.04]" style={{
