@@ -100,7 +100,7 @@ const RoleSelect = () => {
       <div className="relative z-10 w-full max-w-lg mx-4 text-center">
         {/* Logo */}
         <div className="flex flex-col items-center mb-10">
-          <img src={raphaLogoIcon} alt="Rapha Telehealth" className="h-16 w-16 object-contain mb-4" />
+          <img src={raphaLogoIcon} alt="Rapha Telehealth" className="h-24 w-auto object-contain mb-4" />
           <h1 className="font-display text-3xl font-bold text-foreground">
             Rapha<span className="text-primary"> Telehealth</span>
           </h1>

@@ -1,6 +1,6 @@
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
-import raphaLogoIcon from "@/assets/rapha-logo-icon.png";
+import raphaLogoIcon from "@/assets/rapha-logo.png";
 
 const Footer = () => {
   return (
