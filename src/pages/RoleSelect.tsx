@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { User, Briefcase, Star } from "lucide-react";
+import { User, Briefcase } from "lucide-react";
 import raphaLogoIcon from "@/assets/rapha-logo.png";
-import { testimonials } from "@/data/testimonials";
+import PageTransition from "@/components/PageTransition";
 import PageTransition from "@/components/PageTransition";
 
 const FloatingCard = ({
