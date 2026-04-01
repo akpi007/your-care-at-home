@@ -56,8 +56,8 @@ const Signup = () => {
       {/* Left panel */}
       <div className="hidden lg:flex lg:w-1/2 gradient-primary items-center justify-center p-12">
         <div className="max-w-md text-center">
-          <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-foreground/20 backdrop-blur">
-            <Heart className="h-8 w-8 text-primary-foreground" />
+          <div className="mb-6">
+            <img src={raphaLogoNav} alt="Rapha Telehealth" className="h-20 w-auto mx-auto" />
           </div>
           <h2 className="font-display text-3xl font-bold text-primary-foreground">Join Rapha Telehealth</h2>
           <p className="mt-3 text-primary-foreground/80 text-lg">
