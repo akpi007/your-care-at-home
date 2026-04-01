@@ -122,9 +122,7 @@ const Login = () => {
       <div className="flex flex-1 items-center justify-center p-6">
         <div className="w-full max-w-md">
           <Link to="/" className="mb-8 inline-flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-primary">
-              <Heart className="h-5 w-5 text-primary-foreground" />
-            </div>
+            <img src={raphaLogoNav} alt="Rapha Telehealth" className="h-9 w-auto" />
             <span className="font-display text-xl font-bold text-foreground">
               Rapha<span className="text-primary"> Telehealth</span>
             </span>
