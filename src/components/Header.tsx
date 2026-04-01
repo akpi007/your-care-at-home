@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut, Download, MapPin } from "lucide-react";
+import { Menu, X, LogOut, Download, MapPin, ArrowLeft } from "lucide-react";
 import raphaLogoIcon from "@/assets/rapha-logo-nav.png";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
