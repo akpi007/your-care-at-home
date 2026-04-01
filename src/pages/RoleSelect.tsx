@@ -24,7 +24,7 @@ const FloatingCard = ({
 
   return (
     <div
-      className={`absolute ${positions[index]} z-0 pointer-events-none`}
+      className={`absolute ${positions[index]} z-0 pointer-events-none hidden md:block`}
       style={{
         animation: `float ${durations[index]} ease-in-out infinite`,
         animationDelay: delays[index],
