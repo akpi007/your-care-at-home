@@ -90,11 +90,28 @@ const RoleSelect = () => {
         <FloatingCard key={t.id} testimonial={t} index={i} />
       ))}
 
-      {/* Subtle bg pattern */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
+      {/* Medical SVG background */}
+      <div className="absolute inset-0 opacity-[0.04]" style={{
         backgroundImage: "radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)",
         backgroundSize: "40px 40px",
       }} />
+      <svg className="absolute inset-0 w-full h-full opacity-[0.06] pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="med-pattern" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
+            {/* Cross / Plus */}
+            <rect x="52" y="40" width="16" height="40" rx="3" fill="currentColor" />
+            <rect x="40" y="52" width="40" height="16" rx="3" fill="currentColor" />
+            {/* Heart */}
+            <path d="M60 105 C60 105 45 95 45 88 C45 84 48 82 51 82 C54 82 57 84 60 88 C63 84 66 82 69 82 C72 82 75 84 75 88 C75 95 60 105 60 105Z" fill="currentColor" />
+            {/* Stethoscope circle */}
+            <circle cx="20" cy="20" r="8" fill="none" stroke="currentColor" strokeWidth="2" />
+            <line x1="20" y1="28" x2="20" y2="36" stroke="currentColor" strokeWidth="2" />
+            {/* Pulse line */}
+            <polyline points="85,18 90,18 93,8 97,28 100,18 105,18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#med-pattern)" className="text-primary" />
+      </svg>
 
       {/* Main content */}
       <div className="relative z-10 w-full max-w-lg mx-4 text-center">
