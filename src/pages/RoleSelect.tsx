@@ -167,7 +167,14 @@ const RoleSelect = () => {
           </button>
         </div>
 
-        <p className="mt-8 text-xs text-muted-foreground">
+        <button
+          onClick={() => navigate("/home")}
+          className="mt-6 w-full rounded-2xl bg-primary/10 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
+        >
+          Explore
+        </button>
+
+        <p className="mt-4 text-xs text-muted-foreground">
           Already have an account?{" "}
           <button
             onClick={() => navigate("/login")}
