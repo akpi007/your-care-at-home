@@ -58,7 +58,7 @@ Deno.serve(async (req) => {
       // Sign in existing user by generating a magic link token
       const { data: tokenData, error: tokenError } = await supabase.auth.admin.generateLink({
         type: "magiclink",
-        email: existingUser.email || `${phone.replace(/\+/g, "")}@phone.medhome.app`,
+        email: existingUser.email || `${phone.replace(/\+/g, "")}@phone.raphatelehealth.app`,
       });
 
       if (tokenError) throw tokenError;
