@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Heart, Mail, Lock, ArrowRight, Phone, Loader2 } from "lucide-react";
+import { Mail, Lock, ArrowRight, Phone, Loader2 } from "lucide-react";
+import raphaLogoNav from "@/assets/rapha-logo-nav.png";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useToast } from "@/hooks/use-toast";
@@ -107,8 +108,8 @@ const Login = () => {
       {/* Left panel */}
       <div className="hidden lg:flex lg:w-1/2 gradient-primary items-center justify-center p-12">
         <div className="max-w-md text-center">
-          <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-foreground/20 backdrop-blur">
-            <Heart className="h-8 w-8 text-primary-foreground" />
+          <div className="mb-6">
+            <img src={raphaLogoNav} alt="Rapha Telehealth" className="h-20 w-auto mx-auto" />
           </div>
           <h2 className="font-display text-3xl font-bold text-primary-foreground">Welcome to Rapha Telehealth</h2>
           <p className="mt-3 text-primary-foreground/80 text-lg">
@@ -121,9 +122,7 @@ const Login = () => {
       <div className="flex flex-1 items-center justify-center p-6">
         <div className="w-full max-w-md">
           <Link to="/" className="mb-8 inline-flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-primary">
-              <Heart className="h-5 w-5 text-primary-foreground" />
-            </div>
+            <img src={raphaLogoNav} alt="Rapha Telehealth" className="h-9 w-auto" />
             <span className="font-display text-xl font-bold text-foreground">
               Rapha<span className="text-primary"> Telehealth</span>
             </span>
