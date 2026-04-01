@@ -94,7 +94,7 @@ const Header = () => {
     { to: "/professionals", label: "Find Professionals" },
     { to: "/services", label: "Services" },
     { to: "/ai-assistant", label: "AI Assistant" },
-    { to: "/dashboard", label: "My Dashboard" },
+    ...(user ? [{ to: "/dashboard", label: "My Dashboard" }] : []),
     ...(isProfessional ? [{ to: "/provider-dashboard", label: "Provider Dashboard" }] : []),
     ...(isAdmin ? [{ to: "/admin", label: "Admin" }] : []),
   ];
