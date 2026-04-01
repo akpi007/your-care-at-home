@@ -46,17 +46,9 @@ Deno.serve(async (req) => {
     // Mark as verified
     await supabase.from("otp_codes").update({ verified: true }).eq("id", otpRecord.id);
 
-    // Check if user exists with this phone — paginate to find them
-    let existingUser = null;
-    let page = 1;
-    const perPage = 1000;
-    while (true) {
-      const { data: listData } = await supabase.auth.admin.listUsers({ page, perPage });
-      const match = listData?.users?.find((u) => u.phone === phone);
-      if (match) { existingUser = match; break; }
-      if (!listData?.users?.length || listData.users.length < perPage) break;
-      page++;
-    }
+    // Check if user exists with this phone
+    const { data: existingUsers } = await supabase.auth.admin.listUsers();
+    const existingUser = existingUsers?.users?.find((u) => u.phone === phone);
 
     let session = null;
     let user = null;
