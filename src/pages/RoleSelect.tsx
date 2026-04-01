@@ -114,14 +114,6 @@ const RoleSelect = () => {
         </p>
       </div>
 
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          25% { transform: translateY(-15px) rotate(1deg); }
-          50% { transform: translateY(-5px) rotate(-1deg); }
-          75% { transform: translateY(-20px) rotate(0.5deg); }
-        }
-      `}</style>
     </div>
     </PageTransition>
   );
