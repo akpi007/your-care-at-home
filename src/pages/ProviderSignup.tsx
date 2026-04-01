@@ -88,7 +88,7 @@ const ProviderSignup = () => {
             <Stethoscope className="h-8 w-8 text-primary-foreground" />
           </div>
           <h2 className="font-display text-3xl font-bold text-primary-foreground">
-            Join MedHome as a Provider
+            Join Rapha Telehealth as a Provider
           </h2>
           <p className="mt-3 text-primary-foreground/80 text-lg">
             Expand your practice, reach more patients, and deliver healthcare at their doorstep.

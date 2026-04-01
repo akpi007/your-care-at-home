@@ -33,7 +33,7 @@ export const testimonials: Testimonial[] = [
     id: 3,
     name: "Kwame Asante",
     location: "Accra, Ghana",
-    quote: "Professional, affordable, and convenient. I recommend MedHome to everyone.",
+    quote: "Professional, affordable, and convenient. I recommend Rapha Telehealth to everyone.",
     image: testimonial3,
     rating: 4,
   },
