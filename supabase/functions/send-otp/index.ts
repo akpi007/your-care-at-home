@@ -60,7 +60,7 @@ Deno.serve(async (req) => {
       body: new URLSearchParams({
         To: phone,
         From: TWILIO_FROM,
-        Body: `Your MedHome verification code is: ${code}. It expires in 10 minutes.`,
+        Body: `Your Rapha Telehealth verification code is: ${code}. It expires in 10 minutes.`,
       }),
     });
 

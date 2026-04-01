@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Heart, LogOut, Download, MapPin } from "lucide-react";
+import { Menu, X, LogOut, Download, MapPin } from "lucide-react";
+import raphaLogoIcon from "@/assets/rapha-logo-icon.png";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
@@ -102,11 +103,9 @@ const Header = () => {
     <header className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-lg">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/home" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-primary">
-            <Heart className="h-5 w-5 text-primary-foreground" />
-          </div>
+          <img src={raphaLogoIcon} alt="Rapha Telehealth" className="h-9 w-9 object-contain" />
           <span className="font-display text-xl font-bold text-foreground">
-            Med<span className="text-primary">Home</span>
+            Rapha<span className="text-primary"> Telehealth</span>
           </span>
         </Link>
 

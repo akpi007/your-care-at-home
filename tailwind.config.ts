@@ -70,6 +70,14 @@ export default {
           "soft-green": "hsl(var(--healthcare-soft-green))",
           warm: "hsl(var(--healthcare-warm))",
         },
+        brand: {
+          blue: "hsl(var(--brand-blue))",
+          gold: "hsl(var(--brand-gold))",
+          navy: "hsl(var(--brand-navy))",
+          "light-blue": "hsl(var(--brand-light-blue))",
+          "light-gold": "hsl(var(--brand-light-gold))",
+          teal: "hsl(var(--brand-teal))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

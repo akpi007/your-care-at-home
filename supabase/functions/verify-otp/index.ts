@@ -58,7 +58,7 @@ Deno.serve(async (req) => {
       // Sign in existing user by generating a magic link token
       const { data: tokenData, error: tokenError } = await supabase.auth.admin.generateLink({
         type: "magiclink",
-        email: existingUser.email || `${phone.replace(/\+/g, "")}@phone.medhome.app`,
+        email: existingUser.email || `${phone.replace(/\+/g, "")}@phone.raphatelehealth.app`,
       });
 
       if (tokenError) throw tokenError;
@@ -74,7 +74,7 @@ Deno.serve(async (req) => {
       user = verifyData.user;
     } else {
       // Create new user
-      const email = `${phone.replace(/\+/g, "")}@phone.medhome.app`;
+      const email = `${phone.replace(/\+/g, "")}@phone.raphatelehealth.app`;
       const password = crypto.randomUUID();
 
       const { data: newUser, error: createError } = await supabase.auth.admin.createUser({

@@ -1,5 +1,6 @@
-import { Heart, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
+import raphaLogoIcon from "@/assets/rapha-logo-icon.png";
 
 const Footer = () => {
   return (
@@ -8,11 +9,9 @@ const Footer = () => {
         <div className="grid gap-8 md:grid-cols-4">
           <div>
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg gradient-primary">
-                <Heart className="h-4 w-4 text-primary-foreground" />
-              </div>
+              <img src={raphaLogoIcon} alt="Rapha Telehealth" className="h-8 w-8 object-contain" />
               <span className="font-display text-lg font-bold text-foreground">
-                Med<span className="text-primary">Home</span>
+                Rapha<span className="text-primary"> Telehealth</span>
               </span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -49,7 +48,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary" />
-                support@medhome.com
+                support@raphatelehealth.com
               </li>
               <li className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-primary" />
@@ -60,7 +59,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-10 border-t border-border pt-6 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} MedHome. All rights reserved.
+          © {new Date().getFullYear()} Rapha Telehealth. All rights reserved.
         </div>
       </div>
     </footer>

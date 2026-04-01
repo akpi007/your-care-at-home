@@ -7,85 +7,93 @@
 @layer base {
   :root {
     --background: 210 20% 98%;
-    --foreground: 210 40% 11%;
+    --foreground: 215 35% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 210 40% 11%;
+    --card-foreground: 215 35% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 40% 11%;
+    --popover-foreground: 215 35% 15%;
 
-    --primary: 168 72% 40%;
+    --primary: 207 62% 44%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 200 60% 94%;
-    --secondary-foreground: 210 40% 11%;
+    --secondary: 42 70% 55%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 210 20% 95%;
-    --muted-foreground: 210 15% 50%;
+    --muted-foreground: 215 15% 48%;
 
-    --accent: 200 80% 92%;
-    --accent-foreground: 200 80% 30%;
+    --accent: 207 60% 92%;
+    --accent-foreground: 207 62% 35%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 210 20% 90%;
     --input: 210 20% 90%;
-    --ring: 168 72% 40%;
+    --ring: 207 62% 44%;
 
     --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 168 72% 40%;
+    --sidebar-primary: 207 62% 44%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 200 60% 94%;
-    --sidebar-accent-foreground: 210 40% 11%;
+    --sidebar-accent: 207 60% 92%;
+    --sidebar-accent-foreground: 215 35% 15%;
     --sidebar-border: 210 20% 90%;
-    --sidebar-ring: 168 72% 40%;
+    --sidebar-ring: 207 62% 44%;
 
-    /* Custom healthcare tokens */
-    --healthcare-teal: 168 72% 40%;
-    --healthcare-blue: 200 80% 55%;
-    --healthcare-green: 152 60% 48%;
-    --healthcare-navy: 210 40% 15%;
-    --healthcare-soft-blue: 200 60% 94%;
-    --healthcare-soft-green: 152 50% 92%;
-    --healthcare-warm: 30 80% 96%;
+    /* Brand tokens */
+    --brand-blue: 207 62% 44%;
+    --brand-gold: 42 70% 55%;
+    --brand-navy: 215 45% 18%;
+    --brand-light-blue: 207 60% 92%;
+    --brand-light-gold: 42 60% 92%;
+    --brand-teal: 180 50% 42%;
+
+    /* Legacy healthcare tokens mapped to new brand */
+    --healthcare-teal: 207 62% 44%;
+    --healthcare-blue: 207 62% 50%;
+    --healthcare-green: 42 70% 55%;
+    --healthcare-navy: 215 45% 18%;
+    --healthcare-soft-blue: 207 60% 92%;
+    --healthcare-soft-green: 42 60% 92%;
+    --healthcare-warm: 42 70% 94%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(168 72% 40%), hsl(200 80% 55%));
-    --gradient-hero: linear-gradient(135deg, hsl(200 60% 94%), hsl(152 50% 92%), hsl(0 0% 100%));
+    --gradient-primary: linear-gradient(135deg, hsl(207 62% 44%), hsl(42 70% 55%));
+    --gradient-hero: linear-gradient(135deg, hsl(207 60% 95%), hsl(42 60% 95%), hsl(0 0% 100%));
     --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(210 20% 98%));
 
     /* Shadows */
-    --shadow-sm: 0 1px 3px hsl(210 20% 50% / 0.08);
-    --shadow-md: 0 4px 12px hsl(210 20% 50% / 0.1);
-    --shadow-lg: 0 8px 30px hsl(210 20% 50% / 0.12);
-    --shadow-glow: 0 0 20px hsl(168 72% 40% / 0.15);
+    --shadow-sm: 0 1px 3px hsl(207 30% 50% / 0.08);
+    --shadow-md: 0 4px 12px hsl(207 30% 50% / 0.1);
+    --shadow-lg: 0 8px 30px hsl(207 30% 50% / 0.12);
+    --shadow-glow: 0 0 20px hsl(207 62% 44% / 0.2);
   }
 
   .dark {
-    --background: 210 40% 6%;
+    --background: 215 40% 6%;
     --foreground: 210 20% 95%;
-    --card: 210 40% 9%;
+    --card: 215 40% 9%;
     --card-foreground: 210 20% 95%;
-    --popover: 210 40% 9%;
+    --popover: 215 40% 9%;
     --popover-foreground: 210 20% 95%;
-    --primary: 168 72% 45%;
+    --primary: 207 62% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 30% 15%;
-    --secondary-foreground: 210 20% 95%;
-    --muted: 210 30% 15%;
+    --secondary: 42 70% 50%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 215 30% 15%;
     --muted-foreground: 210 15% 60%;
-    --accent: 200 50% 18%;
-    --accent-foreground: 200 80% 80%;
+    --accent: 207 50% 18%;
+    --accent-foreground: 207 60% 80%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 210 30% 18%;
-    --input: 210 30% 18%;
-    --ring: 168 72% 45%;
+    --border: 215 30% 18%;
+    --input: 215 30% 18%;
+    --ring: 207 62% 50%;
   }
 }
 
