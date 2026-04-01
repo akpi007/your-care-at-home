@@ -167,7 +167,7 @@ const Index = () => {
             Ready to Get Care at Home?
           </h2>
           <p className="mt-3 text-primary-foreground/80 text-lg">
-            Join thousands of patients who trust MedHome for quality healthcare.
+            Join thousands of patients who trust Rapha Telehealth for quality healthcare.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button

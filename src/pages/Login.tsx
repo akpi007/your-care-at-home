@@ -125,7 +125,7 @@ const Login = () => {
               <Heart className="h-5 w-5 text-primary-foreground" />
             </div>
             <span className="font-display text-xl font-bold text-foreground">
-              Med<span className="text-primary">Home</span>
+              Rapha<span className="text-primary"> Telehealth</span>
             </span>
           </Link>
 

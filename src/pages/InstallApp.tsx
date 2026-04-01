@@ -46,7 +46,7 @@ const InstallApp = () => {
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10">
             <Smartphone className="h-10 w-10 text-primary" />
           </div>
-          <h1 className="font-display text-3xl font-bold text-foreground">Install YourCare</h1>
+          <h1 className="font-display text-3xl font-bold text-foreground">Install Rapha Telehealth</h1>
           <p className="text-muted-foreground">
             Install our app for a faster, native-like experience with offline access and instant notifications.
           </p>

@@ -103,7 +103,7 @@ const RoleSelect = () => {
             <Heart className="h-8 w-8 text-primary-foreground" />
           </div>
           <h1 className="font-display text-3xl font-bold text-foreground">
-            Med<span className="text-primary">Home</span>
+            Rapha<span className="text-primary"> Telehealth</span>
           </h1>
           <p className="mt-2 text-muted-foreground text-sm max-w-xs">
             Quality healthcare delivered to your doorstep by trusted professionals

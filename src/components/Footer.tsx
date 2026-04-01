@@ -59,7 +59,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-10 border-t border-border pt-6 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} MedHome. All rights reserved.
+          © {new Date().getFullYear()} Rapha Telehealth. All rights reserved.
         </div>
       </div>
     </footer>

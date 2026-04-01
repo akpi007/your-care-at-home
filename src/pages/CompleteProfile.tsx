@@ -113,7 +113,7 @@ const CompleteProfile = () => {
       }
     }
 
-    toast({ title: "Welcome to MedHome!", description: "Your profile has been created successfully." });
+    toast({ title: "Welcome to Rapha Telehealth!", description: "Your profile has been created successfully." });
     navigate("/home", { replace: true });
     setSubmitting(false);
   };

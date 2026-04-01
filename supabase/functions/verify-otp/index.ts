@@ -74,7 +74,7 @@ Deno.serve(async (req) => {
       user = verifyData.user;
     } else {
       // Create new user
-      const email = `${phone.replace(/\+/g, "")}@phone.medhome.app`;
+      const email = `${phone.replace(/\+/g, "")}@phone.raphatelehealth.app`;
       const password = crypto.randomUUID();
 
       const { data: newUser, error: createError } = await supabase.auth.admin.createUser({
