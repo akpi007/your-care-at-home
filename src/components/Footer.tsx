@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import raphaLogoIcon from "@/assets/rapha-logo-nav.png";
 
