@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import BackButton from "@/components/BackButton";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -122,7 +123,8 @@ const CompleteProfile = () => {
 
   return (
     <PageTransition>
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
+    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
+      <BackButton />
       <div className="w-full max-w-lg">
         <div className="rounded-2xl border border-border bg-card shadow-xl p-8">
           {/* Header */}

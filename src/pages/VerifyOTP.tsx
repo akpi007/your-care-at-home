@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import BackButton from "@/components/BackButton";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
@@ -98,7 +99,8 @@ const VerifyOTP = () => {
 
   return (
     <PageTransition>
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
+    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
+      <BackButton />
       <div className="w-full max-w-md">
         <button
           onClick={() => navigate("/onboarding/phone")}
