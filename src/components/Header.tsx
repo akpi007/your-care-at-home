@@ -117,6 +117,7 @@ const Header = () => {
             Rapha<span className="text-primary"> Telehealth</span>
           </span>
         </Link>
+        </div>
 
         <nav className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => (
