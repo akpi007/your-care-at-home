@@ -58,7 +58,7 @@ const Signup = () => {
           <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-foreground/20 backdrop-blur">
             <Heart className="h-8 w-8 text-primary-foreground" />
           </div>
-          <h2 className="font-display text-3xl font-bold text-primary-foreground">Join MedHome</h2>
+          <h2 className="font-display text-3xl font-bold text-primary-foreground">Join Rapha Telehealth</h2>
           <p className="mt-3 text-primary-foreground/80 text-lg">
             Create your account and start booking healthcare professionals for home visits.
           </p>
