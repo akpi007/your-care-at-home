@@ -167,14 +167,7 @@ const RoleSelect = () => {
           </button>
         </div>
 
-        <button
-          onClick={() => navigate("/home")}
-          className="mt-6 w-full rounded-2xl bg-primary/10 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
-        >
-          Explore
-        </button>
-
-        <p className="mt-4 text-xs text-muted-foreground">
+        <p className="mt-8 text-xs text-muted-foreground">
           Already have an account?{" "}
           <button
             onClick={() => navigate("/login")}
@@ -183,6 +176,13 @@ const RoleSelect = () => {
             Sign in
           </button>
         </p>
+
+        <button
+          onClick={() => navigate("/home")}
+          className="mt-3 text-xs font-medium text-primary hover:underline"
+        >
+          Explore
+        </button>
       </div>
 
       <style>{`
