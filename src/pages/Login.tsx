@@ -104,7 +104,13 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="relative min-h-screen flex">
+      <button
+        onClick={() => navigate(-1)}
+        className="absolute top-4 left-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-card/80 backdrop-blur border border-border text-foreground shadow-sm transition-colors hover:bg-accent"
+      >
+        <ArrowLeft className="h-5 w-5" />
+      </button>
       {/* Left panel */}
       <div className="hidden lg:flex lg:w-1/2 gradient-primary items-center justify-center p-12">
         <div className="max-w-md text-center">
