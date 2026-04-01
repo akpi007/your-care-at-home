@@ -17,7 +17,7 @@ export const testimonials: Testimonial[] = [
     id: 1,
     name: "Amara Okafor",
     location: "Lagos, Nigeria",
-    quote: "MedHome brought a doctor to my doorstep in under 30 minutes. Incredible service!",
+    quote: "Rapha Telehealth brought a doctor to my doorstep in under 30 minutes. Incredible service!",
     image: testimonial1,
     rating: 5,
   },
