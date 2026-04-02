@@ -51,12 +51,14 @@ Deno.serve(async (req) => {
     // Send OTP via 2Factor.in SMS API
     const twoFactorUrl = `https://2factor.in/API/V1/${TWO_FACTOR_API_KEY}/SMS/${cleanPhone}/${code}`;
 
-    const smsRes = await fetch(twoFactorUrl);
+    const smsRes = await fetch(twoFactorUrl, {
+      method: "POST",
+    });
     const smsData = await smsRes.json();
 
-    if (smsData.Status !== "Success") {
+    if (!smsRes.ok || smsData.Status !== "Success") {
       console.error("2Factor.in error:", smsData);
-      throw new Error(smsData.Details || "Failed to send SMS via 2Factor.in");
+      throw new Error(smsData.Details || `Failed to send SMS via 2Factor.in [${smsRes.status}]`);
     }
 
     return new Response(JSON.stringify({ success: true }), {
