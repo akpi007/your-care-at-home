@@ -22,7 +22,11 @@ import {
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 
-type Msg = { role: "user" | "assistant"; content: string };
+type MessageContent =
+  | string
+  | Array<{ type: "text"; text: string } | { type: "image_url"; image_url: { url: string } }>;
+
+type Msg = { role: "user" | "assistant"; content: string; aiContent?: MessageContent };
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/healthcare-ai`;
 
@@ -49,12 +53,16 @@ async function readFileAsText(file: File): Promise<string> {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result as string);
     reader.onerror = reject;
+    reader.readAsText(file);
+  });
+}
 
-    if (file.type.startsWith("image/")) {
-      reader.readAsDataURL(file);
-    } else {
-      reader.readAsText(file);
-    }
+async function readFileAsDataURL(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   });
 }
 
@@ -64,7 +72,7 @@ async function streamChat({
   onDone,
   onError,
 }: {
-  messages: Msg[];
+  messages: Array<{ role: string; content: MessageContent }>;
   onDelta: (text: string) => void;
   onDone: () => void;
   onError: (msg: string) => void;
@@ -164,22 +172,25 @@ const AIAssistant = () => {
     const trimmed = text.trim();
     if ((!trimmed && !file) || isLoading) return;
 
-    let messageContent = trimmed;
     let displayContent = trimmed;
+    let aiContent: MessageContent = trimmed;
 
     if (file) {
       try {
-        const fileContent = await readFileAsText(file);
         const fileLabel = `📎 ${file.name}`;
 
         if (file.type.startsWith("image/")) {
+          const dataUrl = await readFileAsDataURL(file);
           displayContent = trimmed ? `${fileLabel}\n\n${trimmed}` : fileLabel;
-          messageContent = trimmed
-            ? `[User uploaded an image: ${file.name}. Note: Image analysis is not available in text mode. Please ask the user to paste or type the report values instead.]\n\n${trimmed}`
-            : `[User uploaded an image: ${file.name}. Note: Image analysis is not available in text mode. Please ask the user to paste or type the report values instead.]`;
+          const textPart = trimmed || "Please interpret this medical report image, going through each finding one at a time.";
+          aiContent = [
+            { type: "text", text: textPart },
+            { type: "image_url", image_url: { url: dataUrl } },
+          ];
         } else {
+          const fileContent = await readFileAsText(file);
           displayContent = trimmed ? `${fileLabel}\n\n${trimmed}` : fileLabel;
-          messageContent = trimmed
+          aiContent = trimmed
             ? `Here is the content of my uploaded file "${file.name}":\n\n---\n${fileContent}\n---\n\n${trimmed}`
             : `Here is the content of my uploaded file "${file.name}":\n\n---\n${fileContent}\n---\n\nPlease interpret this medical report for me, going through each finding one at a time.`;
         }
@@ -189,12 +200,11 @@ const AIAssistant = () => {
       }
     }
 
-    if (!messageContent) return;
+    if (!displayContent && !aiContent) return;
 
-    const userMsgDisplay: Msg = { role: "user", content: displayContent };
-    const userMsgForAI: Msg = { role: "user", content: messageContent };
+    const userMsg: Msg = { role: "user", content: displayContent, aiContent };
 
-    setMessages((prev) => [...prev, userMsgDisplay]);
+    setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setAttachedFile(null);
     setIsLoading(true);
@@ -213,10 +223,10 @@ const AIAssistant = () => {
       });
     };
 
-    // Build AI message history (use display for past messages, AI content for current)
+    // Build AI message history using aiContent (multimodal) when available
     const aiMessages = [
-      ...messages.map((m) => ({ role: m.role, content: m.content })),
-      userMsgForAI,
+      ...messages.map((m) => ({ role: m.role, content: m.aiContent || m.content })),
+      { role: userMsg.role, content: userMsg.aiContent || userMsg.content },
     ];
 
     try {
