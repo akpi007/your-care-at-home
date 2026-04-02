@@ -68,6 +68,13 @@ export type Database = {
             referencedRelation: "professionals"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "availability_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       bookings: {
@@ -138,6 +145,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "bookings_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "bookings_service_id_fkey"
             columns: ["service_id"]
             isOneToOne: false
@@ -187,6 +201,13 @@ export type Database = {
             columns: ["professional_id"]
             isOneToOne: false
             referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "earnings_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
             referencedColumns: ["id"]
           },
         ]
@@ -407,6 +428,13 @@ export type Database = {
             referencedRelation: "professionals"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "professional_certifications_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       professionals: {
@@ -583,6 +611,13 @@ export type Database = {
             referencedRelation: "professionals"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "reviews_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       services: {
@@ -626,7 +661,80 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      professionals_public: {
+        Row: {
+          available: boolean | null
+          bio: string | null
+          city: string | null
+          consultation_fee: number | null
+          created_at: string | null
+          display_name: string | null
+          id: string | null
+          id_proof_url: string | null
+          image_url: string | null
+          license_number: string | null
+          passport_photo_url: string | null
+          rating: number | null
+          service_id: string | null
+          specialization: string | null
+          total_reviews: number | null
+          updated_at: string | null
+          user_id: string | null
+          verification_status: string | null
+          years_experience: number | null
+        }
+        Insert: {
+          available?: boolean | null
+          bio?: string | null
+          city?: string | null
+          consultation_fee?: number | null
+          created_at?: string | null
+          display_name?: string | null
+          id?: string | null
+          id_proof_url?: never
+          image_url?: string | null
+          license_number?: never
+          passport_photo_url?: never
+          rating?: number | null
+          service_id?: string | null
+          specialization?: string | null
+          total_reviews?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          verification_status?: string | null
+          years_experience?: number | null
+        }
+        Update: {
+          available?: boolean | null
+          bio?: string | null
+          city?: string | null
+          consultation_fee?: number | null
+          created_at?: string | null
+          display_name?: string | null
+          id?: string | null
+          id_proof_url?: never
+          image_url?: string | null
+          license_number?: never
+          passport_photo_url?: never
+          rating?: number | null
+          service_id?: string | null
+          specialization?: string | null
+          total_reviews?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          verification_status?: string | null
+          years_experience?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professionals_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       has_role: {
