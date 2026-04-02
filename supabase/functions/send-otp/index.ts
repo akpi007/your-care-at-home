@@ -5,9 +5,6 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const GATEWAY_URL = "https://connector-gateway.lovable.dev/twilio";
-const TWILIO_FROM = "+14782805088";
-
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -22,13 +19,12 @@ Deno.serve(async (req) => {
       });
     }
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    const TWILIO_API_KEY = Deno.env.get("TWILIO_API_KEY");
+    const TWO_FACTOR_API_KEY = Deno.env.get("TWO_FACTOR_API_KEY");
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-    if (!LOVABLE_API_KEY || !TWILIO_API_KEY) {
-      throw new Error("Missing API keys");
+    if (!TWO_FACTOR_API_KEY) {
+      throw new Error("TWO_FACTOR_API_KEY is not configured");
     }
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
@@ -49,25 +45,18 @@ Deno.serve(async (req) => {
 
     if (insertError) throw insertError;
 
-    // Send SMS via Twilio gateway
-    const twilioRes = await fetch(`${GATEWAY_URL}/Messages.json`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "X-Connection-Api-Key": TWILIO_API_KEY,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        To: phone,
-        From: TWILIO_FROM,
-        Body: `Your Rapha Telehealth verification code is: ${code}. It expires in 10 minutes.`,
-      }),
-    });
+    // Strip leading '+' for 2Factor.in API (expects plain digits)
+    const cleanPhone = phone.replace(/^\+/, "");
 
-    const twilioData = await twilioRes.json();
-    if (!twilioRes.ok) {
-      console.error("Twilio error:", twilioData);
-      throw new Error(twilioData.message || "Failed to send SMS");
+    // Send OTP via 2Factor.in Transactional SMS API
+    const twoFactorUrl = `https://2factor.in/API/V1/${TWO_FACTOR_API_KEY}/SMS/${cleanPhone}/${code}/Your OTP is ${code}`;
+
+    const smsRes = await fetch(twoFactorUrl);
+    const smsData = await smsRes.json();
+
+    if (smsData.Status !== "Success") {
+      console.error("2Factor.in error:", smsData);
+      throw new Error(smsData.Details || "Failed to send SMS via 2Factor.in");
     }
 
     return new Response(JSON.stringify({ success: true }), {
