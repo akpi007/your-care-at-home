@@ -63,6 +63,7 @@ export function useProfessional(id: string | undefined) {
 
       if (error) throw error;
       if (!data) return null;
+      const p = data as any;
 
       return {
         id: data.id,
