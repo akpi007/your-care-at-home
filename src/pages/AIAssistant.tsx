@@ -53,12 +53,16 @@ async function readFileAsText(file: File): Promise<string> {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result as string);
     reader.onerror = reject;
+    reader.readAsText(file);
+  });
+}
 
-    if (file.type.startsWith("image/")) {
-      reader.readAsDataURL(file);
-    } else {
-      reader.readAsText(file);
-    }
+async function readFileAsDataURL(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   });
 }
 
