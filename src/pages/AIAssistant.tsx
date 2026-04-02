@@ -72,7 +72,7 @@ async function streamChat({
   onDone,
   onError,
 }: {
-  messages: Msg[];
+  messages: Array<{ role: string; content: MessageContent }>;
   onDelta: (text: string) => void;
   onDone: () => void;
   onError: (msg: string) => void;
