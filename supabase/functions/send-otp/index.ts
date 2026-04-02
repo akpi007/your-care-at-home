@@ -48,8 +48,8 @@ Deno.serve(async (req) => {
     // Strip leading '+' for 2Factor.in API (expects plain digits)
     const cleanPhone = phone.replace(/^\+/, "");
 
-    // Send OTP via 2Factor.in Transactional SMS API
-    const twoFactorUrl = `https://2factor.in/API/V1/${TWO_FACTOR_API_KEY}/SMS/${cleanPhone}/${code}/Your OTP is ${code}`;
+    // Send OTP via 2Factor.in SMS API
+    const twoFactorUrl = `https://2factor.in/API/V1/${TWO_FACTOR_API_KEY}/SMS/${cleanPhone}/${code}`;
 
     const smsRes = await fetch(twoFactorUrl);
     const smsData = await smsRes.json();
