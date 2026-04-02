@@ -14,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { locationData } from "@/data/locationData";
+import { medicalSpecializations } from "@/data/specializations";
 
 const CompleteProfile = () => {
   const { user, loading: authLoading } = useAuth();
@@ -201,13 +202,16 @@ const CompleteProfile = () => {
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="specialization">Specialization *</Label>
-                  <Input
-                    id="specialization"
-                    placeholder="e.g. General Practice, Nursing, Physiotherapy"
-                    value={specialization}
-                    onChange={(e) => setSpecialization(e.target.value)}
-                    required
-                  />
+                  <Select value={specialization} onValueChange={setSpecialization}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select your specialization" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {medicalSpecializations.map((s) => (
+                        <SelectItem key={s} value={s}>{s}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1.5">
