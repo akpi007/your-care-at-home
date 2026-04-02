@@ -176,13 +176,6 @@ const RoleSelect = () => {
             Sign in
           </button>
         </p>
-
-        <button
-          onClick={() => navigate("/home")}
-          className="mt-3 text-xs font-medium text-primary hover:underline"
-        >
-          Explore
-        </button>
       </div>
 
       <style>{`

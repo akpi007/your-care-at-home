@@ -1,5 +1,4 @@
 import { useState } from "react";
-import BackButton from "@/components/BackButton";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -81,8 +80,7 @@ const ProviderSignup = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex">
-      <BackButton />
+    <div className="min-h-screen flex">
       {/* Left panel */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary via-primary/90 to-primary/70 items-center justify-center p-12">
         <div className="max-w-md text-center">
