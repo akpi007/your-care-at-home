@@ -172,22 +172,25 @@ const AIAssistant = () => {
     const trimmed = text.trim();
     if ((!trimmed && !file) || isLoading) return;
 
-    let messageContent = trimmed;
     let displayContent = trimmed;
+    let aiContent: MessageContent = trimmed;
 
     if (file) {
       try {
-        const fileContent = await readFileAsText(file);
         const fileLabel = `📎 ${file.name}`;
 
         if (file.type.startsWith("image/")) {
+          const dataUrl = await readFileAsDataURL(file);
           displayContent = trimmed ? `${fileLabel}\n\n${trimmed}` : fileLabel;
-          messageContent = trimmed
-            ? `[User uploaded an image: ${file.name}. Note: Image analysis is not available in text mode. Please ask the user to paste or type the report values instead.]\n\n${trimmed}`
-            : `[User uploaded an image: ${file.name}. Note: Image analysis is not available in text mode. Please ask the user to paste or type the report values instead.]`;
+          const textPart = trimmed || "Please interpret this medical report image, going through each finding one at a time.";
+          aiContent = [
+            { type: "text", text: textPart },
+            { type: "image_url", image_url: { url: dataUrl } },
+          ];
         } else {
+          const fileContent = await readFileAsText(file);
           displayContent = trimmed ? `${fileLabel}\n\n${trimmed}` : fileLabel;
-          messageContent = trimmed
+          aiContent = trimmed
             ? `Here is the content of my uploaded file "${file.name}":\n\n---\n${fileContent}\n---\n\n${trimmed}`
             : `Here is the content of my uploaded file "${file.name}":\n\n---\n${fileContent}\n---\n\nPlease interpret this medical report for me, going through each finding one at a time.`;
         }
@@ -197,10 +200,9 @@ const AIAssistant = () => {
       }
     }
 
-    if (!messageContent) return;
+    if (!displayContent && !aiContent) return;
 
-    const userMsgDisplay: Msg = { role: "user", content: displayContent };
-    const userMsgForAI: Msg = { role: "user", content: messageContent };
+    const userMsg: Msg = { role: "user", content: displayContent, aiContent };
 
     setMessages((prev) => [...prev, userMsgDisplay]);
     setInput("");
