@@ -19,7 +19,7 @@ export interface Professional {
 
 async function fetchProfessionals(): Promise<Professional[]> {
   const { data, error } = await supabase
-    .from("professionals")
+    .from("professionals_public" as any)
     .select("*, services(name)")
     .eq("verification_status", "verified")
     .order("rating", { ascending: false });
