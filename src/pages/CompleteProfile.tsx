@@ -14,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { locationData } from "@/data/locationData";
+import { medicalSpecializations } from "@/data/specializations";
 
 const CompleteProfile = () => {
   const { user, loading: authLoading } = useAuth();
