@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import FileUploadButton from "@/components/FileUploadButton";
 import {
   Bot,
   Send,
@@ -16,6 +17,7 @@ import {
   Sparkles,
   AlertTriangle,
   Trash2,
+  FileUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
@@ -28,12 +30,12 @@ const QUICK_ACTIONS = [
   {
     icon: Stethoscope,
     label: "Analyze Symptoms",
-    prompt: "I'd like to describe my symptoms for analysis.",
+    prompt: "I have some symptoms I'd like to discuss with you.",
   },
   {
     icon: FileText,
     label: "Interpret Report",
-    prompt: "I have medical test results I'd like you to help me understand.",
+    prompt: "I have a medical report I'd like you to help me understand. I'll upload the file.",
   },
   {
     icon: UserSearch,
@@ -41,6 +43,20 @@ const QUICK_ACTIONS = [
     prompt: "Can you recommend what type of specialist I should see for my condition?",
   },
 ];
+
+async function readFileAsText(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+
+    if (file.type.startsWith("image/")) {
+      reader.readAsDataURL(file);
+    } else {
+      reader.readAsText(file);
+    }
+  });
+}
 
 async function streamChat({
   messages,
@@ -109,7 +125,6 @@ async function streamChat({
     }
   }
 
-  // Flush remaining
   if (buffer.trim()) {
     for (let raw of buffer.split("\n")) {
       if (!raw) continue;
@@ -137,6 +152,7 @@ const AIAssistant = () => {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [attachedFile, setAttachedFile] = useState<File | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -144,13 +160,43 @@ const AIAssistant = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const send = async (text: string) => {
+  const send = async (text: string, file?: File | null) => {
     const trimmed = text.trim();
-    if (!trimmed || isLoading) return;
+    if ((!trimmed && !file) || isLoading) return;
 
-    const userMsg: Msg = { role: "user", content: trimmed };
-    setMessages((prev) => [...prev, userMsg]);
+    let messageContent = trimmed;
+    let displayContent = trimmed;
+
+    if (file) {
+      try {
+        const fileContent = await readFileAsText(file);
+        const fileLabel = `📎 ${file.name}`;
+
+        if (file.type.startsWith("image/")) {
+          displayContent = trimmed ? `${fileLabel}\n\n${trimmed}` : fileLabel;
+          messageContent = trimmed
+            ? `[User uploaded an image: ${file.name}. Note: Image analysis is not available in text mode. Please ask the user to paste or type the report values instead.]\n\n${trimmed}`
+            : `[User uploaded an image: ${file.name}. Note: Image analysis is not available in text mode. Please ask the user to paste or type the report values instead.]`;
+        } else {
+          displayContent = trimmed ? `${fileLabel}\n\n${trimmed}` : fileLabel;
+          messageContent = trimmed
+            ? `Here is the content of my uploaded file "${file.name}":\n\n---\n${fileContent}\n---\n\n${trimmed}`
+            : `Here is the content of my uploaded file "${file.name}":\n\n---\n${fileContent}\n---\n\nPlease interpret this medical report for me, going through each finding one at a time.`;
+        }
+      } catch {
+        toast({ title: "Error", description: "Could not read the file", variant: "destructive" });
+        return;
+      }
+    }
+
+    if (!messageContent) return;
+
+    const userMsgDisplay: Msg = { role: "user", content: displayContent };
+    const userMsgForAI: Msg = { role: "user", content: messageContent };
+
+    setMessages((prev) => [...prev, userMsgDisplay]);
     setInput("");
+    setAttachedFile(null);
     setIsLoading(true);
 
     let assistantSoFar = "";
@@ -167,9 +213,15 @@ const AIAssistant = () => {
       });
     };
 
+    // Build AI message history (use display for past messages, AI content for current)
+    const aiMessages = [
+      ...messages.map((m) => ({ role: m.role, content: m.content })),
+      userMsgForAI,
+    ];
+
     try {
       await streamChat({
-        messages: [...messages, userMsg],
+        messages: aiMessages,
         onDelta: (chunk) => upsertAssistant(chunk),
         onDone: () => setIsLoading(false),
         onError: (msg) => {
@@ -187,12 +239,13 @@ const AIAssistant = () => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      send(input);
+      send(input, attachedFile);
     }
   };
 
   const clearChat = () => {
     setMessages([]);
+    setAttachedFile(null);
   };
 
   return (
@@ -239,7 +292,7 @@ const AIAssistant = () => {
                   How can I help you today?
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  Describe your symptoms, share lab results, or ask for specialist recommendations.
+                  Tell me about your symptoms, upload a medical report, or ask for specialist recommendations.
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full max-w-lg">
@@ -331,32 +384,52 @@ const AIAssistant = () => {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              send(input);
+              send(input, attachedFile);
             }}
-            className="flex items-end gap-2"
+            className="flex flex-col gap-2"
           >
-            <Textarea
-              ref={textareaRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Describe your symptoms or paste lab results..."
-              className="flex-1 min-h-[44px] max-h-[120px] resize-none"
-              disabled={isLoading}
-              rows={1}
-            />
-            <Button
-              type="submit"
-              size="sm"
-              disabled={isLoading || !input.trim()}
-              className="shrink-0 h-11 w-11 p-0"
-            >
-              {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Send className="h-4 w-4" />
-              )}
-            </Button>
+            {attachedFile && (
+              <div className="flex items-center gap-2 rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground">
+                <FileUp className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">{attachedFile.name}</span>
+                <button
+                  type="button"
+                  onClick={() => setAttachedFile(null)}
+                  className="ml-auto shrink-0 hover:text-foreground text-muted-foreground"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
+            <div className="flex items-end gap-2">
+              <FileUploadButton
+                file={null}
+                onFileSelect={setAttachedFile}
+                disabled={isLoading}
+              />
+              <Textarea
+                ref={textareaRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Describe your symptoms or upload a report..."
+                className="flex-1 min-h-[44px] max-h-[120px] resize-none"
+                disabled={isLoading}
+                rows={1}
+              />
+              <Button
+                type="submit"
+                size="sm"
+                disabled={isLoading || (!input.trim() && !attachedFile)}
+                className="shrink-0 h-11 w-11 p-0"
+              >
+                {isLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
           </form>
         </div>
       </div>
