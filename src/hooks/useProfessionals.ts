@@ -56,7 +56,7 @@ export function useProfessional(id: string | undefined) {
     queryFn: async (): Promise<Professional | null> => {
       if (!id) return null;
       const { data, error } = await supabase
-        .from("professionals")
+        .from("professionals_public" as any)
         .select("*, services(name)")
         .eq("id", id)
         .maybeSingle();
