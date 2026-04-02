@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import raphaLogoIcon from "@/assets/rapha-logo-nav.png";
 
@@ -55,6 +55,13 @@ const Footer = () => {
                 Available nationwide
               </li>
             </ul>
+            <Link
+              to="/ai-assistant"
+              className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Talk to Support
+            </Link>
           </div>
         </div>
 

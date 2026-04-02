@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut, Download, MapPin } from "lucide-react";
+import { Menu, X, LogOut, Download, MapPin, ArrowLeft } from "lucide-react";
 import raphaLogoIcon from "@/assets/rapha-logo-nav.png";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -94,7 +94,7 @@ const Header = () => {
     { to: "/professionals", label: "Find Professionals" },
     { to: "/services", label: "Services" },
     { to: "/ai-assistant", label: "AI Assistant" },
-    { to: "/dashboard", label: "My Dashboard" },
+    ...(user ? [{ to: "/dashboard", label: "My Dashboard" }] : []),
     ...(isProfessional ? [{ to: "/provider-dashboard", label: "Provider Dashboard" }] : []),
     ...(isAdmin ? [{ to: "/admin", label: "Admin" }] : []),
   ];
@@ -102,12 +102,22 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-lg">
       <div className="container flex h-16 items-center justify-between">
-        <Link to="/home" className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
+          {location.pathname !== "/home" && (
+            <button
+              onClick={() => navigate(-1)}
+              className="flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+          )}
+          <Link to="/home" className="flex items-center gap-2">
           <img src={raphaLogoIcon} alt="Rapha Telehealth" className="h-9 w-9 object-contain" />
           <span className="font-display text-xl font-bold text-foreground">
             Rapha<span className="text-primary"> Telehealth</span>
           </span>
         </Link>
+        </div>
 
         <nav className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => (
