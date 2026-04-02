@@ -204,7 +204,7 @@ const AIAssistant = () => {
 
     const userMsg: Msg = { role: "user", content: displayContent, aiContent };
 
-    setMessages((prev) => [...prev, userMsgDisplay]);
+    setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setAttachedFile(null);
     setIsLoading(true);
@@ -223,10 +223,10 @@ const AIAssistant = () => {
       });
     };
 
-    // Build AI message history (use display for past messages, AI content for current)
+    // Build AI message history using aiContent (multimodal) when available
     const aiMessages = [
-      ...messages.map((m) => ({ role: m.role, content: m.content })),
-      userMsgForAI,
+      ...messages.map((m) => ({ role: m.role, content: m.aiContent || m.content })),
+      { role: userMsg.role, content: userMsg.aiContent || userMsg.content },
     ];
 
     try {
