@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Heart, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
+import raphaLogoNav from "@/assets/rapha-logo-nav.png";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -52,12 +53,7 @@ const ResetPassword = () => {
       <BackButton />
       <div className="w-full max-w-md">
         <div className="mb-8 flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-primary">
-            <Heart className="h-5 w-5 text-primary-foreground" />
-          </div>
-          <span className="font-display text-xl font-bold text-foreground">
-            Med<span className="text-primary">Home</span>
-          </span>
+          <img src={raphaLogoNav} alt="Rapha Telehealth" className="h-8" />
         </div>
 
         <h1 className="font-display text-2xl font-bold text-foreground">Set new password</h1>

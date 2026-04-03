@@ -12,7 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Heart, Mail, Lock, User, ArrowRight, Stethoscope, Briefcase, MapPin } from "lucide-react";
+import { Mail, Lock, User, ArrowRight, Stethoscope, Briefcase, MapPin } from "lucide-react";
+import raphaLogoNav from "@/assets/rapha-logo-nav.png";
 import { ZAMBIAN_CITIES } from "@/components/ProfessionalsFilter";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -115,12 +116,7 @@ const ProviderSignup = () => {
       <div className="flex flex-1 items-center justify-center p-6 overflow-y-auto">
         <div className="w-full max-w-md py-8">
           <Link to="/" className="mb-8 inline-flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-primary">
-              <Heart className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <span className="font-display text-xl font-bold text-foreground">
-              Med<span className="text-primary">Home</span>
-            </span>
+            <img src={raphaLogoNav} alt="Rapha Telehealth" className="h-8" />
           </Link>
 
           <h1 className="font-display text-2xl font-bold text-foreground">

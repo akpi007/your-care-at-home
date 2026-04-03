@@ -3,7 +3,8 @@ import BackButton from "@/components/BackButton";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
-import { Heart, ArrowLeft, Loader2, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Loader2, ShieldCheck } from "lucide-react";
+import raphaLogoNav from "@/assets/rapha-logo-nav.png";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import PageTransition from "@/components/PageTransition";
@@ -111,9 +112,7 @@ const VerifyOTP = () => {
 
         <div className="rounded-2xl border border-border bg-card shadow-xl p-8">
           <div className="flex flex-col items-center mb-8">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-3">
-              <ShieldCheck className="h-6 w-6 text-primary" />
-            </div>
+            <img src={raphaLogoNav} alt="Rapha Telehealth" className="h-10 mb-3" />
             <h1 className="font-display text-xl font-bold text-foreground">
               Verify your number
             </h1>

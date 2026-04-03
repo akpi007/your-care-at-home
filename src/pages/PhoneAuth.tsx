@@ -3,7 +3,8 @@ import BackButton from "@/components/BackButton";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, Phone, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
+import { Phone, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
+import raphaLogoNav from "@/assets/rapha-logo-nav.png";
 import { countryCodes, findCountryByIso, type CountryCode } from "@/data/countryCodes";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -82,9 +83,7 @@ const PhoneAuth = () => {
         <div className="rounded-2xl border border-border bg-card shadow-xl p-8">
           {/* Logo */}
           <div className="flex flex-col items-center mb-8">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl gradient-primary mb-3">
-              <Heart className="h-6 w-6 text-primary-foreground" />
-            </div>
+            <img src={raphaLogoNav} alt="Rapha Telehealth" className="h-10 mb-3" />
             <h1 className="font-display text-xl font-bold text-foreground">
               Enter your phone number
             </h1>
