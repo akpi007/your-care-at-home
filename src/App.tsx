@@ -54,7 +54,7 @@ const AnimatedRoutes = () => {
           <ProtectedRoute><PatientProfiles /></ProtectedRoute>
         } />
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup" element={<PhoneAuth />} />
         <Route path="/provider-signup" element={<ProviderSignup />} />
         <Route path="/provider-dashboard" element={
           <ProtectedRoute><ProviderDashboard /></ProtectedRoute>
