@@ -12,7 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Heart, Mail, Lock, User, ArrowRight, Stethoscope, Briefcase, MapPin } from "lucide-react";
+import { Mail, Lock, User, ArrowRight, Stethoscope, Briefcase, MapPin } from "lucide-react";
+import raphaLogoNav from "@/assets/rapha-logo-nav.png";
 import { ZAMBIAN_CITIES } from "@/components/ProfessionalsFilter";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
