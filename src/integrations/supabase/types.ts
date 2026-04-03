@@ -670,10 +670,7 @@ export type Database = {
           created_at: string | null
           display_name: string | null
           id: string | null
-          id_proof_url: string | null
           image_url: string | null
-          license_number: string | null
-          passport_photo_url: string | null
           rating: number | null
           service_id: string | null
           specialization: string | null
@@ -691,10 +688,7 @@ export type Database = {
           created_at?: string | null
           display_name?: string | null
           id?: string | null
-          id_proof_url?: never
           image_url?: string | null
-          license_number?: never
-          passport_photo_url?: never
           rating?: number | null
           service_id?: string | null
           specialization?: string | null
@@ -712,10 +706,7 @@ export type Database = {
           created_at?: string | null
           display_name?: string | null
           id?: string | null
-          id_proof_url?: never
           image_url?: string | null
-          license_number?: never
-          passport_photo_url?: never
           rating?: number | null
           service_id?: string | null
           specialization?: string | null
@@ -731,6 +722,55 @@ export type Database = {
             columns: ["service_id"]
             isOneToOne: false
             referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reviews_public: {
+        Row: {
+          booking_id: string | null
+          comment: string | null
+          created_at: string | null
+          id: string | null
+          professional_id: string | null
+          rating: number | null
+        }
+        Insert: {
+          booking_id?: string | null
+          comment?: string | null
+          created_at?: string | null
+          id?: string | null
+          professional_id?: string | null
+          rating?: number | null
+        }
+        Update: {
+          booking_id?: string | null
+          comment?: string | null
+          created_at?: string | null
+          id?: string | null
+          professional_id?: string | null
+          rating?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
             referencedColumns: ["id"]
           },
         ]
