@@ -66,7 +66,7 @@ const RoleSelect = () => {
               </button>
 
               <button
-                onClick={() => handleSelect("provider")}
+                onClick={() => navigate("/provider-signup")}
                 className="group w-full rounded-xl border border-white/10 bg-white/5 p-5 text-left transition-all hover:border-primary hover:bg-white/10 active:scale-[0.98]"
               >
                 <div className="flex items-center gap-4">
