@@ -68,7 +68,7 @@ const VerifyOTP = () => {
           .maybeSingle();
 
         if (profile?.full_name) {
-          navigate("/home", { replace: true });
+          navigate("/dashboard", { replace: true });
         } else {
           navigate("/onboarding/profile", { replace: true });
         }
