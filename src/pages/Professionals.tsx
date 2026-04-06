@@ -37,10 +37,10 @@ const Professionals = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<Filters>(defaultFilters);
-  const activeService = searchParams.get("service") || "all";
-
   const { data: professionals = [], isLoading } = useProfessionals();
   const { data: services = [] } = useServices();
+
+  const { position, loading: geoLoading, requestLocation } = useGeolocation();
 
   const filtered = useMemo(() => {
     return professionals.filter((p) => {
