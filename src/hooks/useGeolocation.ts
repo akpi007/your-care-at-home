@@ -23,7 +23,12 @@ export function useGeolocation() {
         setLoading(false);
       },
       (err) => {
-        setError(err.message);
+        const messages: Record<number, string> = {
+          1: "Location access denied. Please enable location in your browser settings and try again.",
+          2: "Unable to determine your location. Please try again.",
+          3: "Location request timed out. Please try again.",
+        };
+        setError(messages[err.code] || err.message);
         setLoading(false);
       },
       { enableHighAccuracy: true, timeout: 10000 }
