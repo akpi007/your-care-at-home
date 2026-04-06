@@ -84,6 +84,10 @@ const Professionals = () => {
             />
           </div>
           <ProfessionalsFilter filters={filters} onChange={setFilters} />
+          <Button variant="outline" size="sm" onClick={requestLocation} disabled={geoLoading || !!position}>
+            {geoLoading ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Navigation className="h-4 w-4 mr-1" />}
+            {position ? "Location On" : "Distance"}
+          </Button>
         </div>
 
         {/* Service tabs */}
@@ -121,9 +125,20 @@ const Professionals = () => {
           </div>
         ) : filtered.length > 0 ? (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((pro) => (
-              <ProfessionalCard key={pro.id} {...pro} />
-            ))}
+            {filtered.map((pro) => {
+              const cityKey = pro.city?.toLowerCase().trim();
+              const coords = cityKey ? CITY_COORDS[cityKey] : null;
+              const distKm = position && coords
+                ? getDistanceKm(position.latitude, position.longitude, coords.lat, coords.lng)
+                : null;
+              return (
+                <ProfessionalCard
+                  key={pro.id}
+                  {...pro}
+                  distance={distKm !== null ? `${distKm.toFixed(1)} km` : undefined}
+                />
+              );
+            })}
           </div>
         ) : (
           <div className="flex flex-col items-center py-16 text-center">
