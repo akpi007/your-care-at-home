@@ -513,28 +513,49 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address: string | null
+          allergies: string | null
           avatar_url: string | null
+          chronic_conditions: string | null
           created_at: string
+          date_of_birth: string | null
+          emergency_contact: string | null
           full_name: string | null
+          gender: string | null
           id: string
+          medical_history: string | null
           phone: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          address?: string | null
+          allergies?: string | null
           avatar_url?: string | null
+          chronic_conditions?: string | null
           created_at?: string
+          date_of_birth?: string | null
+          emergency_contact?: string | null
           full_name?: string | null
+          gender?: string | null
           id?: string
+          medical_history?: string | null
           phone?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          address?: string | null
+          allergies?: string | null
           avatar_url?: string | null
+          chronic_conditions?: string | null
           created_at?: string
+          date_of_birth?: string | null
+          emergency_contact?: string | null
           full_name?: string | null
+          gender?: string | null
           id?: string
+          medical_history?: string | null
           phone?: string | null
           updated_at?: string
           user_id?: string

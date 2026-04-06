@@ -5,19 +5,43 @@ import Footer from "@/components/Footer";
 import ProfessionalCard from "@/components/ProfessionalCard";
 import { useProfessionals } from "@/hooks/useProfessionals";
 import { useServices } from "@/hooks/useServices";
+import { useGeolocation } from "@/hooks/useGeolocation";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Search, Loader2, Navigation } from "lucide-react";
 import ProfessionalsFilter, { Filters, defaultFilters } from "@/components/ProfessionalsFilter";
+
+const CITY_COORDS: Record<string, { lat: number; lng: number }> = {
+  lagos: { lat: 6.5244, lng: 3.3792 },
+  abuja: { lat: 9.0579, lng: 7.4951 },
+  ibadan: { lat: 7.3775, lng: 3.947 },
+  kano: { lat: 12.0022, lng: 8.5919 },
+  "port harcourt": { lat: 4.8156, lng: 7.0498 },
+  benin: { lat: 6.335, lng: 5.6037 },
+  enugu: { lat: 6.4584, lng: 7.5464 },
+  kaduna: { lat: 10.5105, lng: 7.4165 },
+  accra: { lat: 5.6037, lng: -0.187 },
+  nairobi: { lat: -1.2921, lng: 36.8219 },
+};
+
+function getDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
 
 const Professionals = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const activeService = searchParams.get("service") || "all";
-
   const { data: professionals = [], isLoading } = useProfessionals();
   const { data: services = [] } = useServices();
+
+  const { position, loading: geoLoading, requestLocation } = useGeolocation();
 
   const filtered = useMemo(() => {
     return professionals.filter((p) => {
@@ -60,6 +84,10 @@ const Professionals = () => {
             />
           </div>
           <ProfessionalsFilter filters={filters} onChange={setFilters} />
+          <Button variant="outline" size="sm" onClick={requestLocation} disabled={geoLoading || !!position}>
+            {geoLoading ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Navigation className="h-4 w-4 mr-1" />}
+            {position ? "Location On" : "Distance"}
+          </Button>
         </div>
 
         {/* Service tabs */}
@@ -97,9 +125,20 @@ const Professionals = () => {
           </div>
         ) : filtered.length > 0 ? (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((pro) => (
-              <ProfessionalCard key={pro.id} {...pro} />
-            ))}
+            {filtered.map((pro) => {
+              const cityKey = pro.city?.toLowerCase().trim();
+              const coords = cityKey ? CITY_COORDS[cityKey] : null;
+              const distKm = position && coords
+                ? getDistanceKm(position.latitude, position.longitude, coords.lat, coords.lng)
+                : null;
+              return (
+                <ProfessionalCard
+                  key={pro.id}
+                  {...pro}
+                  distance={distKm !== null ? `${distKm.toFixed(1)} km` : undefined}
+                />
+              );
+            })}
           </div>
         ) : (
           <div className="flex flex-col items-center py-16 text-center">
