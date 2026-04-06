@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar, Clock, Star, User, FileText, MessageSquare, Loader2, MapPin, Settings } from "lucide-react";
+import BookingDetailDialog from "@/components/BookingDetailDialog";
 import { Link } from "react-router-dom";
 import { useBookings } from "@/hooks/useBookings";
 import BookingChat from "@/components/BookingChat";
@@ -24,6 +25,7 @@ const statusColors: Record<string, string> = {
 const Dashboard = () => {
   const { data: bookings = [], isLoading } = useBookings();
   const [chatBookingId, setChatBookingId] = useState<string | null>(null);
+  const [selectedBooking, setSelectedBooking] = useState<any>(null);
 
   const upcoming = bookings.filter((b) => ["pending", "confirmed"].includes(b.status));
   const past = bookings.filter((b) => ["completed", "cancelled"].includes(b.status));
@@ -96,7 +98,11 @@ const Dashboard = () => {
                   ) : (
                     <div className="space-y-3">
                       {upcoming.map((b: any) => (
-                        <div key={b.id} className="flex items-center gap-4 rounded-xl bg-card p-4 shadow-card">
+                        <div
+                          key={b.id}
+                          className="flex items-center gap-4 rounded-xl bg-card p-4 shadow-card cursor-pointer hover:shadow-card-hover hover:-translate-y-0.5 transition-all"
+                          onClick={() => setSelectedBooking(b)}
+                        >
                           <img
                             src={b.professionals?.image_url || "/placeholder.svg"}
                             alt={b.professionals?.display_name || "Professional"}
@@ -111,7 +117,7 @@ const Dashboard = () => {
                               <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{b.booking_time}</span>
                             </div>
                           </div>
-                          <Button variant="ghost" size="sm" onClick={() => setChatBookingId(b.id)}>
+                          <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); setChatBookingId(b.id); }}>
                             <MessageSquare className="h-4 w-4" />
                           </Button>
                           <Badge className={statusColors[b.status] || "bg-muted text-muted-foreground"}>{b.status}</Badge>
@@ -179,6 +185,13 @@ const Dashboard = () => {
       </div>
 
       <Footer />
+
+      {/* Booking detail dialog */}
+      <BookingDetailDialog
+        booking={selectedBooking}
+        open={!!selectedBooking}
+        onClose={() => setSelectedBooking(null)}
+      />
 
       {/* Chat modal */}
       <BookingChat
