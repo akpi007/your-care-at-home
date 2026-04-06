@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Star, MapPin, Clock, Award, DollarSign } from "lucide-react";
+import { Star, MapPin, Clock, Award, DollarSign, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -175,9 +175,16 @@ const ProfessionalCard = ({
             </span>
           </div>
 
-          <Button variant="hero" size="lg" className="w-full mt-2" asChild>
-            <Link to={`/book/${id}`}>Book Appointment</Link>
-          </Button>
+          <div className="flex gap-2 mt-2">
+            <Button variant="outline" size="lg" className="flex-1" asChild>
+              <Link to={`/book/${id}`} onClick={(e) => e.stopPropagation()}>
+                <MessageSquare className="h-4 w-4 mr-1" /> Chat
+              </Link>
+            </Button>
+            <Button variant="hero" size="lg" className="flex-1" asChild>
+              <Link to={`/book/${id}`}>Book Now</Link>
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </>
