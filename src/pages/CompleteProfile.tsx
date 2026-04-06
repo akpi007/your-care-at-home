@@ -116,7 +116,22 @@ const CompleteProfile = () => {
     }
 
     toast({ title: "Welcome to Rapha Telehealth!", description: "Your profile has been created successfully." });
-    navigate("/home", { replace: true });
+
+    // Redirect patients to dashboard, providers to their dashboard
+    if (role === "provider") {
+      navigate("/provider-dashboard", { replace: true });
+    } else {
+      navigate("/dashboard", { replace: true });
+    }
+
+    // Send welcome SMS in background
+    const phone = localStorage.getItem("medhome_otp_phone");
+    if (phone) {
+      supabase.functions.invoke("send-confirmation-sms", {
+        body: { phone, name: fullName.trim() },
+      }).catch(() => {}); // Fire and forget
+    }
+
     setSubmitting(false);
   };
 
