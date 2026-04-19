@@ -117,7 +117,7 @@ const RoleSelect = () => {
         {/* Right panel – hero image */}
         <div className="hidden lg:block lg:w-1/2 relative overflow-hidden">
           <img
-            src={heroDark}
+            src={worldMap}
             alt=""
             className="absolute inset-0 w-full h-full object-cover"
             width={960}
