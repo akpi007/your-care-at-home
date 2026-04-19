@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { User, Briefcase } from "lucide-react";
 import raphaLogoIcon from "@/assets/rapha-logo.png";
-import worldMap from "@/assets/world-map.jpg";
+import africaMap from "@/assets/africa-map.jpg";
 import PageTransition from "@/components/PageTransition";
 
 const RoleSelect = () => {
@@ -26,12 +26,12 @@ const RoleSelect = () => {
   return (
     <PageTransition>
       <div className="relative min-h-screen flex flex-col lg:flex-row bg-[hsl(220,20%,8%)]">
-        {/* Mobile background - faint world map */}
-        <div className="absolute inset-0 lg:hidden opacity-[0.08] pointer-events-none">
+        {/* Mobile background - faint Africa map */}
+        <div className="absolute inset-0 lg:hidden opacity-[0.12] pointer-events-none">
           <img
-            src={worldMap}
+            src={africaMap}
             alt=""
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
         </div>
 
