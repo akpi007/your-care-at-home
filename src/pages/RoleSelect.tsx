@@ -26,6 +26,15 @@ const RoleSelect = () => {
   return (
     <PageTransition>
       <div className="relative min-h-screen flex flex-col lg:flex-row bg-[hsl(220,20%,8%)]">
+        {/* Mobile background - faint world map */}
+        <div className="absolute inset-0 lg:hidden opacity-[0.08] pointer-events-none">
+          <img
+            src={worldMap}
+            alt=""
+            className="w-full h-full object-cover"
+          />
+        </div>
+
         {/* Left panel – role selection */}
         <div className="flex flex-1 items-center justify-center p-6 lg:p-12">
           <div className="w-full max-w-md">
