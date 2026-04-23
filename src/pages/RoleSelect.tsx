@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { User, Briefcase } from "lucide-react";
 import raphaLogoIcon from "@/assets/rapha-logo.png";
 import africaMap from "@/assets/africa-map.jpg";
+import worldMap from "@/assets/world-map.jpg";
 import PageTransition from "@/components/PageTransition";
 
 const RoleSelect = () => {
