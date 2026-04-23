@@ -18,8 +18,6 @@ const PhoneAuth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const role = localStorage.getItem("medhome_selected_role") || "user";
-
   // Auto-detect country from IP
   useEffect(() => {
     const detect = async () => {
@@ -49,13 +47,13 @@ const PhoneAuth = () => {
 
     setLoading(true);
     try {
-      const res = await supabase.functions.invoke("send-otp", {
-        body: { phone: fullPhone },
+      // Supabase native phone auth — sends OTP via configured Twilio provider
+      const { error } = await supabase.auth.signInWithOtp({
+        phone: fullPhone,
       });
 
-      if (res.error || res.data?.error) {
-        const msg = res.data?.error || res.error?.message || "Failed to send code";
-        toast({ title: "Failed to send code", description: msg, variant: "destructive" });
+      if (error) {
+        toast({ title: "Failed to send code", description: error.message, variant: "destructive" });
       } else {
         localStorage.setItem("medhome_otp_phone", fullPhone);
         toast({ title: "Code sent!", description: `We sent a verification code to ${fullPhone}` });
@@ -72,7 +70,6 @@ const PhoneAuth = () => {
     <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
       <BackButton />
       <div className="w-full max-w-md">
-        {/* Back */}
         <button
           onClick={() => navigate("/")}
           className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -81,7 +78,6 @@ const PhoneAuth = () => {
         </button>
 
         <div className="rounded-2xl border border-border bg-card shadow-xl p-8">
-          {/* Logo */}
           <div className="flex flex-col items-center mb-8">
             <img src={raphaLogoNav} alt="Rapha Telehealth" className="h-10 mb-3" />
             <h1 className="font-display text-xl font-bold text-foreground">
@@ -93,7 +89,6 @@ const PhoneAuth = () => {
           </div>
 
           <form onSubmit={handleSendOTP} className="space-y-5">
-            {/* Country selector */}
             <div className="space-y-1.5">
               <label className="text-sm font-medium text-foreground">Country</label>
               <select
@@ -117,7 +112,6 @@ const PhoneAuth = () => {
               )}
             </div>
 
-            {/* Phone number */}
             <div className="space-y-1.5">
               <label className="text-sm font-medium text-foreground">Phone Number</label>
               <div className="flex gap-2">
