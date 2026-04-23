@@ -3,7 +3,7 @@ import BackButton from "@/components/BackButton";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
-import { ArrowLeft, Loader2, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import raphaLogoNav from "@/assets/rapha-logo-nav.png";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -24,7 +24,6 @@ const VerifyOTP = () => {
     }
   }, [phone, navigate]);
 
-  // Countdown timer
   useEffect(() => {
     if (resendTimer <= 0) return;
     const t = setInterval(() => setResendTimer((p) => p - 1), 1000);
@@ -36,42 +35,34 @@ const VerifyOTP = () => {
     setLoading(true);
 
     try {
-      const res = await supabase.functions.invoke("verify-otp", {
-        body: { phone, code: otp },
+      // Supabase native phone OTP verification — establishes session automatically
+      const { data, error } = await supabase.auth.verifyOtp({
+        phone,
+        token: otp,
+        type: "sms",
       });
 
-      if (res.error || res.data?.error) {
-        const msg = res.data?.error || res.error?.message || "Verification failed";
-        toast({ title: "Verification failed", description: msg, variant: "destructive" });
+      if (error || !data.session) {
+        toast({
+          title: "Verification failed",
+          description: error?.message || "Invalid or expired code",
+          variant: "destructive",
+        });
         setLoading(false);
         return;
       }
 
-      const { session, isNewUser } = res.data;
+      // Check if profile already completed
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("full_name")
+        .eq("user_id", data.session.user.id)
+        .maybeSingle();
 
-      if (session) {
-        // Set the session in the client
-        await supabase.auth.setSession({
-          access_token: session.access_token,
-          refresh_token: session.refresh_token,
-        });
-      }
-
-      if (isNewUser) {
-        navigate("/onboarding/profile", { replace: true });
+      if (profile?.full_name) {
+        navigate("/dashboard", { replace: true });
       } else {
-        // Check if profile is completed
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("full_name")
-          .eq("user_id", session.user.id)
-          .maybeSingle();
-
-        if (profile?.full_name) {
-          navigate("/dashboard", { replace: true });
-        } else {
-          navigate("/onboarding/profile", { replace: true });
-        }
+        navigate("/onboarding/profile", { replace: true });
       }
     } catch (err: any) {
       toast({ title: "Verification failed", description: err.message, variant: "destructive" });
@@ -82,11 +73,9 @@ const VerifyOTP = () => {
 
   const handleResend = async () => {
     try {
-      const res = await supabase.functions.invoke("send-otp", {
-        body: { phone },
-      });
-      if (res.error || res.data?.error) {
-        toast({ title: "Resend failed", description: res.data?.error || "Failed", variant: "destructive" });
+      const { error } = await supabase.auth.signInWithOtp({ phone });
+      if (error) {
+        toast({ title: "Resend failed", description: error.message, variant: "destructive" });
       } else {
         toast({ title: "Code resent", description: "Check your phone for the new code" });
         setResendTimer(60);
