@@ -74,8 +74,8 @@ const ProviderBookingCard = ({ booking, showActions = false }: BookingCardProps)
             <Button variant="ghost" size="sm" onClick={() => setChatOpen(true)}>
               <MessageSquare className="h-4 w-4" />
             </Button>
-            <Badge className={statusColors[booking.status] ?? "bg-muted text-muted-foreground"}>
-              {booking.status}
+            <Badge className={BOOKING_STATUS_COLORS[booking.status as BookingStatus] ?? "bg-muted text-muted-foreground"}>
+              {BOOKING_STATUS_LABELS[booking.status as BookingStatus] ?? booking.status}
             </Badge>
           </div>
         </div>
@@ -113,6 +113,19 @@ const ProviderBookingCard = ({ booking, showActions = false }: BookingCardProps)
               className="text-destructive border-destructive/30 hover:bg-destructive/10"
             >
               <X className="h-4 w-4 mr-1" /> Reject
+            </Button>
+          </div>
+        )}
+        {showActions && NEXT_STATUS[booking.status] && (
+          <div className="flex items-center gap-2 mt-3">
+            <Button
+              size="sm"
+              variant="hero"
+              disabled={updating}
+              onClick={() => updateStatus(NEXT_STATUS[booking.status]!.next)}
+            >
+              {NEXT_STATUS[booking.status]!.label}
+              <ArrowRight className="h-4 w-4 ml-1" />
             </Button>
           </div>
         )}
