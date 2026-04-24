@@ -11,13 +11,12 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-
-const statusColors: Record<string, string> = {
-  confirmed: "bg-healthcare-soft-green text-healthcare-green",
-  pending: "bg-healthcare-warm text-amber-700",
-  completed: "bg-secondary text-secondary-foreground",
-  cancelled: "bg-destructive/10 text-destructive",
-};
+import BookingStatusTimeline from "@/components/BookingStatusTimeline";
+import {
+  BOOKING_STATUS_COLORS,
+  BOOKING_STATUS_LABELS,
+  type BookingStatus,
+} from "@/lib/bookingStatus";
 
 const timeSlots = Array.from({ length: 24 }, (_, i) => {
   const h = String(i).padStart(2, "0");
@@ -110,10 +109,19 @@ const BookingDetailDialog = ({ booking, open, onClose }: BookingDetailDialogProp
                 {booking.professionals?.specialization || booking.services?.name || "Service"}
               </p>
             </div>
-            <Badge className={cn("ml-auto", statusColors[booking.status] || "bg-muted text-muted-foreground")}>
-              {booking.status}
+            <Badge
+              className={cn(
+                "ml-auto",
+                BOOKING_STATUS_COLORS[booking.status as BookingStatus] ||
+                  "bg-muted text-muted-foreground"
+              )}
+            >
+              {BOOKING_STATUS_LABELS[booking.status as BookingStatus] || booking.status}
             </Badge>
           </div>
+
+          {/* Live status timeline */}
+          <BookingStatusTimeline status={booking.status} />
 
           {/* Date & Time */}
           {editing ? (
