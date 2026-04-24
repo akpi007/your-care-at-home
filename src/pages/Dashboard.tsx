@@ -15,6 +15,7 @@ import DashboardReports from "@/components/dashboard/DashboardReports";
 import DashboardMessages from "@/components/dashboard/DashboardMessages";
 import DashboardNearby from "@/components/dashboard/DashboardNearby";
 import BookingProgressBar from "@/components/BookingProgressBar";
+import PatientLiveTracking from "@/components/PatientLiveTracking";
 import {
   BOOKING_STATUS_COLORS,
   BOOKING_STATUS_SHORT_LABELS,
