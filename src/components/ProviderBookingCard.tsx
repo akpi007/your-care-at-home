@@ -1,18 +1,27 @@
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, Check, X, MessageSquare } from "lucide-react";
+import { Calendar, Clock, Check, X, MessageSquare, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import BookingChat from "@/components/BookingChat";
 import PatientLocationLink from "@/components/PatientLocationLink";
+import {
+  BOOKING_STATUS_COLORS,
+  BOOKING_STATUS_LABELS,
+  type BookingStatus,
+} from "@/lib/bookingStatus";
 
-const statusColors: Record<string, string> = {
-  confirmed: "bg-healthcare-soft-green text-healthcare-green",
-  pending: "bg-healthcare-warm text-amber-700",
-  completed: "bg-secondary text-secondary-foreground",
-  cancelled: "bg-destructive/10 text-destructive",
+// Next status in the patient-visible flow
+const NEXT_STATUS: Record<string, { next: BookingStatus; label: string } | null> = {
+  confirmed: { next: "assigned", label: "Mark as Assigned" },
+  assigned: { next: "on_the_way", label: "I'm On the Way" },
+  on_the_way: { next: "arrived", label: "Mark as Arrived" },
+  arrived: { next: "completed", label: "Complete Booking" },
+  completed: null,
+  cancelled: null,
+  pending: null,
 };
 
 interface BookingCardProps {
@@ -65,8 +74,8 @@ const ProviderBookingCard = ({ booking, showActions = false }: BookingCardProps)
             <Button variant="ghost" size="sm" onClick={() => setChatOpen(true)}>
               <MessageSquare className="h-4 w-4" />
             </Button>
-            <Badge className={statusColors[booking.status] ?? "bg-muted text-muted-foreground"}>
-              {booking.status}
+            <Badge className={BOOKING_STATUS_COLORS[booking.status as BookingStatus] ?? "bg-muted text-muted-foreground"}>
+              {BOOKING_STATUS_LABELS[booking.status as BookingStatus] ?? booking.status}
             </Badge>
           </div>
         </div>
@@ -104,6 +113,19 @@ const ProviderBookingCard = ({ booking, showActions = false }: BookingCardProps)
               className="text-destructive border-destructive/30 hover:bg-destructive/10"
             >
               <X className="h-4 w-4 mr-1" /> Reject
+            </Button>
+          </div>
+        )}
+        {showActions && NEXT_STATUS[booking.status] && (
+          <div className="flex items-center gap-2 mt-3">
+            <Button
+              size="sm"
+              variant="hero"
+              disabled={updating}
+              onClick={() => updateStatus(NEXT_STATUS[booking.status]!.next)}
+            >
+              {NEXT_STATUS[booking.status]!.label}
+              <ArrowRight className="h-4 w-4 ml-1" />
             </Button>
           </div>
         )}
