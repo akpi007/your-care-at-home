@@ -27,7 +27,9 @@ const Dashboard = () => {
   const [chatBookingId, setChatBookingId] = useState<string | null>(null);
   const [selectedBooking, setSelectedBooking] = useState<any>(null);
 
-  const upcoming = bookings.filter((b) => ["pending", "confirmed"].includes(b.status));
+  const upcoming = bookings.filter((b) =>
+    ["pending", "confirmed", "assigned", "on_the_way", "arrived"].includes(b.status)
+  );
   const past = bookings.filter((b) => ["completed", "cancelled"].includes(b.status));
 
   return (
@@ -100,27 +102,43 @@ const Dashboard = () => {
                       {upcoming.map((b: any) => (
                         <div
                           key={b.id}
-                          className="flex items-center gap-4 rounded-xl bg-card p-4 shadow-card cursor-pointer hover:shadow-card-hover hover:-translate-y-0.5 transition-all"
+                          className="rounded-xl bg-card p-4 shadow-card cursor-pointer hover:shadow-card-hover hover:-translate-y-0.5 transition-all"
                           onClick={() => setSelectedBooking(b)}
                         >
-                          <img
-                            src={b.professionals?.image_url || "/placeholder.svg"}
-                            alt={b.professionals?.display_name || "Professional"}
-                            className="h-12 w-12 rounded-xl object-cover"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-card-foreground truncate">
-                              {b.professionals?.display_name || "Professional"}
-                            </h4>
-                            <div className="flex items-center gap-3 text-sm text-muted-foreground mt-0.5">
-                              <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{b.booking_date}</span>
-                              <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{b.booking_time}</span>
+                          <div className="flex items-center gap-4">
+                            <img
+                              src={b.professionals?.image_url || "/placeholder.svg"}
+                              alt={b.professionals?.display_name || "Professional"}
+                              className="h-12 w-12 rounded-xl object-cover"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-card-foreground truncate">
+                                {b.professionals?.display_name || "Professional"}
+                              </h4>
+                              <div className="flex items-center gap-3 text-sm text-muted-foreground mt-0.5">
+                                <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{b.booking_date}</span>
+                                <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{b.booking_time}</span>
+                              </div>
                             </div>
+                            <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); setChatBookingId(b.id); }}>
+                              <MessageSquare className="h-4 w-4" />
+                            </Button>
+                            <Badge className={BOOKING_STATUS_COLORS[b.status as BookingStatus] || "bg-muted text-muted-foreground"}>
+                              {BOOKING_STATUS_SHORT_LABELS[b.status as BookingStatus] || b.status}
+                            </Badge>
                           </div>
-                          <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); setChatBookingId(b.id); }}>
-                            <MessageSquare className="h-4 w-4" />
-                          </Button>
-                          <Badge className={statusColors[b.status] || "bg-muted text-muted-foreground"}>{b.status}</Badge>
+                          <div className="mt-3" onClick={(e) => e.stopPropagation()}>
+                            <BookingProgressBar status={b.status} />
+                            {isActiveBooking(b.status) && (
+                              <div className="mt-3">
+                                <PatientLiveTracking
+                                  bookingId={b.id}
+                                  patientLat={b.latitude}
+                                  patientLng={b.longitude}
+                                />
+                              </div>
+                            )}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -149,7 +167,9 @@ const Dashboard = () => {
                               <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{b.booking_date}</span>
                             </div>
                           </div>
-                          <Badge className={statusColors[b.status] || "bg-muted text-muted-foreground"}>{b.status}</Badge>
+                          <Badge className={BOOKING_STATUS_COLORS[b.status as BookingStatus] || "bg-muted text-muted-foreground"}>
+                            {BOOKING_STATUS_SHORT_LABELS[b.status as BookingStatus] || b.status}
+                          </Badge>
                           <Button variant="outline" size="sm" asChild>
                             <Link to={`/book/${b.professional_id}`}>Rebook</Link>
                           </Button>
