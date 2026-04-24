@@ -12,6 +12,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import BookingStatusTimeline from "@/components/BookingStatusTimeline";
+import PatientLiveTracking from "@/components/PatientLiveTracking";
+import { isActiveBooking } from "@/lib/bookingStatus";
 import {
   BOOKING_STATUS_COLORS,
   BOOKING_STATUS_LABELS,
@@ -122,6 +124,15 @@ const BookingDetailDialog = ({ booking, open, onClose }: BookingDetailDialogProp
 
           {/* Live status timeline */}
           <BookingStatusTimeline status={booking.status} />
+
+          {/* Live GPS tracking when professional is en route */}
+          {isActiveBooking(booking.status) && (
+            <PatientLiveTracking
+              bookingId={booking.id}
+              patientLat={booking.latitude}
+              patientLng={booking.longitude}
+            />
+          )}
 
           {/* Date & Time */}
           {editing ? (

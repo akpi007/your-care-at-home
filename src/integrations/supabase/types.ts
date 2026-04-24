@@ -77,6 +77,36 @@ export type Database = {
           },
         ]
       }
+      booking_locations: {
+        Row: {
+          accuracy: number | null
+          booking_id: string
+          is_sharing: boolean
+          latitude: number
+          longitude: number
+          professional_id: string
+          updated_at: string
+        }
+        Insert: {
+          accuracy?: number | null
+          booking_id: string
+          is_sharing?: boolean
+          latitude: number
+          longitude: number
+          professional_id: string
+          updated_at?: string
+        }
+        Update: {
+          accuracy?: number | null
+          booking_id?: string
+          is_sharing?: boolean
+          latitude?: number
+          longitude?: number
+          professional_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           address: string | null

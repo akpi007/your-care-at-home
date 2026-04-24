@@ -7,9 +7,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import BookingChat from "@/components/BookingChat";
 import PatientLocationLink from "@/components/PatientLocationLink";
+import ProviderLiveLocationToggle from "@/components/ProviderLiveLocationToggle";
 import {
   BOOKING_STATUS_COLORS,
   BOOKING_STATUS_LABELS,
+  isActiveBooking,
   type BookingStatus,
 } from "@/lib/bookingStatus";
 
@@ -27,6 +29,7 @@ const NEXT_STATUS: Record<string, { next: BookingStatus; label: string } | null>
 interface BookingCardProps {
   booking: {
     id: string;
+    professionalId: string;
     bookingDate: string;
     bookingTime: string;
     status: string;
@@ -127,6 +130,14 @@ const ProviderBookingCard = ({ booking, showActions = false }: BookingCardProps)
               {NEXT_STATUS[booking.status]!.label}
               <ArrowRight className="h-4 w-4 ml-1" />
             </Button>
+          </div>
+        )}
+        {showActions && isActiveBooking(booking.status) && (
+          <div className="mt-3">
+            <ProviderLiveLocationToggle
+              bookingId={booking.id}
+              professionalId={booking.professionalId}
+            />
           </div>
         )}
       </div>
