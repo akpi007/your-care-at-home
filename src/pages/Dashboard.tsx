@@ -14,13 +14,13 @@ import DashboardProfile from "@/components/dashboard/DashboardProfile";
 import DashboardReports from "@/components/dashboard/DashboardReports";
 import DashboardMessages from "@/components/dashboard/DashboardMessages";
 import DashboardNearby from "@/components/dashboard/DashboardNearby";
-
-const statusColors: Record<string, string> = {
-  confirmed: "bg-healthcare-soft-green text-healthcare-green",
-  pending: "bg-healthcare-warm text-amber-700",
-  completed: "bg-secondary text-secondary-foreground",
-  cancelled: "bg-destructive/10 text-destructive",
-};
+import BookingProgressBar from "@/components/BookingProgressBar";
+import {
+  BOOKING_STATUS_COLORS,
+  BOOKING_STATUS_SHORT_LABELS,
+  isActiveBooking,
+  type BookingStatus,
+} from "@/lib/bookingStatus";
 
 const Dashboard = () => {
   const { data: bookings = [], isLoading } = useBookings();
