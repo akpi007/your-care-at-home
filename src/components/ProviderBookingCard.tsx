@@ -132,6 +132,14 @@ const ProviderBookingCard = ({ booking, showActions = false }: BookingCardProps)
             </Button>
           </div>
         )}
+        {showActions && isActiveBooking(booking.status) && (
+          <div className="mt-3">
+            <ProviderLiveLocationToggle
+              bookingId={booking.id}
+              professionalId={booking.professionalId}
+            />
+          </div>
+        )}
       </div>
 
       <BookingChat
