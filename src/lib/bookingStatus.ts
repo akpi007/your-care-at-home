@@ -28,6 +28,16 @@ export const BOOKING_STATUS_LABELS: Record<BookingStatus, string> = {
   cancelled: "Cancelled",
 };
 
+export const BOOKING_STATUS_SHORT_LABELS: Record<BookingStatus, string> = {
+  pending: "Pending",
+  confirmed: "Confirmed",
+  assigned: "Assigned",
+  on_the_way: "On the way",
+  arrived: "Arrived",
+  completed: "Completed",
+  cancelled: "Cancelled",
+};
+
 export const BOOKING_STATUS_ICONS: Record<BookingStatus, typeof CheckCircle2> = {
   pending: Clock,
   confirmed: CheckCircle2,
@@ -50,4 +60,9 @@ export const BOOKING_STATUS_COLORS: Record<BookingStatus, string> = {
 
 export function getStatusIndex(status: string): number {
   return BOOKING_STATUS_FLOW.indexOf(status as BookingStatus);
+}
+
+// Active = booking is in-flight and patient should see live tracking option
+export function isActiveBooking(status: string): boolean {
+  return ["assigned", "on_the_way", "arrived"].includes(status);
 }
