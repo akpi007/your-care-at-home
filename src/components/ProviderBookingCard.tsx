@@ -1,18 +1,27 @@
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, Check, X, MessageSquare } from "lucide-react";
+import { Calendar, Clock, Check, X, MessageSquare, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import BookingChat from "@/components/BookingChat";
 import PatientLocationLink from "@/components/PatientLocationLink";
+import {
+  BOOKING_STATUS_COLORS,
+  BOOKING_STATUS_LABELS,
+  type BookingStatus,
+} from "@/lib/bookingStatus";
 
-const statusColors: Record<string, string> = {
-  confirmed: "bg-healthcare-soft-green text-healthcare-green",
-  pending: "bg-healthcare-warm text-amber-700",
-  completed: "bg-secondary text-secondary-foreground",
-  cancelled: "bg-destructive/10 text-destructive",
+// Next status in the patient-visible flow
+const NEXT_STATUS: Record<string, { next: BookingStatus; label: string } | null> = {
+  confirmed: { next: "assigned", label: "Mark as Assigned" },
+  assigned: { next: "on_the_way", label: "I'm On the Way" },
+  on_the_way: { next: "arrived", label: "Mark as Arrived" },
+  arrived: { next: "completed", label: "Complete Booking" },
+  completed: null,
+  cancelled: null,
+  pending: null,
 };
 
 interface BookingCardProps {
