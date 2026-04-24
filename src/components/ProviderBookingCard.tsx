@@ -7,9 +7,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import BookingChat from "@/components/BookingChat";
 import PatientLocationLink from "@/components/PatientLocationLink";
+import ProviderLiveLocationToggle from "@/components/ProviderLiveLocationToggle";
 import {
   BOOKING_STATUS_COLORS,
   BOOKING_STATUS_LABELS,
+  isActiveBooking,
   type BookingStatus,
 } from "@/lib/bookingStatus";
 
