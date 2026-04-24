@@ -21,6 +21,7 @@ export interface ProviderProfile {
 
 export interface ProviderBooking {
   id: string;
+  professionalId: string;
   bookingDate: string;
   bookingTime: string;
   status: string;
@@ -96,6 +97,7 @@ export function useProviderBookings() {
 
       return (data ?? []).map((b: any) => ({
         id: b.id,
+        professionalId: b.professional_id,
         bookingDate: b.booking_date,
         bookingTime: b.booking_time,
         status: b.status,

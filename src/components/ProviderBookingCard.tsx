@@ -29,6 +29,7 @@ const NEXT_STATUS: Record<string, { next: BookingStatus; label: string } | null>
 interface BookingCardProps {
   booking: {
     id: string;
+    professionalId: string;
     bookingDate: string;
     bookingTime: string;
     status: string;
