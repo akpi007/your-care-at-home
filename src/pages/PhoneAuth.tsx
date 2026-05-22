@@ -47,13 +47,10 @@ const PhoneAuth = () => {
 
     setLoading(true);
     try {
-      // Supabase native phone auth — sends OTP via configured Twilio provider
-      const { error } = await supabase.auth.signInWithOtp({
-        phone: fullPhone,
-      });
-
-      if (error) {
-        toast({ title: "Failed to send code", description: error.message, variant: "destructive" });
+      const res = await supabase.functions.invoke("send-otp", { body: { phone: fullPhone } });
+      const errMsg = res.data?.error || res.error?.message;
+      if (errMsg) {
+        toast({ title: "Failed to send code", description: errMsg, variant: "destructive" });
       } else {
         localStorage.setItem("medhome_otp_phone", fullPhone);
         toast({ title: "Code sent!", description: `We sent a verification code to ${fullPhone}` });

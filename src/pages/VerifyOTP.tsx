@@ -35,17 +35,28 @@ const VerifyOTP = () => {
     setLoading(true);
 
     try {
-      // Supabase native phone OTP verification — establishes session automatically
-      const { data, error } = await supabase.auth.verifyOtp({
-        phone,
-        token: otp,
-        type: "sms",
-      });
-
-      if (error || !data.session) {
+      const res = await supabase.functions.invoke("verify-otp", { body: { phone, code: otp } });
+      const errMsg = res.data?.error || res.error?.message;
+      if (errMsg || !res.data?.password) {
         toast({
           title: "Verification failed",
-          description: error?.message || "Invalid or expired code",
+          description: errMsg || "Invalid or expired code",
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+
+      const { phone: normalizedPhone, password } = res.data;
+      const { data: signIn, error: signInErr } = await supabase.auth.signInWithPassword({
+        phone: normalizedPhone,
+        password,
+      });
+
+      if (signInErr || !signIn.session) {
+        toast({
+          title: "Sign-in failed",
+          description: signInErr?.message || "Could not establish session",
           variant: "destructive",
         });
         setLoading(false);
@@ -56,7 +67,7 @@ const VerifyOTP = () => {
       const { data: profile } = await supabase
         .from("profiles")
         .select("full_name")
-        .eq("user_id", data.session.user.id)
+        .eq("user_id", signIn.session.user.id)
         .maybeSingle();
 
       if (profile?.full_name) {
@@ -73,9 +84,10 @@ const VerifyOTP = () => {
 
   const handleResend = async () => {
     try {
-      const { error } = await supabase.auth.signInWithOtp({ phone });
-      if (error) {
-        toast({ title: "Resend failed", description: error.message, variant: "destructive" });
+      const res = await supabase.functions.invoke("send-otp", { body: { phone } });
+      const errMsg = res.data?.error || res.error?.message;
+      if (errMsg) {
+        toast({ title: "Resend failed", description: errMsg, variant: "destructive" });
       } else {
         toast({ title: "Code resent", description: "Check your phone for the new code" });
         setResendTimer(60);
