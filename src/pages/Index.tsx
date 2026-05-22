@@ -19,6 +19,9 @@ import {
   Search,
   Loader2,
   Download,
+  Baby,
+  Brain,
+  Smile,
 } from "lucide-react";
 
 const serviceCards = [
@@ -27,6 +30,10 @@ const serviceCards = [
   { icon: Activity, title: "Physiotherapy", description: "Rehab & therapy", href: "/professionals?service=physio", color: "bg-accent text-accent-foreground" },
   { icon: Heart, title: "Caregivers", description: "Daily care support", href: "/professionals?service=caregiver", color: "bg-healthcare-warm text-amber-600" },
   { icon: FlaskConical, title: "Lab Tests", description: "Home diagnostics", href: "/professionals?service=lab", color: "bg-secondary text-secondary-foreground" },
+  { icon: Baby, title: "Midwife", description: "Pregnancy & birth care", href: "/professionals?service=midwife", color: "bg-healthcare-soft-green text-healthcare-green" },
+  { icon: Stethoscope, title: "Paediatrician", description: "Child specialist", href: "/professionals?service=paediatrician", color: "bg-healthcare-soft-blue text-healthcare-blue" },
+  { icon: Brain, title: "Psychiatrist", description: "Mental health care", href: "/professionals?service=psychiatrist", color: "bg-accent text-accent-foreground" },
+  { icon: Smile, title: "Dentist", description: "Oral & dental care", href: "/professionals?service=dentist", color: "bg-healthcare-warm text-amber-600" },
 ];
 
 const steps = [

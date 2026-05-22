@@ -167,7 +167,7 @@ const ProviderLiveLocationToggle = ({
         <div className="relative">
           <MapPin className="h-4 w-4 text-primary" />
           {sharing && (
-            <Radio className="absolute -top-1 -right-1 h-2.5 w-2.5 text-primary animate-pulse" />
+            <Radio className="absolute -top-1 -right-1 h-2.5 w-2.5 text-primary" />
           )}
         </div>
         <div className="min-w-0">
