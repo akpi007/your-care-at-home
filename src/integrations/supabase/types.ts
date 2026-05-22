@@ -317,27 +317,33 @@ export type Database = {
       }
       otp_codes: {
         Row: {
+          attempts: number
           code: string
           created_at: string | null
           expires_at: string
           id: string
           phone: string
+          used: boolean
           verified: boolean | null
         }
         Insert: {
+          attempts?: number
           code: string
           created_at?: string | null
           expires_at: string
           id?: string
           phone: string
+          used?: boolean
           verified?: boolean | null
         }
         Update: {
+          attempts?: number
           code?: string
           created_at?: string | null
           expires_at?: string
           id?: string
           phone?: string
+          used?: boolean
           verified?: boolean | null
         }
         Relationships: []
