@@ -57,7 +57,7 @@ const PatientLiveTracking = ({ bookingId, patientLat, patientLng }: PatientLiveT
   return (
     <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 space-y-2">
       <div className="flex items-center gap-2">
-        <Radio className="h-4 w-4 text-primary animate-pulse" />
+        <Radio className="h-4 w-4 text-primary" />
         <span className="text-sm font-medium text-foreground">Live location active</span>
       </div>
       <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
