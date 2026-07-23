@@ -91,5 +91,25 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
     "vitest": "^3.2.4"
+  },
+  "overrides": {
+    "fast-uri": "^3.1.1",
+    "ajv": "^8.17.1",
+    "picomatch": "^4.0.4",
+    "minimatch": "^10.2.6",
+    "brace-expansion": "^2.0.3",
+    "glob": "^11.1.1",
+    "serialize-javascript": "^7.0.8",
+    "@babel/plugin-transform-modules-systemjs": "^7.29.1"
+  },
+  "resolutions": {
+    "fast-uri": "^3.1.1",
+    "ajv": "^8.17.1",
+    "picomatch": "^4.0.4",
+    "minimatch": "^10.2.6",
+    "brace-expansion": "^2.0.3",
+    "glob": "^11.1.1",
+    "serialize-javascript": "^7.0.8",
+    "@babel/plugin-transform-modules-systemjs": "^7.29.1"
   }
 }
