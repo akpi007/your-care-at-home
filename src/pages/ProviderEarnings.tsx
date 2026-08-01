@@ -12,10 +12,12 @@ import {
   Loader2,
   ArrowLeft,
   Percent,
+  Download,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useProviderEarningsDetails } from "@/hooks/useProviderEarningsDetails";
+import { downloadCsv } from "@/lib/csv";
 import ProviderPayoutPanel from "@/components/ProviderPayoutPanel";
 import {
   ChartContainer,
@@ -72,6 +74,15 @@ const ProviderEarnings = () => {
             <Button variant="ghost" size="icon"><ArrowLeft className="h-5 w-5" /></Button>
           </Link>
           <h1 className="font-display text-2xl font-bold text-foreground">Earnings Dashboard</h1>
+          <Button
+            variant="outline"
+            size="sm"
+            className="ml-auto"
+            disabled={records.length === 0}
+            onClick={() => downloadCsv("earnings.csv", records as unknown as Record<string, unknown>[])}
+          >
+            <Download className="h-4 w-4" /> Export CSV
+          </Button>
         </div>
 
         {/* Summary cards */}
