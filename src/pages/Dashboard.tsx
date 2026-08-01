@@ -4,7 +4,11 @@ import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, Clock, Star, User, FileText, MessageSquare, Loader2, MapPin, Heart, ShieldAlert } from "lucide-react";
+import { Calendar, Clock, Star, User, FileText, MessageSquare, Loader2, MapPin, Heart, ShieldAlert, Gift, Repeat } from "lucide-react";
+import DashboardReferrals from "@/components/dashboard/DashboardReferrals";
+import DashboardRecurring from "@/components/dashboard/DashboardRecurring";
+import SOSButton from "@/components/SOSButton";
+
 import BookingDetailDialog from "@/components/BookingDetailDialog";
 import { Link } from "react-router-dom";
 import { useBookings } from "@/hooks/useBookings";
