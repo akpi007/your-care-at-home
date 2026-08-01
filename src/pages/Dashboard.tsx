@@ -78,10 +78,17 @@ const Dashboard = () => {
             <TabsTrigger value="disputes" className="gap-1.5">
               <ShieldAlert className="h-4 w-4" /> Issues
             </TabsTrigger>
+            <TabsTrigger value="recurring" className="gap-1.5">
+              <Repeat className="h-4 w-4" /> Recurring
+            </TabsTrigger>
+            <TabsTrigger value="referrals" className="gap-1.5">
+              <Gift className="h-4 w-4" /> Invite
+            </TabsTrigger>
             <TabsTrigger value="profile" className="gap-1.5">
               <User className="h-4 w-4" /> Profile
             </TabsTrigger>
           </TabsList>
+
 
           {/* Bookings Tab */}
           <TabsContent value="bookings">
