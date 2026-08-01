@@ -726,6 +726,63 @@ export type Database = {
           },
         ]
       }
+      professional_documents: {
+        Row: {
+          created_at: string
+          doc_type: string
+          document_url: string | null
+          expires_at: string | null
+          id: string
+          note: string | null
+          professional_id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          doc_type: string
+          document_url?: string | null
+          expires_at?: string | null
+          id?: string
+          note?: string | null
+          professional_id: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          doc_type?: string
+          document_url?: string | null
+          expires_at?: string | null
+          id?: string
+          note?: string | null
+          professional_id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_documents_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "professional_documents_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       professionals: {
         Row: {
           available: boolean | null
@@ -737,6 +794,8 @@ export type Database = {
           id: string
           id_proof_url: string | null
           image_url: string | null
+          intro_video_url: string | null
+          licence_expiry: string | null
           license_number: string | null
           passport_photo_url: string | null
           rating: number | null
@@ -758,6 +817,8 @@ export type Database = {
           id?: string
           id_proof_url?: string | null
           image_url?: string | null
+          intro_video_url?: string | null
+          licence_expiry?: string | null
           license_number?: string | null
           passport_photo_url?: string | null
           rating?: number | null
@@ -779,6 +840,8 @@ export type Database = {
           id?: string
           id_proof_url?: string | null
           image_url?: string | null
+          intro_video_url?: string | null
+          licence_expiry?: string | null
           license_number?: string | null
           passport_photo_url?: string | null
           rating?: number | null
@@ -814,6 +877,8 @@ export type Database = {
           id: string
           medical_history: string | null
           phone: string | null
+          referral_code: string | null
+          referred_by: string | null
           updated_at: string
           user_id: string
         }
@@ -830,6 +895,8 @@ export type Database = {
           id?: string
           medical_history?: string | null
           phone?: string | null
+          referral_code?: string | null
+          referred_by?: string | null
           updated_at?: string
           user_id: string
         }
@@ -846,6 +913,8 @@ export type Database = {
           id?: string
           medical_history?: string | null
           phone?: string | null
+          referral_code?: string | null
+          referred_by?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -878,6 +947,122 @@ export type Database = {
         }
         Relationships: []
       }
+      recurring_bookings: {
+        Row: {
+          active: boolean
+          address: string | null
+          booking_time: string
+          created_at: string
+          day_of_week: number
+          end_date: string | null
+          frequency: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          notes: string | null
+          patient_profile_id: string
+          professional_id: string
+          service_id: string | null
+          start_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          address?: string | null
+          booking_time: string
+          created_at?: string
+          day_of_week: number
+          end_date?: string | null
+          frequency: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          notes?: string | null
+          patient_profile_id: string
+          professional_id: string
+          service_id?: string | null
+          start_date: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          address?: string | null
+          booking_time?: string
+          created_at?: string
+          day_of_week?: number
+          end_date?: string | null
+          frequency?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          notes?: string | null
+          patient_profile_id?: string
+          professional_id?: string
+          service_id?: string | null
+          start_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recurring_bookings_patient_profile_id_fkey"
+            columns: ["patient_profile_id"]
+            isOneToOne: false
+            referencedRelation: "patient_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recurring_bookings_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recurring_bookings_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recurring_bookings_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      referrals: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          referred_user_id: string
+          referrer_user_id: string
+          status: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          referred_user_id: string
+          referrer_user_id: string
+          status?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          referred_user_id?: string
+          referrer_user_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
       reviews: {
         Row: {
           booking_id: string
@@ -886,7 +1071,9 @@ export type Database = {
           id: string
           patient_id: string
           professional_id: string
+          provider_response: string | null
           rating: number
+          responded_at: string | null
         }
         Insert: {
           booking_id: string
@@ -895,7 +1082,9 @@ export type Database = {
           id?: string
           patient_id: string
           professional_id: string
+          provider_response?: string | null
           rating: number
+          responded_at?: string | null
         }
         Update: {
           booking_id?: string
@@ -904,7 +1093,9 @@ export type Database = {
           id?: string
           patient_id?: string
           professional_id?: string
+          provider_response?: string | null
           rating?: number
+          responded_at?: string | null
         }
         Relationships: [
           {
@@ -950,6 +1141,56 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      sos_alerts: {
+        Row: {
+          booking_id: string | null
+          created_at: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          note: string | null
+          raised_role: string
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          booking_id?: string | null
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          note?: string | null
+          raised_role?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          booking_id?: string | null
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          note?: string | null
+          raised_role?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sos_alerts_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_blocks: {
         Row: {
@@ -1039,6 +1280,61 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      visit_verifications: {
+        Row: {
+          booking_id: string
+          created_at: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          phase: string
+          photo_url: string | null
+          professional_id: string
+        }
+        Insert: {
+          booking_id: string
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          phase: string
+          photo_url?: string | null
+          professional_id: string
+        }
+        Update: {
+          booking_id?: string
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          phase?: string
+          photo_url?: string | null
+          professional_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visit_verifications_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visit_verifications_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visit_verifications_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals_public"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -1166,6 +1462,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      send_booking_reminders: { Args: never; Returns: undefined }
+      send_licence_expiry_reminders: { Args: never; Returns: undefined }
     }
     Enums: {
       app_role: "patient" | "professional" | "admin"

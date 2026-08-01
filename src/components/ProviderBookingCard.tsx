@@ -8,6 +8,9 @@ import { useToast } from "@/hooks/use-toast";
 import BookingChat from "@/components/BookingChat";
 import PatientLocationLink from "@/components/PatientLocationLink";
 import ProviderLiveLocationToggle from "@/components/ProviderLiveLocationToggle";
+import VisitVerificationPanel from "@/components/VisitVerificationPanel";
+import SOSButton from "@/components/SOSButton";
+import { notifyBooking, type BookingSmsEvent } from "@/lib/notifyBooking";
 import {
   BOOKING_STATUS_COLORS,
   BOOKING_STATUS_LABELS,
@@ -61,6 +64,7 @@ const ProviderBookingCard = ({ booking, showActions = false }: BookingCardProps)
     } else {
       queryClient.invalidateQueries({ queryKey: ["provider-bookings"] });
       toast({ title: `Booking ${newStatus}` });
+      void notifyBooking(booking.id, newStatus as BookingSmsEvent);
     }
     setUpdating(false);
   };
@@ -133,11 +137,16 @@ const ProviderBookingCard = ({ booking, showActions = false }: BookingCardProps)
           </div>
         )}
         {showActions && isActiveBooking(booking.status) && (
-          <div className="mt-3">
+          <div className="mt-3 space-y-3">
             <ProviderLiveLocationToggle
               bookingId={booking.id}
               professionalId={booking.professionalId}
             />
+            <VisitVerificationPanel
+              bookingId={booking.id}
+              professionalId={booking.professionalId}
+            />
+            <SOSButton bookingId={booking.id} role="professional" />
           </div>
         )}
       </div>

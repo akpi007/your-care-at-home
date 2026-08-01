@@ -4,7 +4,11 @@ import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, Clock, Star, User, FileText, MessageSquare, Loader2, MapPin, Heart, ShieldAlert } from "lucide-react";
+import { Calendar, Clock, Star, User, FileText, MessageSquare, Loader2, MapPin, Heart, ShieldAlert, Gift, Repeat } from "lucide-react";
+import DashboardReferrals from "@/components/dashboard/DashboardReferrals";
+import DashboardRecurring from "@/components/dashboard/DashboardRecurring";
+import SOSButton from "@/components/SOSButton";
+
 import BookingDetailDialog from "@/components/BookingDetailDialog";
 import { Link } from "react-router-dom";
 import { useBookings } from "@/hooks/useBookings";
@@ -74,10 +78,17 @@ const Dashboard = () => {
             <TabsTrigger value="disputes" className="gap-1.5">
               <ShieldAlert className="h-4 w-4" /> Issues
             </TabsTrigger>
+            <TabsTrigger value="recurring" className="gap-1.5">
+              <Repeat className="h-4 w-4" /> Recurring
+            </TabsTrigger>
+            <TabsTrigger value="referrals" className="gap-1.5">
+              <Gift className="h-4 w-4" /> Invite
+            </TabsTrigger>
             <TabsTrigger value="profile" className="gap-1.5">
               <User className="h-4 w-4" /> Profile
             </TabsTrigger>
           </TabsList>
+
 
           {/* Bookings Tab */}
           <TabsContent value="bookings">
@@ -144,14 +155,16 @@ const Dashboard = () => {
                           <div className="mt-3" onClick={(e) => e.stopPropagation()}>
                             <BookingProgressBar status={b.status} />
                             {isActiveBooking(b.status) && (
-                              <div className="mt-3">
+                              <div className="mt-3 space-y-3">
                                 <PatientLiveTracking
                                   bookingId={b.id}
                                   patientLat={b.latitude}
                                   patientLng={b.longitude}
                                 />
+                                <SOSButton bookingId={b.id} role="patient" />
                               </div>
                             )}
+
                           </div>
                         </div>
                       ))}
@@ -239,10 +252,21 @@ const Dashboard = () => {
             <DashboardDisputes />
           </TabsContent>
 
+          {/* Recurring Tab */}
+          <TabsContent value="recurring">
+            <DashboardRecurring />
+          </TabsContent>
+
+          {/* Referrals Tab */}
+          <TabsContent value="referrals">
+            <DashboardReferrals />
+          </TabsContent>
+
           {/* Profile Tab */}
           <TabsContent value="profile">
             <DashboardProfile />
           </TabsContent>
+
         </Tabs>
       </div>
 

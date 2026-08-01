@@ -15,10 +15,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { locationData } from "@/data/locationData";
 import { medicalSpecializations } from "@/data/specializations";
+import { useApplyReferralCode } from "@/hooks/useReferrals";
 
 const CompleteProfile = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const applyReferral = useApplyReferralCode();
   const { toast } = useToast();
 
   const role = localStorage.getItem("medhome_selected_role") || "user";
@@ -113,6 +115,16 @@ const CompleteProfile = () => {
         setSubmitting(false);
         return;
       }
+    }
+
+    const pendingRef = localStorage.getItem("rapha_referral_code");
+    if (pendingRef) {
+      try {
+        await applyReferral.mutateAsync(pendingRef);
+      } catch {
+        // ignore invalid/expired referral codes during onboarding
+      }
+      localStorage.removeItem("rapha_referral_code");
     }
 
     toast({ title: "Welcome to Rapha Telehealth!", description: "Your profile has been created successfully." });

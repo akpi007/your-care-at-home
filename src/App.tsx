@@ -29,9 +29,13 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+import ServiceCityLanding from "./pages/ServiceCityLanding";
+import CareDirectory from "./pages/CareDirectory";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { installErrorLogging } from "@/lib/errorLogger";
+import { trackPageView } from "@/lib/analytics";
+import { useEffect } from "react";
 
 installErrorLogging();
 
@@ -39,9 +43,21 @@ const queryClient = new QueryClient();
 
 const AnimatedRoutes = () => {
   const location = useLocation();
+
+  useEffect(() => {
+    const ref = new URLSearchParams(location.search).get("ref");
+    if (ref) localStorage.setItem("rapha_referral_code", ref);
+  }, [location.search]);
+
+
+  useEffect(() => {
+    trackPageView(location.pathname + location.search);
+  }, [location.pathname, location.search]);
+
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
+
         {/* Onboarding flow */}
         <Route path="/" element={<RoleSelect />} />
         <Route path="/onboarding/phone" element={<PhoneAuth />} />
@@ -80,7 +96,10 @@ const AnimatedRoutes = () => {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/about" element={<About />} />
+        <Route path="/care" element={<CareDirectory />} />
+        <Route path="/care/:service/:city" element={<ServiceCityLanding />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+
 
         <Route path="*" element={<NotFound />} />
       </Routes>

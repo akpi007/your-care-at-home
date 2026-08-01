@@ -19,6 +19,10 @@ import AdminReportList from "@/components/AdminReportList";
 import AdminPayoutList from "@/components/AdminPayoutList";
 import AdminAnalytics from "@/components/AdminAnalytics";
 import AdminErrorLogs from "@/components/AdminErrorLogs";
+import AdminProviderDocuments from "@/components/AdminProviderDocuments";
+import AdminSosAlerts from "@/components/AdminSosAlerts";
+import AdminSupportMode from "@/components/AdminSupportMode";
+import AdminBulkProviderImport from "@/components/AdminBulkProviderImport";
 
 const AdminPanel = () => {
   const { data: isAdmin, isLoading: adminLoading } = useIsAdmin();
@@ -108,6 +112,10 @@ const AdminPanel = () => {
               <TabsTrigger value="reports">Reports</TabsTrigger>
               <TabsTrigger value="payouts">Payouts</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
+              <TabsTrigger value="documents">Documents</TabsTrigger>
+              <TabsTrigger value="sos">SOS</TabsTrigger>
+              <TabsTrigger value="support">Support</TabsTrigger>
+              <TabsTrigger value="import">Import</TabsTrigger>
               <TabsTrigger value="errors">Error Logs</TabsTrigger>
             </TabsList>
 
@@ -144,6 +152,22 @@ const AdminPanel = () => {
 
             <TabsContent value="analytics">
               <AdminAnalytics />
+            </TabsContent>
+
+            <TabsContent value="documents">
+              <AdminProviderDocuments />
+            </TabsContent>
+
+            <TabsContent value="sos">
+              <AdminSosAlerts />
+            </TabsContent>
+
+            <TabsContent value="support">
+              <AdminSupportMode />
+            </TabsContent>
+
+            <TabsContent value="import">
+              <AdminBulkProviderImport />
             </TabsContent>
 
             <TabsContent value="errors">
