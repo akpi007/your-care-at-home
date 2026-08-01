@@ -25,7 +25,11 @@ import AdminPanel from "./pages/AdminPanel";
 import AIAssistant from "./pages/AIAssistant";
 import ProviderEarnings from "./pages/ProviderEarnings";
 import InstallApp from "./pages/InstallApp";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+
 
 const queryClient = new QueryClient();
 
