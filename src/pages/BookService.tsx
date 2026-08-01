@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
+import { queueBooking } from "@/lib/offlineBookings";
+import { notifyBooking } from "@/lib/notifyBooking";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -110,8 +112,30 @@ const BookService = () => {
       return;
     }
 
+    const payload = {
+      professional_id: professional.id,
+      service_id: professional.serviceId,
+      patient_profile_id: selectedProfile,
+      booking_date: selectedDate,
+      booking_time: selectedTime,
+      address,
+      symptoms_notes: notes || undefined,
+      latitude: latitude ?? undefined,
+      longitude: longitude ?? undefined,
+    };
+
+    if (!navigator.onLine) {
+      queueBooking(payload);
+      toast({
+        title: "Saved offline",
+        description: "You're offline — this booking will be sent automatically once you're back online.",
+      });
+      navigate("/dashboard");
+      return;
+    }
+
     try {
-      await createBooking.mutateAsync({
+      const created = await createBooking.mutateAsync({
         professional_id: professional.id,
         service_id: professional.serviceId,
         patient_profile_id: selectedProfile,
@@ -122,6 +146,8 @@ const BookService = () => {
         latitude: latitude ?? undefined,
         longitude: longitude ?? undefined,
       });
+      const newId = (created as any)?.id;
+      if (newId) void notifyBooking(newId, "new_request");
       toast({ title: "Booking confirmed!", description: "Your appointment has been scheduled." });
       navigate("/dashboard");
     } catch (err: any) {
