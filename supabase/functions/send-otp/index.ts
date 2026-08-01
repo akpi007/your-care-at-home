@@ -28,9 +28,58 @@ Deno.serve(async (req) => {
     const cleanPhone = phone.replace(/^\+/, "");
     const normalizedPhone = `+${cleanPhone}`;
 
+    if (!/^\d{8,15}$/.test(cleanPhone)) {
+      return new Response(JSON.stringify({ error: "Valid phone number required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // --- Rate limiting ---
+    const now = Date.now();
+    const hourAgo = new Date(now - 60 * 60 * 1000).toISOString();
+    const dayAgo = new Date(now - 24 * 60 * 60 * 1000).toISOString();
+
+    const { data: recent, error: recentErr } = await admin
+      .from("otp_codes")
+      .select("created_at")
+      .eq("phone", normalizedPhone)
+      .gte("created_at", dayAgo)
+      .order("created_at", { ascending: false })
+      .limit(50);
+
+    if (recentErr) {
+      console.error("rate limit lookup error:", recentErr);
+    } else if (recent && recent.length > 0) {
+      const last = new Date(recent[0].created_at as string).getTime();
+      const secondsSince = (now - last) / 1000;
+      if (secondsSince < 60) {
+        return new Response(
+          JSON.stringify({
+            error: `Please wait ${Math.ceil(60 - secondsSince)}s before requesting another code.`,
+          }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      const lastHour = recent.filter((r: any) => r.created_at >= hourAgo).length;
+      if (lastHour >= 5) {
+        return new Response(
+          JSON.stringify({ error: "Too many code requests. Please try again in an hour." }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      if (recent.length >= 15) {
+        return new Response(
+          JSON.stringify({ error: "Daily limit reached. Please try again tomorrow or contact support." }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    }
+
     // Generate 6-digit OTP
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+    const expiresAt = new Date(now + 10 * 60 * 1000).toISOString();
+
 
     // Invalidate previous unused codes for this phone
     await admin
