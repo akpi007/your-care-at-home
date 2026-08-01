@@ -25,7 +25,11 @@ import AdminPanel from "./pages/AdminPanel";
 import AIAssistant from "./pages/AIAssistant";
 import ProviderEarnings from "./pages/ProviderEarnings";
 import InstallApp from "./pages/InstallApp";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+
 
 const queryClient = new QueryClient();
 
@@ -69,7 +73,11 @@ const AnimatedRoutes = () => {
           <ProtectedRoute><AIAssistant /></ProtectedRoute>
         } />
         <Route path="/install" element={<InstallApp />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/about" element={<About />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
