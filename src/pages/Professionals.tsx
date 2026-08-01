@@ -43,8 +43,15 @@ const Professionals = () => {
 
   const { position, loading: geoLoading, requestLocation } = useGeolocation();
 
+  const distanceFor = (city?: string) => {
+    const key = city?.toLowerCase().trim();
+    const coords = key ? CITY_COORDS[key] : null;
+    if (!position || !coords) return null;
+    return getDistanceKm(position.latitude, position.longitude, coords.lat, coords.lng);
+  };
+
   const filtered = useMemo(() => {
-    return professionals.filter((p) => {
+    const list = professionals.filter((p) => {
       const matchesService =
         activeService === "all" ||
         p.service.toLowerCase().includes(activeService);
@@ -58,9 +65,45 @@ const Professionals = () => {
       const matchesAvailable = !filters.availableOnly || p.available;
       const matchesCity =
         filters.city === "all" || p.city.toLowerCase() === filters.city.toLowerCase();
-      return matchesService && matchesSearch && matchesPrice && matchesRating && matchesAvailable && matchesCity;
+      const matchesFavorites = !favoritesOnly || favoriteIds.has(p.id);
+      return (
+        matchesService &&
+        matchesSearch &&
+        matchesPrice &&
+        matchesRating &&
+        matchesAvailable &&
+        matchesCity &&
+        matchesFavorites
+      );
     });
-  }, [activeService, search, professionals, filters]);
+
+    // Relevance score: availability, rating confidence, proximity, experience.
+    const score = (p: any) => {
+      const dist = distanceFor(p.city);
+      const proximity = dist === null ? 0 : Math.max(0, 30 - dist) / 30; // 0..1
+      const confidence = Math.min(1, (p.reviews ?? 0) / 20);
+      return (
+        (p.available ? 2 : 0) +
+        (p.rating / 5) * 2.5 * (0.5 + confidence / 2) +
+        proximity * 2 +
+        Math.min(1, (p.experience ?? 0) / 15)
+      );
+    };
+
+    const sorted = [...list];
+    if (sortBy === "distance") {
+      sorted.sort((a, b) => (distanceFor(a.city) ?? Infinity) - (distanceFor(b.city) ?? Infinity));
+    } else if (sortBy === "rating") {
+      sorted.sort((a, b) => b.rating - a.rating || (b.reviews ?? 0) - (a.reviews ?? 0));
+    } else if (sortBy === "price_low") {
+      sorted.sort((a, b) => a.fee - b.fee);
+    } else if (sortBy === "price_high") {
+      sorted.sort((a, b) => b.fee - a.fee);
+    } else {
+      sorted.sort((a, b) => score(b) - score(a));
+    }
+    return sorted;
+  }, [activeService, search, professionals, filters, sortBy, favoritesOnly, favoriteIds, position]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
