@@ -144,8 +144,11 @@ const PhoneAuth = () => {
           </form>
 
           <p className="mt-4 text-xs text-center text-muted-foreground">
-            By continuing, you agree to our Terms of Service and Privacy Policy
+            By continuing, you agree to our{" "}
+            <a href="/terms" className="text-primary hover:underline">Terms of Service</a> and{" "}
+            <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>
           </p>
+
         </div>
       </div>
     </div>
