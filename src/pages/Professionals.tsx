@@ -49,6 +49,7 @@ const Professionals = () => {
   const [sortBy, setSortBy] = useState("recommended");
   const [favoritesOnly, setFavoritesOnly] = useState(false);
   const favoriteIds = useFavoriteIds();
+  const { user } = useAuth();
 
   const distanceFor = (city?: string) => {
     const key = city?.toLowerCase().trim();
@@ -134,11 +135,34 @@ const Professionals = () => {
             />
           </div>
           <ProfessionalsFilter filters={filters} onChange={setFilters} />
+          <Select value={sortBy} onValueChange={setSortBy}>
+            <SelectTrigger className="w-full sm:w-44">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="recommended">Recommended</SelectItem>
+              <SelectItem value="distance">Nearest first</SelectItem>
+              <SelectItem value="rating">Highest rated</SelectItem>
+              <SelectItem value="price_low">Price: low to high</SelectItem>
+              <SelectItem value="price_high">Price: high to low</SelectItem>
+            </SelectContent>
+          </Select>
+          {user && (
+            <Button
+              variant={favoritesOnly ? "hero" : "outline"}
+              size="sm"
+              onClick={() => setFavoritesOnly((v) => !v)}
+              aria-pressed={favoritesOnly}
+            >
+              <Heart className={`h-4 w-4 mr-1 ${favoritesOnly ? "fill-current" : ""}`} /> Favourites
+            </Button>
+          )}
           <Button variant="outline" size="sm" onClick={requestLocation} disabled={geoLoading || !!position}>
             {geoLoading ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Navigation className="h-4 w-4 mr-1" />}
             {position ? "Location On" : "Distance"}
           </Button>
         </div>
+
 
         {/* Service tabs */}
         <div className="mb-6 flex flex-wrap gap-2">
