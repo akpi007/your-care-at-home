@@ -252,10 +252,21 @@ const Dashboard = () => {
             <DashboardDisputes />
           </TabsContent>
 
+          {/* Recurring Tab */}
+          <TabsContent value="recurring">
+            <DashboardRecurring />
+          </TabsContent>
+
+          {/* Referrals Tab */}
+          <TabsContent value="referrals">
+            <DashboardReferrals />
+          </TabsContent>
+
           {/* Profile Tab */}
           <TabsContent value="profile">
             <DashboardProfile />
           </TabsContent>
+
         </Tabs>
       </div>
 
