@@ -23,6 +23,7 @@ import { useToast } from "@/hooks/use-toast";
 import ProviderProfileEdit from "@/components/ProviderProfileEdit";
 import ProviderBookingCard from "@/components/ProviderBookingCard";
 import AvailabilityScheduler from "@/components/AvailabilityScheduler";
+import ProviderOnboardingChecklist from "@/components/ProviderOnboardingChecklist";
 
 const verificationBadge: Record<string, { label: string; className: string }> = {
   verified: { label: "Verified", className: "bg-healthcare-soft-green text-healthcare-green" },
@@ -136,6 +137,8 @@ const ProviderDashboard = () => {
             </div>
           </div>
         </div>
+
+        <ProviderOnboardingChecklist profile={profile} />
 
         {/* Stats */}
         <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
