@@ -1462,6 +1462,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      send_booking_reminders: { Args: never; Returns: undefined }
+      send_licence_expiry_reminders: { Args: never; Returns: undefined }
     }
     Enums: {
       app_role: "patient" | "professional" | "admin"
