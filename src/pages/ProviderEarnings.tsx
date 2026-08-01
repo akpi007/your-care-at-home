@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useProviderEarningsDetails } from "@/hooks/useProviderEarningsDetails";
+import ProviderPayoutPanel from "@/components/ProviderPayoutPanel";
 import {
   ChartContainer,
   ChartTooltip,
@@ -122,6 +123,11 @@ const ProviderEarnings = () => {
             </Card>
           </div>
         )}
+
+        {/* Payout requests */}
+        <div className="mb-8">
+          <ProviderPayoutPanel availableBalance={summary.pending} />
+        </div>
 
         {/* Payout history */}
         <Tabs defaultValue="all" className="w-full">
