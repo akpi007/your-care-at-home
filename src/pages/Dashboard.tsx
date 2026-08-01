@@ -155,14 +155,16 @@ const Dashboard = () => {
                           <div className="mt-3" onClick={(e) => e.stopPropagation()}>
                             <BookingProgressBar status={b.status} />
                             {isActiveBooking(b.status) && (
-                              <div className="mt-3">
+                              <div className="mt-3 space-y-3">
                                 <PatientLiveTracking
                                   bookingId={b.id}
                                   patientLat={b.latitude}
                                   patientLng={b.longitude}
                                 />
+                                <SOSButton bookingId={b.id} role="patient" />
                               </div>
                             )}
+
                           </div>
                         </div>
                       ))}
