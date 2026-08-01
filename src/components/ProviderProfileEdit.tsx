@@ -103,7 +103,14 @@ const ProviderProfileEdit = ({ profile }: Props) => {
 
     setSaving(true);
     try {
-      const updates: Record<string, any> = {
+      const updates: {
+        bio: string;
+        consultation_fee: number;
+        city: string | null;
+        passport_photo_url?: string;
+        image_url?: string;
+        id_proof_url?: string;
+      } = {
         bio: bio.trim(),
         consultation_fee: feeNum,
         city: city || null,
