@@ -15,7 +15,9 @@ export function useBookings() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("bookings")
-        .select("*, professionals(display_name, image_url, specialization), services(name)")
+        .select(
+          "*, professionals(user_id, display_name, image_url, specialization, consultation_fee), services(name)",
+        )
         .eq("user_id", user!.id)
         .order("booking_date", { ascending: false });
       if (error) throw error;

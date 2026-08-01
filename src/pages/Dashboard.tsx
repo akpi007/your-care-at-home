@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, Clock, Star, User, FileText, MessageSquare, Loader2, MapPin, Settings } from "lucide-react";
+import { Calendar, Clock, Star, User, FileText, MessageSquare, Loader2, MapPin, Heart, ShieldAlert } from "lucide-react";
 import BookingDetailDialog from "@/components/BookingDetailDialog";
 import { Link } from "react-router-dom";
 import { useBookings } from "@/hooks/useBookings";
@@ -16,6 +16,11 @@ import DashboardMessages from "@/components/dashboard/DashboardMessages";
 import DashboardNearby from "@/components/dashboard/DashboardNearby";
 import BookingProgressBar from "@/components/BookingProgressBar";
 import PatientLiveTracking from "@/components/PatientLiveTracking";
+import LeaveReviewDialog from "@/components/LeaveReviewDialog";
+import RaiseDisputeDialog from "@/components/RaiseDisputeDialog";
+import DashboardFavorites from "@/components/dashboard/DashboardFavorites";
+import DashboardDisputes from "@/components/dashboard/DashboardDisputes";
+import { useMyReviewedBookingIds } from "@/hooks/useReviews";
 import {
   BOOKING_STATUS_COLORS,
   BOOKING_STATUS_SHORT_LABELS,
@@ -27,6 +32,8 @@ const Dashboard = () => {
   const { data: bookings = [], isLoading } = useBookings();
   const [chatBookingId, setChatBookingId] = useState<string | null>(null);
   const [selectedBooking, setSelectedBooking] = useState<any>(null);
+  const reviewedBookingIds = useMyReviewedBookingIds();
+
 
   const upcoming = bookings.filter((b) =>
     ["pending", "confirmed", "assigned", "on_the_way", "arrived"].includes(b.status)
@@ -60,6 +67,12 @@ const Dashboard = () => {
             </TabsTrigger>
             <TabsTrigger value="nearby" className="gap-1.5">
               <MapPin className="h-4 w-4" /> Nearby
+            </TabsTrigger>
+            <TabsTrigger value="favorites" className="gap-1.5">
+              <Heart className="h-4 w-4" /> Favourites
+            </TabsTrigger>
+            <TabsTrigger value="disputes" className="gap-1.5">
+              <ShieldAlert className="h-4 w-4" /> Issues
             </TabsTrigger>
             <TabsTrigger value="profile" className="gap-1.5">
               <User className="h-4 w-4" /> Profile
@@ -154,26 +167,44 @@ const Dashboard = () => {
                   ) : (
                     <div className="space-y-3">
                       {past.map((b: any) => (
-                        <div key={b.id} className="flex items-center gap-4 rounded-xl bg-card p-4 shadow-card">
-                          <img
-                            src={b.professionals?.image_url || "/placeholder.svg"}
-                            alt={b.professionals?.display_name || "Professional"}
-                            className="h-12 w-12 rounded-xl object-cover"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-card-foreground truncate">
-                              {b.professionals?.display_name || "Professional"}
-                            </h4>
-                            <div className="flex items-center gap-3 text-sm text-muted-foreground mt-0.5">
-                              <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{b.booking_date}</span>
+                        <div key={b.id} className="rounded-xl bg-card p-4 shadow-card">
+                          <div className="flex items-center gap-4">
+                            <img
+                              src={b.professionals?.image_url || "/placeholder.svg"}
+                              alt={b.professionals?.display_name || "Professional"}
+                              className="h-12 w-12 rounded-xl object-cover"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-card-foreground truncate">
+                                {b.professionals?.display_name || "Professional"}
+                              </h4>
+                              <div className="flex items-center gap-3 text-sm text-muted-foreground mt-0.5">
+                                <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{b.booking_date}</span>
+                              </div>
                             </div>
+                            <Badge className={BOOKING_STATUS_COLORS[b.status as BookingStatus] || "bg-muted text-muted-foreground"}>
+                              {BOOKING_STATUS_SHORT_LABELS[b.status as BookingStatus] || b.status}
+                            </Badge>
                           </div>
-                          <Badge className={BOOKING_STATUS_COLORS[b.status as BookingStatus] || "bg-muted text-muted-foreground"}>
-                            {BOOKING_STATUS_SHORT_LABELS[b.status as BookingStatus] || b.status}
-                          </Badge>
-                          <Button variant="outline" size="sm" asChild>
-                            <Link to={`/book/${b.professional_id}`}>Rebook</Link>
-                          </Button>
+
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            <Button variant="outline" size="sm" asChild>
+                              <Link to={`/book/${b.professional_id}`}>Rebook</Link>
+                            </Button>
+                            {b.status === "completed" && !reviewedBookingIds.has(b.id) && (
+                              <LeaveReviewDialog
+                                bookingId={b.id}
+                                professionalId={b.professional_id}
+                                professionalName={b.professionals?.display_name}
+                              />
+                            )}
+                            {b.status === "completed" && reviewedBookingIds.has(b.id) && (
+                              <span className="flex items-center gap-1 self-center text-xs text-muted-foreground">
+                                <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" /> Reviewed
+                              </span>
+                            )}
+                            <RaiseDisputeDialog bookingId={b.id} />
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -196,6 +227,16 @@ const Dashboard = () => {
           {/* Nearby Professionals Tab */}
           <TabsContent value="nearby">
             <DashboardNearby />
+          </TabsContent>
+
+          {/* Favourites Tab */}
+          <TabsContent value="favorites">
+            <DashboardFavorites />
+          </TabsContent>
+
+          {/* Disputes Tab */}
+          <TabsContent value="disputes">
+            <DashboardDisputes />
           </TabsContent>
 
           {/* Profile Tab */}

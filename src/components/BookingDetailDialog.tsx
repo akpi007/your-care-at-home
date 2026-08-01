@@ -14,6 +14,10 @@ import { useToast } from "@/hooks/use-toast";
 import BookingStatusTimeline from "@/components/BookingStatusTimeline";
 import PatientLiveTracking from "@/components/PatientLiveTracking";
 import { isActiveBooking } from "@/lib/bookingStatus";
+import CancelBookingDialog from "@/components/CancelBookingDialog";
+import RaiseDisputeDialog from "@/components/RaiseDisputeDialog";
+import ReportUserDialog from "@/components/ReportUserDialog";
+import { CANCELLATION_POLICY_SUMMARY } from "@/lib/cancellationPolicy";
 import {
   BOOKING_STATUS_COLORS,
   BOOKING_STATUS_LABELS,
@@ -201,21 +205,29 @@ const BookingDetailDialog = ({ booking, open, onClose }: BookingDetailDialogProp
           )}
 
           {/* Actions */}
-          {["pending", "confirmed"].includes(booking.status) && !editing && (
-            <div className="flex gap-2 pt-2">
-              <Button variant="outline" size="sm" onClick={() => setEditing(true)}>
-                <Edit2 className="h-4 w-4 mr-1" /> Edit Date & Time
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-destructive border-destructive/30 hover:bg-destructive/10"
-                onClick={handleCancel}
-                disabled={saving}
-              >
-                {saving ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <X className="h-4 w-4 mr-1" />}
-                Cancel Booking
-              </Button>
+          {!editing && (
+            <div className="space-y-2 pt-2">
+              <div className="flex flex-wrap gap-2">
+                {["pending", "confirmed", "assigned"].includes(booking.status) && (
+                  <Button variant="outline" size="sm" onClick={() => setEditing(true)}>
+                    <Edit2 className="h-4 w-4 mr-1" /> Edit Date & Time
+                  </Button>
+                )}
+                <CancelBookingDialog
+                  booking={booking}
+                  consultationFee={Number(booking.professionals?.consultation_fee ?? 0)}
+                  onCancelled={onClose}
+                />
+                <RaiseDisputeDialog bookingId={booking.id} />
+                {booking.professionals?.user_id && (
+                  <ReportUserDialog
+                    reportedUserId={booking.professionals.user_id}
+                    reportedName={booking.professionals?.display_name}
+                    bookingId={booking.id}
+                  />
+                )}
+              </div>
+              <p className="text-[11px] text-muted-foreground">{CANCELLATION_POLICY_SUMMARY}</p>
             </div>
           )}
         </div>
