@@ -24,6 +24,8 @@ import ProviderProfileEdit from "@/components/ProviderProfileEdit";
 import ProviderBookingCard from "@/components/ProviderBookingCard";
 import AvailabilityScheduler from "@/components/AvailabilityScheduler";
 import ProviderOnboardingChecklist from "@/components/ProviderOnboardingChecklist";
+import ProviderDocumentsPanel from "@/components/ProviderDocumentsPanel";
+import ProviderReviewsPanel from "@/components/ProviderReviewsPanel";
 
 const verificationBadge: Record<string, { label: string; className: string }> = {
   verified: { label: "Verified", className: "bg-healthcare-soft-green text-healthcare-green" },
@@ -168,6 +170,8 @@ const ProviderDashboard = () => {
           <TabsList className="mb-4">
             <TabsTrigger value="upcoming">Upcoming ({upcoming.length})</TabsTrigger>
             <TabsTrigger value="past">Past ({past.length})</TabsTrigger>
+            <TabsTrigger value="documents">Documents</TabsTrigger>
+            <TabsTrigger value="reviews">Reviews</TabsTrigger>
           </TabsList>
 
           <TabsContent value="upcoming">
@@ -192,6 +196,14 @@ const ProviderDashboard = () => {
                 ))}
               </div>
             )}
+          </TabsContent>
+
+          <TabsContent value="documents">
+            <ProviderDocumentsPanel professionalId={profile.id} />
+          </TabsContent>
+
+          <TabsContent value="reviews">
+            <ProviderReviewsPanel professionalId={profile.id} />
           </TabsContent>
         </Tabs>
       </div>
