@@ -33,7 +33,7 @@ const Footer = () => {
             <h4 className="font-display font-semibold mb-4 text-foreground">Company</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link to="/about" className="hover:text-primary transition-colors">About Us</Link></li>
-              <li><Link to="/careers" className="hover:text-primary transition-colors">Careers</Link></li>
+              <li><a href="mailto:support@raphatelehealth.com" className="hover:text-primary transition-colors">Contact Us</a></li>
               <li><Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
               <li><Link to="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
             </ul>
