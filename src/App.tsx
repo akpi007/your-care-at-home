@@ -45,6 +45,12 @@ const AnimatedRoutes = () => {
   const location = useLocation();
 
   useEffect(() => {
+    const ref = new URLSearchParams(location.search).get("ref");
+    if (ref) localStorage.setItem("rapha_referral_code", ref);
+  }, [location.search]);
+
+
+  useEffect(() => {
     trackPageView(location.pathname + location.search);
   }, [location.pathname, location.search]);
 
