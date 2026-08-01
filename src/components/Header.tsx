@@ -19,6 +19,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { locationData } from "@/data/locationData";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import NotificationBell from "@/components/NotificationBell";
 
 const Header = () => {
   const { user, signOut } = useAuth();
@@ -171,6 +173,8 @@ const Header = () => {
               </div>
             </PopoverContent>
           </Popover>
+          <LanguageSwitcher />
+          <NotificationBell />
           <Button variant="soft" size="sm" asChild>
             <Link to="/install"><Download className="h-4 w-4 mr-1" /> Get App</Link>
           </Button>
@@ -196,12 +200,16 @@ const Header = () => {
           )}
         </div>
 
-        <button
-          className="md:hidden p-2 rounded-lg hover:bg-muted"
-          onClick={() => setMobileOpen(!mobileOpen)}
-        >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex items-center gap-1 md:hidden">
+          <NotificationBell />
+          <button
+            className="p-2 rounded-lg hover:bg-muted"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {mobileOpen && (
@@ -222,6 +230,7 @@ const Header = () => {
               </Link>
             ))}
             <div className="mt-3 flex flex-col gap-2">
+              <LanguageSwitcher compact />
               <Button variant="soft" asChild>
                 <Link to="/install" onClick={() => setMobileOpen(false)}>
                   <Download className="h-4 w-4 mr-1" /> Download App

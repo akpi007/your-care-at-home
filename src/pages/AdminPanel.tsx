@@ -14,6 +14,11 @@ import {
 import { useIsAdmin, useAdminProfessionals, useAdminUsers, useAdminStats } from "@/hooks/useAdminData";
 import AdminProviderList from "@/components/AdminProviderList";
 import AdminUserList from "@/components/AdminUserList";
+import AdminDisputeList from "@/components/AdminDisputeList";
+import AdminReportList from "@/components/AdminReportList";
+import AdminPayoutList from "@/components/AdminPayoutList";
+import AdminAnalytics from "@/components/AdminAnalytics";
+import AdminErrorLogs from "@/components/AdminErrorLogs";
 
 const AdminPanel = () => {
   const { data: isAdmin, isLoading: adminLoading } = useIsAdmin();
@@ -99,6 +104,11 @@ const AdminPanel = () => {
               <TabsTrigger value="users">
                 Users ({users.length})
               </TabsTrigger>
+              <TabsTrigger value="disputes">Disputes</TabsTrigger>
+              <TabsTrigger value="reports">Reports</TabsTrigger>
+              <TabsTrigger value="payouts">Payouts</TabsTrigger>
+              <TabsTrigger value="analytics">Analytics</TabsTrigger>
+              <TabsTrigger value="errors">Error Logs</TabsTrigger>
             </TabsList>
 
             <TabsContent value="pending">
@@ -118,6 +128,26 @@ const AdminPanel = () => {
 
             <TabsContent value="users">
               <AdminUserList users={users} />
+            </TabsContent>
+
+            <TabsContent value="disputes">
+              <AdminDisputeList />
+            </TabsContent>
+
+            <TabsContent value="reports">
+              <AdminReportList />
+            </TabsContent>
+
+            <TabsContent value="payouts">
+              <AdminPayoutList />
+            </TabsContent>
+
+            <TabsContent value="analytics">
+              <AdminAnalytics />
+            </TabsContent>
+
+            <TabsContent value="errors">
+              <AdminErrorLogs />
             </TabsContent>
           </Tabs>
         )}
