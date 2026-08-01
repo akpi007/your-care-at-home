@@ -60,6 +60,43 @@ const en = {
   "prof.findSubtitle": "Browse verified healthcare professionals near you",
   "prof.bookNow": "Book Now",
   "prof.perVisit": "/ visit",
+
+  "auth.phone": "Phone number",
+  "auth.sendCode": "Send code",
+  "auth.enterCode": "Enter the code we sent you",
+  "auth.verify": "Verify",
+  "auth.resend": "Resend code",
+
+  "booking.date": "Date",
+  "booking.time": "Time",
+  "booking.address": "Address",
+  "booking.notes": "Symptoms / Notes",
+  "booking.confirm": "Confirm Booking",
+  "booking.total": "Total",
+  "booking.status.pending": "Pending",
+  "booking.status.confirmed": "Confirmed",
+  "booking.status.onTheWay": "On the way",
+  "booking.status.arrived": "Arrived",
+  "booking.status.completed": "Completed",
+  "booking.status.cancelled": "Cancelled",
+
+  "provider.availability": "Availability",
+  "provider.earnings": "Earnings",
+  "provider.documents": "Documents",
+  "provider.reviews": "Reviews",
+  "provider.available": "Available",
+  "provider.unavailable": "Unavailable",
+
+  "safety.sos": "Emergency help",
+  "safety.sosSent": "Emergency alert sent",
+  "safety.verifyArrival": "Confirm arrival",
+  "safety.verifyFinish": "Confirm visit finished",
+
+  "referral.title": "Invite friends",
+  "referral.yourCode": "Your invite code",
+  "referral.copy": "Copy link",
+  "recurring.title": "Recurring visits",
+  "recurring.weekly": "Weekly",
 } as const;
 
 const ny: Partial<Record<TranslationKey, string>> = {
@@ -114,6 +151,43 @@ const ny: Partial<Record<TranslationKey, string>> = {
   "prof.findSubtitle": "Onani adotolo otsimikizika pafupi nanu",
   "prof.bookNow": "Bukani Tsopano",
   "prof.perVisit": "/ ulendo",
+
+  "auth.phone": "Nambala ya foni",
+  "auth.sendCode": "Tumizani kodi",
+  "auth.enterCode": "Lowetsani kodi imene takutumizirani",
+  "auth.verify": "Tsimikizani",
+  "auth.resend": "Tumizaninso kodi",
+
+  "booking.date": "Tsiku",
+  "booking.time": "Nthawi",
+  "booking.address": "Adilesi",
+  "booking.notes": "Zizindikiro / Zolemba",
+  "booking.confirm": "Tsimikizani Buku",
+  "booking.total": "Zonse pamodzi",
+  "booking.status.pending": "Ikuyembekezera",
+  "booking.status.confirmed": "Yatsimikizika",
+  "booking.status.onTheWay": "Ali panjira",
+  "booking.status.arrived": "Wafika",
+  "booking.status.completed": "Yatha",
+  "booking.status.cancelled": "Yalekedwa",
+
+  "provider.availability": "Nthawi zopezeka",
+  "provider.earnings": "Ndalama",
+  "provider.documents": "Zikalata",
+  "provider.reviews": "Ndemanga",
+  "provider.available": "Ndilipo",
+  "provider.unavailable": "Kulibe",
+
+  "safety.sos": "Thandizo mwadzidzidzi",
+  "safety.sosSent": "Chidziwitso chadzidzidzi chatumizidwa",
+  "safety.verifyArrival": "Tsimikizani kufika",
+  "safety.verifyFinish": "Tsimikizani kutha kwa ulendo",
+
+  "referral.title": "Itanani anzanu",
+  "referral.yourCode": "Kodi yanu yoitanira",
+  "referral.copy": "Koperani ulalo",
+  "recurring.title": "Maulendo obwerezabwereza",
+  "recurring.weekly": "Sabata iliyonse",
 };
 
 const bem: Partial<Record<TranslationKey, string>> = {
@@ -168,6 +242,43 @@ const bem: Partial<Record<TranslationKey, string>> = {
   "prof.findSubtitle": "Moneni abashinganga abashininkishiwa mupepi nenu",
   "prof.bookNow": "Bukeni Nomba",
   "prof.perVisit": "/ ulendo",
+
+  "auth.phone": "Nambala ya foni",
+  "auth.sendCode": "Tumeni kodi",
+  "auth.enterCode": "Ingisheni kodi iyo twamutumina",
+  "auth.verify": "Shininkisheni",
+  "auth.resend": "Tumeni kodi na kabili",
+
+  "booking.date": "Ubushiku",
+  "booking.time": "Inshita",
+  "booking.address": "Adresi",
+  "booking.notes": "Ifishibilo / Amalembo",
+  "booking.confirm": "Shininkisheni Ubuku",
+  "booking.total": "Fyonse pamo",
+  "booking.status.pending": "Cilepembelela",
+  "booking.status.confirmed": "Cashininkishiwa",
+  "booking.status.onTheWay": "Ali munshila",
+  "booking.status.arrived": "Nafika",
+  "booking.status.completed": "Capwa",
+  "booking.status.cancelled": "Calekwa",
+
+  "provider.availability": "Inshita shakusangwa",
+  "provider.earnings": "Indalama",
+  "provider.documents": "Amapepala",
+  "provider.reviews": "Amashiwi",
+  "provider.available": "Ndi mupepi",
+  "provider.unavailable": "Nshili mupepi",
+
+  "safety.sos": "Ubwafwilisho bwa bwangu",
+  "safety.sosSent": "Ubwishibisho bwa bwangu bwatumwa",
+  "safety.verifyArrival": "Shininkisheni ukufika",
+  "safety.verifyFinish": "Shininkisheni ulendo wapwa",
+
+  "referral.title": "Iteni abanenu",
+  "referral.yourCode": "Kodi yenu ya kwita",
+  "referral.copy": "Kopeni ulalo",
+  "recurring.title": "Ulendo lwakubwelelapo",
+  "recurring.weekly": "Cila mulungu",
 };
 
 export const translations: Record<Language, Partial<Record<TranslationKey, string>>> = {
