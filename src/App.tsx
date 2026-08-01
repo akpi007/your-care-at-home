@@ -90,7 +90,10 @@ const AnimatedRoutes = () => {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/about" element={<About />} />
+        <Route path="/care" element={<CareDirectory />} />
+        <Route path="/care/:service/:city" element={<ServiceCityLanding />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+
 
         <Route path="*" element={<NotFound />} />
       </Routes>
