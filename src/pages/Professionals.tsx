@@ -11,6 +11,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Search, Loader2, Navigation } from "lucide-react";
 import ProfessionalsFilter, { Filters, defaultFilters } from "@/components/ProfessionalsFilter";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useFavoriteIds } from "@/hooks/useFavorites";
+import { useAuth } from "@/contexts/AuthContext";
+import { Heart } from "lucide-react";
 
 const CITY_COORDS: Record<string, { lat: number; lng: number }> = {
   lagos: { lat: 6.5244, lng: 3.3792 },
@@ -42,6 +46,9 @@ const Professionals = () => {
   const { data: services = [] } = useServices();
 
   const { position, loading: geoLoading, requestLocation } = useGeolocation();
+  const [sortBy, setSortBy] = useState("recommended");
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const favoriteIds = useFavoriteIds();
 
   const distanceFor = (city?: string) => {
     const key = city?.toLowerCase().trim();
