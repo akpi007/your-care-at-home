@@ -10,6 +10,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import FavoriteButton from "@/components/FavoriteButton";
 
 interface ProfessionalCardProps {
   id: string;
@@ -47,7 +48,7 @@ const ProfessionalCard = ({
   return (
     <>
       <div
-        className="group overflow-hidden rounded-2xl bg-card shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 cursor-pointer"
+        className="group relative overflow-hidden rounded-2xl bg-card shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 cursor-pointer"
         onClick={() => setOpen(true)}
       >
         <div className="flex gap-4 p-5">
@@ -60,6 +61,9 @@ const ProfessionalCard = ({
             {available && (
               <div className="absolute bottom-1 right-1 h-3 w-3 rounded-full border-2 border-card bg-primary" />
             )}
+          </div>
+          <div className="absolute right-3 top-3">
+            <FavoriteButton professionalId={id} />
           </div>
 
           <div className="flex-1 min-w-0">
