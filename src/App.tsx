@@ -73,7 +73,11 @@ const AnimatedRoutes = () => {
           <ProtectedRoute><AIAssistant /></ProtectedRoute>
         } />
         <Route path="/install" element={<InstallApp />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/about" element={<About />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
