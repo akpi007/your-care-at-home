@@ -5,6 +5,8 @@ import Footer from "@/components/Footer";
 import ServiceCard from "@/components/ServiceCard";
 import ProfessionalCard from "@/components/ProfessionalCard";
 import { useProfessionals } from "@/hooks/useProfessionals";
+import { SEO_SERVICES, citySlug } from "@/data/seoLanding";
+
 import {
   Stethoscope,
   Syringe,
