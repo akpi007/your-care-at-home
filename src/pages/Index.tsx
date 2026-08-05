@@ -168,6 +168,53 @@ const Index = () => {
         )}
       </section>
 
+      {/* SEO content: home based care in Zambia */}
+      <section className="bg-muted/50">
+        <div className="container py-16">
+          <div className="mx-auto max-w-3xl">
+            <h2 className="font-display text-3xl font-bold text-foreground">
+              Home based care and doctor home visits across Zambia
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              Rapha Telehealth connects Zambian families with licence-verified healthcare
+              professionals who come to your home. Whether you need home nursing services in Lusaka,
+              a doctor home visit in Kitwe, a midwife in Ndola, physiotherapy at home in Livingstone
+              or a lab test collected at your door, you can compare providers, see transparent
+              prices in Kwacha and book a same-day visit.
+            </p>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              Every private nurse, doctor and therapist on the platform is background-checked and
+              licence-verified. You can track your provider in real time as they travel to you, chat
+              in-app and rate the visit afterwards — no queues, no commute, no waiting rooms.
+            </p>
+
+            <h3 className="mt-10 font-display text-xl font-semibold text-foreground">
+              Popular home healthcare searches in Zambia
+            </h3>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {SEO_SERVICES.slice(0, 6).flatMap((s) =>
+                ["Lusaka", "Kitwe", "Ndola"].map((c) => (
+                  <Link
+                    key={`${s.slug}-${c}`}
+                    to={`/care/${s.slug}/${citySlug(c)}`}
+                    className="rounded-full bg-card px-3 py-1.5 text-sm text-foreground shadow-sm transition-colors hover:bg-primary/10 hover:text-primary"
+                  >
+                    {s.label} in {c}
+                  </Link>
+                )),
+              )}
+            </div>
+            <div className="mt-6">
+              <Link to="/care" className="text-sm font-medium text-primary hover:underline">
+                Browse all services and cities in Zambia →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
       {/* CTA */}
       <section className="gradient-primary">
         <div className="container py-16 text-center">
