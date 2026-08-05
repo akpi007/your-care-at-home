@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://raphatelehealth.com/sitemap.xml
+Sitemap: https://www.raphatelehealth.com/sitemap.xml
