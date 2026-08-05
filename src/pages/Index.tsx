@@ -69,13 +69,14 @@ const Index = () => {
               Verified Healthcare Professionals
             </div>
             <h1 className="font-display text-4xl font-extrabold tracking-tight text-foreground md:text-5xl lg:text-6xl">
-              Healthcare at{" "}
-              <span className="text-primary">Your Doorstep</span>
+              Home Based Care in{" "}
+              <span className="text-primary">Zambia</span>
             </h1>
             <p className="mt-4 text-lg text-muted-foreground md:text-xl leading-relaxed">
-              Book trusted doctors, nurses, and specialists for home visits. 
-              Quality care, zero commute.
+              Book verified doctors, nurses, midwives and physiotherapists for home visits in
+              Lusaka, Kitwe, Ndola and across Zambia. Quality care, zero commute.
             </p>
+
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Button variant="hero" size="xl" asChild>
                 <Link to="/professionals">
