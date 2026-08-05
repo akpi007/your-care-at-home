@@ -48,11 +48,16 @@ const RoleSelect = () => {
             </div>
 
             <h1 className="font-display text-3xl font-bold text-white mb-2">
-              Get Started
+              Home Based Care in Zambia
             </h1>
-            <p className="text-white/60 text-base mb-10">
+            <p className="text-white/60 text-base mb-2">
+              Book verified doctors, nurses, midwives and physiotherapists for home
+              visits in Lusaka, Kitwe, Ndola and across Zambia.
+            </p>
+            <p className="text-white/40 text-sm mb-10">
               Choose how you'd like to use Rapha Telehealth
             </p>
+
 
             {/* Role buttons */}
             <div className="space-y-4">
