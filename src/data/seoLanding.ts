@@ -65,13 +65,15 @@ export const SEO_SERVICES: SeoService[] = [
   },
 ];
 
+// Zambia-only focus: this is where the service currently operates.
 export const SEO_CITIES: string[] = Array.from(
   new Set(
     locationData
-      .filter((c) => ["Zambia", "South Africa", "Kenya", "Nigeria"].includes(c.country))
+      .filter((c) => c.country === "Zambia")
       .flatMap((c) => c.regions.flatMap((r) => r.cities)),
   ),
 );
+
 
 export const citySlug = (city: string) => city.toLowerCase().replace(/\s+/g, "-");
 
