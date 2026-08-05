@@ -58,12 +58,13 @@ const ServiceCityLanding = () => {
   const svc = serviceFromSlug(service);
   const cityName = cityFromSlug(city);
 
-  const title = svc && cityName ? `${svc.label} at Home in ${cityName} | Rapha Telehealth` : "";
+  const title =
+    svc && cityName ? `${svc.label} Home Visit in ${cityName}, Zambia | Rapha Telehealth` : "";
   const description =
     svc && cityName
-      ? `Book a verified ${svc.label.toLowerCase()} for a home visit in ${cityName}. Transparent pricing, live tracking and same-day availability.`
+      ? `Book a verified ${svc.label.toLowerCase()} for a home visit in ${cityName}, Zambia. Home based care with transparent pricing, live tracking and same-day availability.`
       : "";
-  const canonical = `/care/${service}/${city}`;
+  const canonical = `https://www.raphatelehealth.com/care/${service}/${city}`;
 
   const jsonLd =
     svc && cityName
@@ -72,11 +73,12 @@ const ServiceCityLanding = () => {
           "@type": "MedicalBusiness",
           name: `Rapha Telehealth — ${svc.plural} in ${cityName}`,
           description,
-          areaServed: cityName,
+          areaServed: { "@type": "City", name: cityName, addressCountry: "ZM" },
           medicalSpecialty: svc.label,
           url: canonical,
         }
       : {};
+
 
   useHeadTags(title, description, jsonLd, canonical);
 
