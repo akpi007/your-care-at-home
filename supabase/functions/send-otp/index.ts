@@ -119,11 +119,17 @@ Deno.serve(async (req) => {
     }
 
     if (!sent) {
+      const details = String(smsData?.Details || "");
+      const message =
+        !isIndian && /invalid phone number/i.test(details)
+          ? "SMS to this country isn't enabled on the SMS provider account yet. Please contact support."
+          : details || "SMS delivery failed";
       return new Response(
-        JSON.stringify({ error: smsData?.Details || "SMS delivery failed" }),
+        JSON.stringify({ error: message }),
         { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
 
 
 
