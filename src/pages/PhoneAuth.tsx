@@ -53,7 +53,7 @@ const PhoneAuth = () => {
         toast({ title: "Failed to send code", description: errMsg, variant: "destructive" });
       } else {
         localStorage.setItem("medhome_otp_phone", fullPhone);
-        toast({ title: "Code sent!", description: `We sent a verification code to ${fullPhone}` });
+        toast({ title: "Calling you now", description: `We are calling you with a verification code at ${fullPhone}` });
         navigate("/onboarding/verify");
       }
     } catch (err: any) {
@@ -81,7 +81,7 @@ const PhoneAuth = () => {
               Enter your phone number
             </h1>
             <p className="mt-1 text-sm text-muted-foreground text-center">
-              We'll send you a verification code via SMS
+              We'll call you with a verification code
             </p>
           </div>
 
