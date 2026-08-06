@@ -98,17 +98,34 @@ Deno.serve(async (req) => {
     }
 
     // Send via 2Factor.in
-    const url = `https://2factor.in/API/V1/${TWO_FACTOR_API_KEY}/SMS/${cleanPhone}/${code}`;
-    const smsRes = await fetch(url, { method: "POST" });
-    const smsData = await smsRes.json();
+    // Indian numbers use the bare 10-digit/91-prefixed form; international
+    // numbers must be sent with the leading "+" (E.164).
+    const isIndian = cleanPhone.startsWith("91") && cleanPhone.length === 12;
+    const candidates = isIndian
+      ? [cleanPhone]
+      : [encodeURIComponent(`+${cleanPhone}`), cleanPhone];
 
-    if (!smsRes.ok || smsData.Status !== "Success") {
-      console.error("2Factor.in send error:", smsData);
+    let smsData: any = null;
+    let sent = false;
+    for (const target of candidates) {
+      const url = `https://2factor.in/API/V1/${TWO_FACTOR_API_KEY}/SMS/${target}/${code}`;
+      const smsRes = await fetch(url, { method: "POST" });
+      smsData = await smsRes.json().catch(() => null);
+      if (smsRes.ok && smsData?.Status === "Success") {
+        sent = true;
+        break;
+      }
+      console.error("2Factor.in send error:", target, smsData);
+    }
+
+    if (!sent) {
       return new Response(
         JSON.stringify({ error: smsData?.Details || "SMS delivery failed" }),
         { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+
 
     console.log(`OTP sent to ${normalizedPhone}`);
     return new Response(JSON.stringify({ success: true }), {
