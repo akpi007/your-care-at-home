@@ -97,7 +97,7 @@ Deno.serve(async (req) => {
       throw new Error("Failed to store OTP");
     }
 
-    // Send via 2Factor.in
+    // Send via 2Factor.in VOICE call (OTP is read out over an automated call)
     // Indian numbers use the bare 10-digit/91-prefixed form; international
     // numbers must be sent with the leading "+" (E.164).
     const isIndian = cleanPhone.startsWith("91") && cleanPhone.length === 12;
@@ -108,22 +108,22 @@ Deno.serve(async (req) => {
     let smsData: any = null;
     let sent = false;
     for (const target of candidates) {
-      const url = `https://2factor.in/API/V1/${TWO_FACTOR_API_KEY}/SMS/${target}/${code}`;
+      const url = `https://2factor.in/API/V1/${TWO_FACTOR_API_KEY}/VOICE/${target}/${code}`;
       const smsRes = await fetch(url, { method: "POST" });
       smsData = await smsRes.json().catch(() => null);
       if (smsRes.ok && smsData?.Status === "Success") {
         sent = true;
         break;
       }
-      console.error("2Factor.in send error:", target, smsData);
+      console.error("2Factor.in voice send error:", target, smsData);
     }
 
     if (!sent) {
       const details = String(smsData?.Details || "");
       const message =
         !isIndian && /invalid phone number/i.test(details)
-          ? "SMS to this country isn't enabled on the SMS provider account yet. Please contact support."
-          : details || "SMS delivery failed";
+          ? "Voice OTP calls to this country aren't enabled on the provider account yet. Please contact support."
+          : details || "Verification call failed";
       return new Response(
         JSON.stringify({ error: message }),
         { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -133,7 +133,7 @@ Deno.serve(async (req) => {
 
 
 
-    console.log(`OTP sent to ${normalizedPhone}`);
+    console.log(`Voice OTP call placed to ${normalizedPhone}`);
     return new Response(JSON.stringify({ success: true }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

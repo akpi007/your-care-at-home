@@ -89,7 +89,7 @@ const VerifyOTP = () => {
       if (errMsg) {
         toast({ title: "Resend failed", description: errMsg, variant: "destructive" });
       } else {
-        toast({ title: "Code resent", description: "Check your phone for the new code" });
+        toast({ title: "Calling you again", description: "Answer the call to hear your new code" });
         setResendTimer(60);
       }
     } catch {
@@ -118,8 +118,9 @@ const VerifyOTP = () => {
               Verify your number
             </h1>
             <p className="mt-1 text-sm text-muted-foreground text-center">
-              Enter the 6-digit code sent to{" "}
-              <span className="font-medium text-foreground">{maskedPhone}</span>
+              We're calling{" "}
+              <span className="font-medium text-foreground">{maskedPhone}</span>{" "}
+              — answer and enter the 6-digit code you hear
             </p>
           </div>
 
@@ -155,7 +156,7 @@ const VerifyOTP = () => {
           <div className="mt-4 text-center">
             {resendTimer > 0 ? (
               <p className="text-xs text-muted-foreground">
-                Resend code in{" "}
+                Request a new call in{" "}
                 <span className="font-medium text-foreground">{resendTimer}s</span>
               </p>
             ) : (
@@ -163,7 +164,7 @@ const VerifyOTP = () => {
                 onClick={handleResend}
                 className="text-xs font-medium text-primary hover:underline"
               >
-                Resend verification code
+                Call me again with a new code
               </button>
             )}
           </div>
